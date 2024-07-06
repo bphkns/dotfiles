@@ -39,6 +39,7 @@ return {
         treesitter_context = true,
         which_key = true,
       },
+      flavour = "mocha",
     },
   },
 
@@ -46,7 +47,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      style = "moon",
+      colorscheme = "catppuccin",
     },
   },
 }

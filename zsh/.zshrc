@@ -93,6 +93,7 @@ export PATH="$PNPM_HOME:$PATH"
 export PATH="$PATH:$HOME/.rvm/bin"
 
 export PATH="$PATH:$HOME/usr/local/go/bin"
+export CONFIG_DIR="$HOME/.config/lazygit"
 export NODE_EXTRA_CA_CERTS="$(mkcert -CAROOT)/rootCA.pem"
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
   --highlight-line \
@@ -118,6 +119,7 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
   --color=spinner:#ff007c \
 "
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source <(pkgx --shellcode)
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
