@@ -1,8 +1,21 @@
 return {
   {
+    "jesseleite/nvim-noirbuddy",
+    dependencies = {
+      { "tjdevries/colorbuddy.nvim" },
+    },
+    lazy = false,
+    priority = 1000,
+  },
+  {
     "LazyVim/LazyVim",
     opts = {
-      style = "storm",
+      colorscheme = function()
+        require("noirbuddy").setup({
+          -- Options here:
+          preset = "miami-nights",
+        })
+      end,
     },
   },
 }
