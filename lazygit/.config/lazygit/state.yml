@@ -1,10 +1,11 @@
 lastupdatecheck: 0
 recentrepos:
-    - /Users/bikashphukan/dotfiles
-    - /Users/bikashphukan/code/trueleap-plus
+    - /Users/bikash/dotfiles
+    - /Users/bikash/work/angular-frontend
 startuppopupversion: 5
 lastversion: 0.42.0
-customcommandshistory: []
+customcommandshistory:
+    - wqa
 hidecommandlog: false
 ignorewhitespaceindiffview: false
 diffcontextsize: 3

@@ -124,6 +124,8 @@ source <(pkgx --shellcode)
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
+export NVM_DIR=~/.nvm
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
 zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
 zinit light sindresorhus/pure
