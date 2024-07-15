@@ -14,6 +14,11 @@ return {
         vtsls = {
           settings = {
             complete_function_calls = false,
+            typescript = {
+              suggest = {
+                completeFunctionCalls = false,
+              },
+            },
           },
         },
       },

@@ -124,4 +124,7 @@ source <(pkgx --shellcode)
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
-eval "$(starship init zsh)"
+
+zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
+zinit light sindresorhus/pure
+
