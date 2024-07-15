@@ -39,8 +39,7 @@ return {
         treesitter_context = true,
         which_key = true,
       },
-      flavour = "mocha",
-      transparent_background = true,
+      flavour = "macchiato",
     },
   },
   {
