@@ -17,7 +17,9 @@ return {
             "thumbs.db",
           },
         },
-        follow_current_file = true,
+        follow_current_file = {
+          enabled = true, -- This will change the root directory to the current file
+        },
         group_empty_dirs = false,
         use_libuv_file_watcher = true, -- This will use the OS level file watchers to detect changes
         window = {
