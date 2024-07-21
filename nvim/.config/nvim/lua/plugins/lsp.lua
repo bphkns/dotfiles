@@ -6,14 +6,16 @@ return {
         "nxls",
         "angularls",
         "prettier",
+        "emmet_ls",
       },
       servers = {
         angularls = {
           root_dir = function(fname)
             local util = require("lspconfig.util")
             -- Look for nx.json in parent directories
-            return util.root_pattern("nx.json")(fname) or util.root_pattern("angular.json", "project.json")(fname)
+            return util.root_pattern("angular.json", "nx.json")(fname)
           end,
+          filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx", "htmlangular" },
         },
         vtsls = {
           settings = {
@@ -25,9 +27,35 @@ return {
             },
           },
         },
+        emmet_ls = {
+          filetypes = {
+            "astro",
+            "css",
+            "eruby",
+            "html",
+            "htmldjango",
+            "javascriptreact",
+            "less",
+            "pug",
+            "sass",
+            "scss",
+            "svelte",
+            "typescriptreact",
+            "vue",
+            "htmlangular",
+          },
+        },
       },
       inlay_hints = {
         enabled = false,
+      },
+      setup = {
+        angularls = function()
+          LazyVim.lsp.on_attach(function(client)
+            --HACK: disable angular renaming capability due to duplicate rename popping up
+            client.server_capabilities.renameProvider = false
+          end, "angularls")
+        end,
       },
     },
   },
@@ -42,13 +70,5 @@ return {
         },
       })
     end,
-    setup = {
-      angularls = function()
-        LazyVim.lsp.on_attach(function(client)
-          --HACK: disable angular renaming capability due to duplicate rename popping up
-          client.server_capabilities.renameProvider = false
-        end, "angularls")
-      end,
-    },
   },
 }
