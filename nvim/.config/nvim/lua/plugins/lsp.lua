@@ -8,14 +8,6 @@ return {
         "prettier",
       },
       servers = {
-        angularls = {
-          root_dir = function(fname)
-            local util = require("lspconfig.util")
-            -- Look for nx.json in parent directories
-            return util.root_pattern("nx.json")(fname) or util.root_pattern("angular.json", "project.json")(fname)
-          end,
-          filetypes = { "angular", "html", "typescript", "typescriptreact" },
-        },
         vtsls = {
           settings = {
             complete_function_calls = false,
@@ -47,14 +39,10 @@ return {
       local angular_ls_path = get_angular_ls_path()
       if angular_ls_path then
         opts.servers.angularls = opts.servers.angularls or {}
-        opts.servers.angularls.cmd = {
-          "ngserver",
-          "--stdio",
-          "--tsProbeLocations",
-          angular_ls_path .. "/node_modules",
-          "--ngProbeLocations",
-          angular_ls_path .. "/node_modules",
-        }
+        opts.servers.angularls.root_dir = function(fname)
+          return util.root_pattern("angular.json", "nx.json")(fname)
+        end
+        opts.servers.angularls.filetypes = { "angular", "html", "typescript", "typescriptreact", "htmlangular" }
         LazyVim.extend(opts.servers.vtsls, "settings.vtsls.tsserver.globalPlugins", {
           {
             name = "@angular/language-server",
