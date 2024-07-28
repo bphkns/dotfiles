@@ -27,11 +27,21 @@ return {
             warnings = { "undercurl" },
             information = { "undercurl" },
           },
+          virtual_text = {
+            errors = { "italic" },
+            hints = { "italic" },
+            warnings = { "italic" },
+            information = { "italic" },
+            ok = { "italic" },
+          },
+          inlay_hints = {
+            background = true,
+          },
         },
         navic = { enabled = true, custom_bg = "lualine" },
         neotest = true,
         neotree = true,
-        noice = false,
+        noice = true,
         notify = true,
         semantic_tokens = true,
         telescope = true,
@@ -48,5 +58,27 @@ return {
     opts = {
       colorscheme = "catppuccin",
     },
+  },
+  {
+    "akinsho/bufferline.nvim",
+    event = "ColorScheme",
+    config = function()
+      require("bufferline").setup({
+        highlights = require("catppuccin.groups.integrations.bufferline").get({
+          styles = { "italic", "bold" },
+        }),
+      })
+    end,
+  },
+  {
+    "nvim-lualine/lualine.nvim",
+    event = "ColorScheme",
+    config = function()
+      require("lualine").setup({
+        options = {
+          theme = "catppuccin",
+        },
+      })
+    end,
   },
 }
