@@ -16,6 +16,14 @@ return {
               suggest = {
                 completeFunctionCalls = false,
               },
+              inlayHints = {
+                enumMemberValues = { enabled = true },
+                functionLikeReturnTypes = { enabled = true },
+                parameterNames = { enabled = "literals" },
+                parameterTypes = { enabled = true },
+                propertyDeclarationTypes = { enabled = false },
+                variableTypes = { enabled = false },
+              },
             },
           },
         },
