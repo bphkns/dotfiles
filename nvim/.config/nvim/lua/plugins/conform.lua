@@ -16,7 +16,7 @@ return {
         ["yaml"] = { "prettier" },
         ["dockerfile"] = { "prettier" },
         ["prisma"] = { "prettier" },
-        ["hmlangular"] = { "prettier" },
+        ["htmlangular"] = { "prettierd", "prettier" },
       },
     },
 
