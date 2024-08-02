@@ -19,6 +19,7 @@ return {
         mason = true,
         markdown = true,
         mini = true,
+        grug_far = true,
         native_lsp = {
           enabled = true,
           underlines = {
@@ -49,7 +50,7 @@ return {
         treesitter_context = true,
         which_key = true,
       },
-      flavour = "mocha",
+      flavour = "macchiato",
       transparent_background = true,
     },
   },

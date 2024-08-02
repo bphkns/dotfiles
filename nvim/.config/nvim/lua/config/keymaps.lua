@@ -1,7 +1,7 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
-
+local opts = { silent = true }
 -- Moves selection up and down
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
@@ -13,9 +13,6 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 -- Keep search terms in the middle when browsing results
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
-
--- Delete without yank
-vim.keymap.set("x", "<leader>p", '"_dP')
 
 -- Yank to clipboard
 vim.keymap.set("n", "<leader>y", '"+y', { desc = "[Y]ank to clipboard" })
@@ -48,3 +45,13 @@ vim.keymap.set(
   ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>",
   { desc = "Replace word under cursor" }
 )
+
+-- Turn off arrow keys - force HJKL
+vim.keymap.set("n", "<UP>", "<NOP>", opts)
+vim.keymap.set("n", "<DOWN>", "<NOP>", opts)
+vim.keymap.set("n", "<LEFT>", "<NOP>", opts)
+vim.keymap.set("n", "<RIGHT>", "<NOP>", opts)
+
+vim.keymap.set({ "n", "t", "v", "i", "" }, "<C-x>", "<cmd>echo &filetype<cr>", opts)
+
+vim.keymap.set("v", "p", '"_dP', opts)
