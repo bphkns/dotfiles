@@ -1,85 +1,42 @@
 return {
   {
-    "catppuccin/nvim",
-    lazy = true,
-    name = "catppuccin",
+    "folke/tokyonight.nvim",
     opts = {
-      integrations = {
-        aerial = true,
-        alpha = true,
-        cmp = true,
-        dashboard = true,
-        flash = true,
-        gitsigns = true,
-        headlines = true,
-        illuminate = true,
-        indent_blankline = { enabled = true },
-        leap = true,
-        lsp_trouble = true,
-        mason = true,
-        markdown = true,
-        mini = true,
-        grug_far = true,
-        native_lsp = {
-          enabled = true,
-          underlines = {
-            errors = { "undercurl" },
-            hints = { "undercurl" },
-            warnings = { "undercurl" },
-            information = { "undercurl" },
-          },
-          virtual_text = {
-            errors = { "italic" },
-            hints = { "italic" },
-            warnings = { "italic" },
-            information = { "italic" },
-            ok = { "italic" },
-          },
-          inlay_hints = {
-            background = true,
-          },
-        },
-        navic = { enabled = true, custom_bg = "lualine" },
-        neotest = true,
-        neotree = true,
-        noice = true,
-        notify = true,
-        semantic_tokens = true,
-        telescope = true,
-        treesitter = true,
-        treesitter_context = true,
-        which_key = true,
+      transparent = true,
+      styles = {
+        sidebars = "transparent",
+        floats = "transparent",
       },
-      flavour = "macchiato",
-      transparent_background = true,
+      on_highlights = function(hl, c)
+        local prompt = "#2d3149"
+        hl.TelescopeNormal = {
+          bg = c.bg_dark,
+          fg = c.fg_dark,
+        }
+        hl.TelescopeBorder = {
+          bg = c.bg_dark,
+          fg = c.bg_dark,
+        }
+        hl.TelescopePromptNormal = {
+          bg = prompt,
+        }
+        hl.TelescopePromptBorder = {
+          bg = prompt,
+          fg = prompt,
+        }
+        hl.TelescopePromptTitle = {
+          bg = prompt,
+          fg = prompt,
+        }
+        hl.TelescopePreviewTitle = {
+          bg = c.bg_dark,
+          fg = c.bg_dark,
+        }
+        hl.TelescopeResultsTitle = {
+          bg = c.bg_dark,
+          fg = c.bg_dark,
+        }
+      end,
     },
-  },
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "catppuccin",
-    },
-  },
-  {
-    "akinsho/bufferline.nvim",
-    event = "ColorScheme",
-    config = function()
-      require("bufferline").setup({
-        highlights = require("catppuccin.groups.integrations.bufferline").get({
-          styles = { "italic", "bold" },
-        }),
-      })
-    end,
-  },
-  {
-    "nvim-lualine/lualine.nvim",
-    event = "ColorScheme",
-    config = function()
-      require("lualine").setup({
-        options = {
-          theme = "catppuccin",
-        },
-      })
-    end,
   },
 }
