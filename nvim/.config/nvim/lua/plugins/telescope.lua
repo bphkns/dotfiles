@@ -22,4 +22,12 @@ return {
       },
     }
   end,
+  opts = function(_, opts)
+    opts.pickers.grep_string = {
+      additional_args = { "--hidden" },
+    }
+    opts.pickers.live_grep = {
+      additional_args = { "--hidden" },
+    }
+  end,
 }
