@@ -55,5 +55,3 @@ vim.keymap.set("n", "<RIGHT>", "<NOP>", opts)
 vim.keymap.set({ "n", "t", "v", "i", "" }, "<C-x>", "<cmd>echo &filetype<cr>", opts)
 
 vim.keymap.set("v", "p", '"_dP', opts)
-
-vim.g.maplocalleader = ","
