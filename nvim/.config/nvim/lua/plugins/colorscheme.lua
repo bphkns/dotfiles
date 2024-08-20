@@ -45,6 +45,12 @@ return {
         options = {
           --- @usage 'rose-pine' | 'rose-pine-alt'
           theme = "rose-pine",
+          section_separators = { left = "", right = "" },
+          component_separators = { left = "|", right = "|" },
+        },
+        sections = {
+          lualine_x = { "encoding", "filetype" },
+          lualine_y = {},
         },
       })
     end,
