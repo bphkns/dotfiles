@@ -13,6 +13,7 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 
 vim.opt.wrap = true
+vim.o.showbreak = "↪ "
 
 vim.opt.swapfile = false
 vim.opt.backup = false
