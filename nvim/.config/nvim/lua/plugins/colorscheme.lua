@@ -3,8 +3,8 @@ return {
     "rose-pine/neovim",
     name = "rose-pine",
     opts = {
-      variant = "main", -- auto, main, moon, or dawn
-      dark_variant = "main", -- main, moon, or dawn
+      variant = "moon", -- auto, main, moon, or dawn
+      dark_variant = "moon", -- main, moon, or dawn
       highlight_groups = {
         NormalFloat = { bg = "#000000", blend = 100, inherit = true },
         TelescopeBorder = { fg = "overlay", bg = "overlay" },
