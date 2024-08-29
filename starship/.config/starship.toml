@@ -14,10 +14,7 @@ $c\
 $rust\
 $golang\
 $nodejs\
-[](fg:color_blue bg:color_bg3)\
-$docker_context\
-$conda\
-[](fg:color_bg3 bg:color_bg1)\
+[](fg:color_blue bg:color_bg1)\
 $time\
 [ ](fg:color_bg1)\
 $line_break$character"""
@@ -66,7 +63,7 @@ RedHatEnterprise = "󱄛"
 show_always = true
 style_user = "bg:color_orange fg:color_fg0"
 style_root = "bg:color_orange fg:color_fg0"
-format = '[ $user ]($style)'
+format = '[  ]($style)'
 
 [directory]
 style = "fg:color_fg0 bg:color_yellow"
