@@ -5,6 +5,9 @@ return {
     opts = {
       variant = "main", -- auto, main, moon, or dawn
       dark_variant = "main", -- main, moon, or dawn
+      styles = {
+        transparency = true,
+      },
       highlight_groups = {
         NormalFloat = { bg = "#000000", blend = 100, inherit = true },
         TelescopeBorder = { fg = "overlay", bg = "overlay" },
