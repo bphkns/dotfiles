@@ -28,12 +28,9 @@ return {
     }
     opts.defaults.layout_strategy = "horizontal"
     opts.defaults.layout_config = {
-      horizontal = {
-        prompt_position = "top",
-      },
+      horizontal = {},
     }
 
-    opts.defaults.sorting_strategy = "ascending"
     opts.pickers.live_grep = {
       additional_args = { "--hidden" },
     }
