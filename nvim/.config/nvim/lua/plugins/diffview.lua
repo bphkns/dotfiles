@@ -8,12 +8,10 @@ return {
     "sindrets/diffview.nvim",
     lazy = true,
     opts = function(_, opts)
-      opts.file_history = {
-        {
-          layout = "diff2_vertical",
-        },
+      opts.view.file_history = {
+        layout = "diff2_vertical",
       }
-      opts.default = {
+      opts.view.default = {
         layout = "diff2_vertical",
       }
     end,
