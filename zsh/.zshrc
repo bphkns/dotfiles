@@ -126,3 +126,14 @@ function yy() {
 	fi
 	rm -f -- "$tmp"
 }
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+export LDFLAGS="-L/usr/local/opt/zlib/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include"
+export LDFLAGS="-L/usr/local/opt/openssl@3/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl@3/include"
+
+alias pyenv86="arch -x86_64 pyenv"
+
+
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
