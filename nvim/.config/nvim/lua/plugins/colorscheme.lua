@@ -41,8 +41,25 @@ return {
     },
   },
   {
+    "EdenEast/nightfox.nvim",
+    name = "nightfox",
+    lazy = false,
+    priority = 1000,
+    opts = {
+      groups = {
+        all = {
+          LspReferenceText = {
+            bg = "none",
+          },
+        },
+      },
+    },
+  },
+  {
     "LazyVim/LazyVim",
     lazy = false,
-    opts = {},
+    opts = {
+      colorscheme = "carbonfox",
+    },
   },
 }
