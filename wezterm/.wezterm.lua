@@ -2,8 +2,8 @@ local wezterm = require("wezterm")
 local theme = wezterm.plugin.require("https://github.com/neapsix/wezterm").main
 local config = wezterm.config_builder()
 
-config.font = wezterm.font("CaskaydiaCove Nerd Font")
-config.color_scheme = "Tokyo Night"
+config.font = wezterm.font("Iosevka Term")
+config.color_scheme = "Catppuccin Mocha"
 config.font_size = 14
 config.enable_tab_bar = false
 config.window_decorations = "RESIZE"
