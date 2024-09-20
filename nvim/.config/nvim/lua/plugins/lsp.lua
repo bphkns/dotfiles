@@ -9,6 +9,9 @@ return {
         "emmet_ls",
       },
       servers = {
+        ts_ls = {
+          enabled = false,
+        },
         vtsls = {
           settings = {
             complete_function_calls = false,
