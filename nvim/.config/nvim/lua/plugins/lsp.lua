@@ -7,28 +7,26 @@ return {
         "angularls",
         "prettier",
         "emmet_ls",
+        "json_ls",
       },
       servers = {
-        ts_ls = {
-          enabled = false,
-        },
         vtsls = {
+          enabled = false,
           settings = {
             complete_function_calls = false,
             typescript = {
               suggest = {
                 completeFunctionCalls = false,
               },
-              inlayHints = {
-                enumMemberValues = { enabled = true },
-                functionLikeReturnTypes = { enabled = false },
-                parameterNames = { enabled = "literals" },
-                parameterTypes = { enabled = false },
-                propertyDeclarationTypes = { enabled = false },
-                variableTypes = { enabled = false },
-              },
+              inlayHints = false,
             },
           },
+        },
+        tsserver = {
+          enabled = false,
+        },
+        ts_ls = {
+          enabled = false,
         },
         emmet_ls = {
           filetypes = {
