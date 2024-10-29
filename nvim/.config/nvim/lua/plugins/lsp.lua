@@ -11,7 +11,6 @@ return {
       },
       servers = {
         vtsls = {
-          enabled = false,
           settings = {
             complete_function_calls = false,
             typescript = {
