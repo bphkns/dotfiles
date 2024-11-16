@@ -8,6 +8,7 @@ return {
         "prettier",
         "emmet_ls",
         "json_ls",
+        "vtsls",
       },
       servers = {
         vtsls = {
@@ -20,6 +21,7 @@ return {
               inlayHints = false,
             },
           },
+          autoUseWorkspaceTsdk = true,
         },
         tsserver = {
           enabled = false,
@@ -72,10 +74,6 @@ return {
           },
         })
       else
-        vim.notify(
-          "Could not find Angular Language Server. Make sure it's installed in your project.",
-          vim.log.levels.WARN
-        )
       end
     end,
     setup = {
