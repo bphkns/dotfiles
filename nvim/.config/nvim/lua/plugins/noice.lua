@@ -1,6 +1,14 @@
 return {
   "folke/noice.nvim",
-  opts = function(_, opts)
-    opts.presets.lsp_doc_border = true
-  end,
+  opts = {
+    routes = {
+      filter = {
+        event = "notify",
+        find = "Intializing project",
+      },
+      opts = {
+        skip = true,
+      },
+    },
+  },
 }

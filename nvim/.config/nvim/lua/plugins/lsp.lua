@@ -20,14 +20,8 @@ return {
               },
               inlayHints = false,
             },
+            autouseWorkspaceTsdk = false,
           },
-          autoUseWorkspaceTsdk = true,
-        },
-        tsserver = {
-          enabled = false,
-        },
-        ts_ls = {
-          enabled = false,
         },
         emmet_ls = {
           filetypes = {
