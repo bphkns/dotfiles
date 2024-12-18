@@ -133,3 +133,8 @@ vim.keymap.set("v", "<C-g>we", ":<C-u>'<,'>GpWhisperEnew<cr>", keymapOptions("Vi
 vim.keymap.set("v", "<C-g>wn", ":<C-u>'<,'>GpWhisperNew<cr>", keymapOptions("Visual Whisper New"))
 vim.keymap.set("v", "<C-g>wv", ":<C-u>'<,'>GpWhisperVnew<cr>", keymapOptions("Visual Whisper Vnew"))
 vim.keymap.set("v", "<C-g>wt", ":<C-u>'<,'>GpWhisperTabnew<cr>", keymapOptions("Visual Whisper Tabnew"))
+
+-- Ctrl + p for old files fzf-lua to cwd
+vim.keymap.set("n", "<C-p>", LazyVim.pick("oldfiles", { cwd = vim.uv.cwd() }), keymapOptions("Fzf recent files"))
+vim.keymap.set("n", "<C-f>", LazyVim.pick("files", { root = false }), keymapOptions("All files"))
+vim.keymap.set("n", "<leader>/", LazyVim.pick("live_grep", { cwd = vim.uv.cwd() }), keymapOptions("Grep text"))
