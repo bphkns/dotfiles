@@ -14,13 +14,7 @@ return {
         vtsls = {
           settings = {
             complete_function_calls = false,
-            typescript = {
-              suggest = {
-                completeFunctionCalls = false,
-              },
-              inlayHints = false,
-            },
-            autouseWorkspaceTsdk = false,
+            autoUseWorkspaceTsdk = true,
           },
         },
         emmet_ls = {
@@ -64,7 +58,7 @@ return {
           {
             name = "@angular/language-server",
             location = angular_ls_path,
-            enableForWorkspaceTypeScriptVersions = false,
+            enableForWorkspaceTypeScriptVersions = true,
           },
         })
       else
