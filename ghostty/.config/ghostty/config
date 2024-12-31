@@ -1,7 +1,8 @@
 font-family = IosevkaTerm Nerd Font
 font-size=14
 mouse-hide-while-typing=true
-background = black
 gtk-titlebar = false
 window-decoration = true
 macos-titlebar-style = hidden
+window-padding-balance = true
+theme = catppuccin-mocha
