@@ -113,7 +113,7 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
 source <(pkgx --shellcode)
 # Shell integrations
 eval "$(fzf --zsh)"
-eval "$(zoxide init --cmd cd zsh)"
+eval "$(zoxide init zsh)"
 
 export NVM_DIR=~/.nvm
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
