@@ -6,30 +6,22 @@ return {
         "nxls",
         "angularls",
         "prettier",
-        "emmet_ls",
         "json_ls",
         "vtsls",
       },
       servers = {
         vtsls = {
-          settings = {
-            complete_function_calls = false,
-            autoUseWorkspaceTsdk = true,
-          },
-        },
-        emmet_ls = {
           filetypes = {
-            "astro",
-            "html",
-            "typescript",
-            "typescriptreact",
-            "typescript.jsx",
-            "htmlangular",
-            "css",
             "javascript",
             "javascriptreact",
-            "scss",
-            "sass",
+            "javascript.jsx",
+            "typescript",
+            "typescriptreact",
+            "typescript.tsx",
+            "htmlangular",
+          },
+          settings = {
+            complete_function_calls = false,
           },
         },
       },
@@ -53,7 +45,8 @@ return {
         opts.servers.angularls.root_dir = function(fname)
           return util.root_pattern("angular.json", "nx.json")(fname)
         end
-        opts.servers.angularls.filetypes = { "angular", "html", "typescript", "typescriptreact", "htmlangular" }
+        opts.servers.angularls.filetypes =
+          { "angular", "html", "typescript", "typescriptreact", "htmlangular", "typescript.tsx" }
         LazyVim.extend(opts.servers.vtsls, "settings.vtsls.tsserver.globalPlugins", {
           {
             name = "@angular/language-server",
