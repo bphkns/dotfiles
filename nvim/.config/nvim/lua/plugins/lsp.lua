@@ -6,22 +6,15 @@ return {
         "nxls",
         "angularls",
         "prettier",
+        "emmet_ls",
         "json_ls",
         "vtsls",
       },
       servers = {
         vtsls = {
-          filetypes = {
-            "javascript",
-            "javascriptreact",
-            "javascript.jsx",
-            "typescript",
-            "typescriptreact",
-            "typescript.tsx",
-            "htmlangular",
-          },
           settings = {
             complete_function_calls = false,
+            autoUseWorkspaceTsdk = true,
           },
         },
       },
