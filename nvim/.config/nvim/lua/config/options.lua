@@ -23,6 +23,7 @@ vim.opt.undofile = true
 vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
+vim.g.have_nerd_font = true
 
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
@@ -30,6 +31,4 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 vim.opt.colorcolumn = "100"
-
-vim.g.mapleader = " "
-vim.g.maplocalleader = ","
+vim.opt.clipboard = "unnamedplus"

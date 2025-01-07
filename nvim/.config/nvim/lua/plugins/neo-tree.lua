@@ -1,10 +1,47 @@
 return {
   {
     "nvim-neo-tree/neo-tree.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "echasnovski/mini.icons",
+      "MunifTanjim/nui.nvim",
+      "3rd/image.nvim"
+    },
     opts = {
+      default_component_configs = {
+        icon = {
+          provider = function(icon, node) -- setup a custom icon provider
+            local text, hl
+            local mini_icons = require("mini.icons")
+            if node.type == "file" then          -- if it's a file, set the text/hl
+              text, hl = mini_icons.get("file", node.name)
+            elseif node.type == "directory" then -- get directory icons
+              text, hl = mini_icons.get("directory", node.name)
+              -- only set the icon text if it is not expanded
+              if node:is_expanded() then
+                text = nil
+              end
+            end
+
+            -- set the icon text/highlight only if it exists
+            if text then
+              icon.text = text
+            end
+            if hl then
+              icon.highlight = hl
+            end
+          end,
+        },
+        kind_icon = {
+          provider = function(icon, node)
+            local mini_icons = require("mini.icons")
+            icon.text, icon.highlight = mini_icons.get("lsp", node.extra.kind.name)
+          end,
+        },
+      },
       filesystem = {
         filtered_items = {
-          visible = false, -- This makes filtered items visible by default
+          visible = false,         -- This makes filtered items visible by default
           hide_dotfiles = false,
           hide_gitignored = false, -- Don't hide gitignored files by default
           hide_hidden = false,
@@ -79,8 +116,23 @@ return {
       },
     },
     keys = {
-      { "<leader>E", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
-      { "<leader>e", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
+      {
+        "<leader>E",
+        function()
+          require("neo-tree.command").execute({ toggle = true })
+        end,
+        desc = "Explorer NeoTree (root dir)",
+        remap = true
+      },
+      {
+        "<leader>e",
+        function()
+          require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
+        end
+        ,
+        desc = "Explorer NeoTree (cwd)",
+        remap = true
+      },
     },
   },
 }

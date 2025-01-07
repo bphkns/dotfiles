@@ -1,76 +1,41 @@
 return {
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      ensure_installed = {
-        "nxls",
-        "angularls",
-        "prettier",
-        "emmet_ls",
-        "json_ls",
-        "vtsls",
-      },
-      servers = {
-        vtsls = {
-          settings = {
-            complete_function_calls = false,
-            autoUseWorkspaceTsdk = true,
-          },
-        },
-        emmet_ls = {
-          filetypes = {
-            "astro",
-            "html",
-            "typescript",
-            "typescriptreact",
-            "typescript.jsx",
-            "htmlangular",
-            "css",
-            "javascript",
-            "javascriptreact",
-            "scss",
-            "sass",
-          },
-        },
-      },
-    },
-  },
-  {
-    "neovim/nvim-lspconfig",
-    opts = function(_, opts)
-      local util = require("lspconfig.util")
-      local function get_angular_ls_path()
-        local workspace_root = util.root_pattern("nx.json")(vim.fn.getcwd())
-        if workspace_root then
-          return workspace_root .. "/node_modules/@angular/language-server"
-        end
-        return nil
-      end
+  'neovim/nvim-lspconfig',
+  dependencies = {
 
-      local angular_ls_path = get_angular_ls_path()
-      if angular_ls_path then
-        opts.servers.angularls = opts.servers.angularls or {}
-        opts.servers.angularls.root_dir = function(fname)
-          return util.root_pattern("angular.json", "nx.json")(fname)
-        end
-        opts.servers.angularls.filetypes = { "angular", "html", "typescript", "typescriptreact", "htmlangular" }
-        LazyVim.extend(opts.servers.vtsls, "settings.vtsls.tsserver.globalPlugins", {
-          {
-            name = "@angular/language-server",
-            location = angular_ls_path,
-            enableForWorkspaceTypeScriptVersions = true,
-          },
-        })
-      else
-      end
-    end,
-    setup = {
-      angularls = function()
-        LazyVim.lsp.on_attach(function(client)
-          --HACK: disable angular renaming capability due to duplicate rename popping up
-          client.server_capabilities.renameProvider = false
-        end, "angularls")
-      end,
+    { 'williamboman/mason.nvim', config = true },
+    'williamboman/mason-lspconfig.nvim',
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
+    {
+      'j-hui/fidget.nvim',
+      opts = {}
     },
+    'saghen/blink.cmp' },
+
+  -- example using `opts` for defining servers
+  opts = {
+    servers = {
+      lua_ls = {},
+      vtsls = {},
+      angularls = {}
+    }
   },
+  config = function(_, opts)
+    require('mason').setup()
+
+    -- You can add other tools here that you want Mason to install
+    -- for you, so that they are available from within Neovim.
+    local ensure_installed = vim.tbl_keys(opts.servers or {})
+    vim.list_extend(ensure_installed, {
+      'stylua', -- Used to format Lua code
+    })
+    require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
+    local lspconfig = require('lspconfig')
+    for server, config in pairs(opts.servers) do
+      -- passing config.capabilities to blink.cmp merges with the capabilities in your
+      -- `opts[server].capabilities, if you've defined it
+      config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+      lspconfig[server].setup(config)
+    end
+  end
+
 }
