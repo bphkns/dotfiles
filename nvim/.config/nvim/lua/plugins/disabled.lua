@@ -4,10 +4,6 @@ return {
     enabled = false,
   },
   {
-    "nvim-lualine/lualine.nvim",
-    enabled = false,
-  },
-  {
     "folke/noice.nvim",
     opts = {
       lsp = {
