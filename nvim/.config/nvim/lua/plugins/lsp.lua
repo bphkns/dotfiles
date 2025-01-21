@@ -14,7 +14,9 @@ return {
         vtsls = {
           settings = {
             complete_function_calls = false,
-            autoUseWorkspaceTsdk = true,
+            typescript = {
+              inlayHints = false,
+            },
           },
         },
       },
