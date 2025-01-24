@@ -1,14 +1,15 @@
 return {
   {
-    "folke/tokyonight.nvim",
-    lazy = true,
+    "sainnhe/gruvbox-material",
+    lazy = false,
+    priority = 1000,
+  },
+  {
+    "LazyVim/LazyVim",
     opts = {
-      style = "storm",
-      on_highlights = function(hl, c)
-        hl.LspReferenceText = {
-          bg = "none",
-        }
-      end,
+      colorscheme = "gruvbox-material",
+      background = "dark",
+      gruvbox_material_background = "hard",
     },
   },
 }

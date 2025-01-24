@@ -110,13 +110,9 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
   --color=spinner:#ff007c \
 "
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-source <(pkgx --shellcode)
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
-
-export NVM_DIR=~/.nvm
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
 eval "$(starship init zsh)"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
