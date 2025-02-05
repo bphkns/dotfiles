@@ -1,15 +1,25 @@
 return {
-  --   {
-  --     "sainnhe/gruvbox-material",
-  --     lazy = false,
-  --     priority = 1000,
-  --   },
-  --   {
-  --     "LazyVim/LazyVim",
-  --     opts = {
-  --       colorscheme = "gruvbox-material",
-  --       background = "dark",
-  --       gruvbox_material_background = "hard",
-  --     },
-  --   },
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
+    opts = {
+      variant = "moon",
+      dark_variant = "moon",
+      styles = {
+        bold = true,
+        italic = false,
+        transparency = false,
+      },
+      highlight_groups = {
+        LspReferenceText = { bg = "none" },
+      },
+    },
+  },
+  {
+    "LazyVim/LazyVim",
+    lazy = false,
+    opts = {
+      colorscheme = "rose-pine",
+    },
+  },
 }
