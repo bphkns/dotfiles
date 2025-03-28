@@ -1,36 +1,42 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
-        "angular",
-        "tsx",
-        "typescript",
-        "html",
-        "yaml",
-        "json",
-        "css",
-        "scss",
-        "sql",
-        "dockerfile",
-        "prisma",
-      })
-      vim.filetype.add({
-        extension = {
-          perm = "perm",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+    },
+    build = ":TSUpdate",
+    config = function()
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = {
+          "lua",
+          "vim",
+          "vimdoc",
+          "angular",
+          "tsx",
+          "typescript",
+          "html",
+          "yaml",
+          "json",
+          "css",
+          "scss",
+          "sql",
+          "dockerfile",
+          "prisma",
+        },
+        highlight = { enable = true },
+        indent = { enable = true },
+        incremental_selection = {
+          enable = true,
+          keymaps = {
+            init_selection = "<C-space>",
+            node_incremental = "<C-space>",
+            scope_incremental = false,
+            node_decremental = "<bs>",
+          },
         },
       })
     end,
   },
   { "nvim-treesitter/playground" },
-  {
-    "nvim-treesitter",
-    opts = function()
-      vim.filetype.add({
-        pattern = {
-          [".*%.component%.html"] = "htmlangular", -- Sets the filetype to `htmlangular` if it matches the pattern
-        },
-      })
-    end,
-  },
 }
