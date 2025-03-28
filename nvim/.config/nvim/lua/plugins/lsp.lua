@@ -3,7 +3,7 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      "mason.nvim",
+      "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "saghen/blink.cmp",
     },
@@ -66,7 +66,7 @@ return {
           return util.root_pattern("angular.json", "nx.json")(fname)
         end
         opts.servers.angularls.filetypes =
-          { "angular", "html", "typescript", "typescriptreact", "htmlangular", "typescript.tsx" }
+        { "angular", "html", "typescript", "typescriptreact", "htmlangular", "typescript.tsx" }
       end
 
       -- TypeScript setup
