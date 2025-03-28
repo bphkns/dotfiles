@@ -1,11 +1,13 @@
 return {
   {
-    "echasnovski/mini.starter",
-    version = "*",
-    dependencies = { "echasnovski/mini.icons", version = "*" },
+    "goolord/alpha-nvim",
     event = "VimEnter",
+    dependencies = {
+      "echasnovski/mini.icons",
+      "nvim-lua/plenary.nvim",
+    },
     config = function()
-      require("mini.starter").setup({})
+      require("alpha").setup(require("alpha.themes.theta").config)
     end,
   },
 }
