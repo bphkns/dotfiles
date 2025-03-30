@@ -1,13 +1,21 @@
 return {
-
+  {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+        { path = "lazy.nvim",          words = { "LazyVim" } }
+      },
+    },
+  },
   {
     "saghen/blink.cmp",
     dependencies = {
       "rafamadriz/friendly-snippets",
-      "saghen/blink.compat",
       "moyiz/blink-emoji.nvim",
-      "ray-x/cmp-sql",
-      "supermaven-inc/supermaven-nvim",
       "onsails/lspkind.nvim",
     },
     version = "v1.*",
@@ -18,7 +26,6 @@ return {
       },
       completion = {
         accept = {
-          -- experimental auto-brackets support
           auto_brackets = {
             enabled = true,
           },
@@ -27,8 +34,8 @@ return {
           draw = {
             treesitter = { "lsp" },
             columns = {
-              { "label", "label_description", gap = 1 },
-              { "kind_icon", "kind", gap = 1 },
+              { "label",     "label_description", gap = 1 },
+              { "kind_icon", "kind",              gap = 1 },
             },
           },
         },
@@ -39,47 +46,34 @@ return {
         ghost_text = {
           enabled = true,
         },
+        trigger = {
+          show_on_keyword = true,
+        },
       },
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
-        default = { "lsp", "path", "snippets", "buffer", "emoji", "sql" },
+        default = { "lazydev", "lsp", "path", "snippets", "buffer", "emoji", },
         providers = {
           emoji = {
             module = "blink-emoji",
             name = "Emoji",
-            score_offset = 15, -- Tune by preference
+            score_offset = 15,        -- Tune by preference
             opts = { insert = true }, -- Insert emoji (default) or complete its name
             should_show_items = function()
               return vim.tbl_contains(
-                -- Enable emoji completion only for git commits and markdown.
-                -- By default, enabled for all file-types.
+              -- Enable emoji completion only for git commits and markdown.
+              -- By default, enabled for all file-types.
                 { "gitcommit", "markdown" },
                 vim.o.filetype
               )
             end,
           },
-          sql = {
-            -- IMPORTANT: use the same name as you would for nvim-cmp
-            name = "sql",
-            module = "blink.compat.source",
-
-            -- all blink.cmp source config options work as normal:
-            score_offset = -3,
-
-            -- this table is passed directly to the proxied completion source
-            -- as the `option` field in nvim-cmp's source config
-            --
-            -- this is NOT the same as the opts in a plugin's lazy.nvim spec
-            opts = {},
-            should_show_items = function()
-              return vim.tbl_contains(
-                -- Enable emoji completion only for git commits and markdown.
-                -- By default, enabled for all file-types.
-                { "sql" },
-                vim.o.filetype
-              )
-            end,
+          lazydev = {
+            name = "LazyDev",
+            module = "lazydev.integrations.blink",
+            -- make lazydev completions top priority (see `:h blink.cmp`)
+            score_offset = 100,
           },
         },
       },
