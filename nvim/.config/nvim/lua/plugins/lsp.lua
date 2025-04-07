@@ -1,5 +1,4 @@
 return {
-
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
@@ -7,6 +6,7 @@ return {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "saghen/blink.cmp",
+      "yioneko/nvim-vtsls", -- Ensure nvim-vtsls is installed
     },
     opts = {
       ensure_installed = {
@@ -30,7 +30,7 @@ return {
       local mason_lspconfig = require("mason-lspconfig")
       local util = require("lspconfig.util")
 
-      -- Get Angular LS path function
+      -- Function to get Angular LS path
       local function get_angular_ls_path()
         local workspace_root = util.root_pattern("nx.json")(vim.fn.getcwd())
         if workspace_root then
@@ -39,27 +39,47 @@ return {
         return nil
       end
 
-      -- Basic diagnostic configuration
+      -- Diagnostic configuration
       vim.diagnostic.config({
         virtual_text = true,
         signs = true,
         update_in_insert = false,
         severity_sort = true,
       })
-
-      -- Diagnostic keymaps
       vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
 
+      -- Common on_attach for all servers
       local on_attach = function(client, bufnr)
-        vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, { desc = "Rename Symbol", buffer = bufnr })
-        vim.keymap.set("n", "<space>sh", vim.lsp.buf.signature_help, { desc = "Signature Help", buffer = bufnr })
+        local bufopts = { buffer = bufnr }
+        vim.keymap.set(
+          "n",
+          "<leader>rn",
+          vim.lsp.buf.rename,
+          vim.tbl_extend("force", bufopts, { desc = "Rename Symbol" })
+        )
+        vim.keymap.set(
+          "n",
+          "<leader>sh",
+          vim.lsp.buf.signature_help,
+          vim.tbl_extend("force", bufopts, { desc = "Signature Help" })
+        )
+        vim.keymap.set(
+          "n",
+          "<leader>ca",
+          vim.lsp.buf.code_action,
+          vim.tbl_extend("force", bufopts, { desc = "Code Action" })
+        )
+        -- Updated keymap for organize imports using nvim-vtsls
+        vim.keymap.set("n", "<leader>cu", function()
+          require("vtsls").commands.organize_imports(vim.api.nvim_get_current_buf())
+        end, vim.tbl_extend("force", bufopts, { desc = "Organize Imports" }))
       end
 
-      -- Mason setup
+      -- Setup Mason and ensure servers are installed
       mason.setup()
       mason_lspconfig.setup({ ensure_installed = opts.ensure_installed })
 
-      -- Configure Angular if found
+      -- Configure Angular LS if the workspace is found
       local angular_ls_path = get_angular_ls_path()
       if angular_ls_path then
         opts.servers.angularls = opts.servers.angularls or {}
@@ -67,10 +87,19 @@ return {
           return util.root_pattern("angular.json", "nx.json")(fname)
         end
         opts.servers.angularls.filetypes =
-        { "angular", "html", "typescript", "typescriptreact", "htmlangular", "typescript.tsx" }
+          { "angular", "html", "typescript", "typescriptreact", "htmlangular", "typescript.tsx" }
+        opts.servers.angularls.cmd = {
+          "node",
+          angular_ls_path .. "/bin/ngserver",
+          "--stdio",
+          "--tsProbeLocations",
+          angular_ls_path .. "/node_modules",
+          "--ngProbeLocations",
+          angular_ls_path .. "/node_modules",
+        }
       end
 
-      -- TypeScript setup
+      -- TypeScript setup for vtsls with specific settings
       lspconfig.vtsls.setup({
         on_attach = on_attach,
         settings = {
@@ -83,11 +112,9 @@ return {
               functionLikeReturnTypes = { enabled = true },
             },
             preferences = {
-              importModuleSpecifier = "non-relative",
-              autoImportFileExcludePatterns = { "**/node_modules/**" },
+              importModuleSpecifier = "relative",
             },
             suggest = {
-              completeFunctionCalls = true,
               includeAutomaticOptionalChainCompletions = true,
             },
           },
@@ -98,15 +125,15 @@ return {
               variableTypes = { enabled = true },
             },
             preferences = {
-              importModuleSpecifier = "non-relative",
-              autoImportFileExcludePatterns = { "**/node_modules/**" },
+              importModuleSpecifier = "relative",
             },
           },
         },
       })
 
-      -- Lua setup
-      lspconfig.lua_ls.setup({
+      -- Lua setup; merging extra opts if any
+      lspconfig.lua_ls.setup(vim.tbl_deep_extend("force", {
+        on_attach = on_attach,
         settings = {
           Lua = {
             diagnostics = {
@@ -121,13 +148,15 @@ return {
             },
           },
         },
-      })
+      }, opts.servers.lua_ls or {}))
 
-      -- Setup other servers with blink capabilities
+      -- Setup remaining servers (angularls, emmet_ls, jsonls, etc.) with blink capabilities
       for server, config in pairs(opts.servers) do
         if server ~= "vtsls" and server ~= "lua_ls" then
-          config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
-          config.on_attach = on_attach
+          config = vim.tbl_deep_extend("force", config, {
+            on_attach = on_attach,
+            capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities),
+          })
           lspconfig[server].setup(config)
         end
       end
