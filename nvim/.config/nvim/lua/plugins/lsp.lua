@@ -63,12 +63,6 @@ return {
           vim.lsp.buf.signature_help,
           vim.tbl_extend("force", bufopts, { desc = "Signature Help" })
         )
-        vim.keymap.set(
-          "n",
-          "<leader>ca",
-          vim.lsp.buf.code_action,
-          vim.tbl_extend("force", bufopts, { desc = "Code Action" })
-        )
         -- Updated keymap for organize imports using nvim-vtsls
         vim.keymap.set("n", "<leader>cu", function()
           require("vtsls").commands.organize_imports(vim.api.nvim_get_current_buf())

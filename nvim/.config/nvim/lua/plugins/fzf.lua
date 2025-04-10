@@ -130,6 +130,12 @@ return {
         "<cmd>FzfLua lsp_typedefs jump1=true ignore_current_line=true<cr>",
         desc = "Goto T[y]pe Definition",
       },
+      {
+        "<leader>ca",
+        ":lua require('fzf-lua').lsp_code_actions({ async = false })<cr>",
+        desc = "Code Actions",
+        nowait = true,
+      },
     },
     config = function(_, opts)
       require("fzf-lua").setup(opts)
