@@ -81,7 +81,7 @@ return {
           return util.root_pattern("angular.json", "nx.json")(fname)
         end
         opts.servers.angularls.filetypes =
-          { "angular", "html", "typescript", "typescriptreact", "htmlangular", "typescript.tsx" }
+        { "angular", "html", "typescript", "typescriptreact", "htmlangular", "typescript.tsx" }
         opts.servers.angularls.cmd = {
           "node",
           angular_ls_path .. "/bin/ngserver",
@@ -106,7 +106,7 @@ return {
               functionLikeReturnTypes = { enabled = true },
             },
             preferences = {
-              importModuleSpecifier = "relative",
+              importModuleSpecifier = "project-relative",
             },
             suggest = {
               includeAutomaticOptionalChainCompletions = true,
