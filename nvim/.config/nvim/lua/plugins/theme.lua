@@ -13,19 +13,8 @@ return {
           italic = false,
           transparency = false,
         },
-        -- highlight_groups = {
-        --   LspReferenceText = { bg = "none" },
-        -- },
       })
       vim.cmd("colorscheme rose-pine")
-    end,
-  },
-  {
-    "akinsho/bufferline.nvim",
-    event = "ColorScheme",
-    config = function()
-      local highlights = require("rose-pine.plugins.bufferline")
-      require("bufferline").setup({ highlights = highlights })
     end,
   },
 }

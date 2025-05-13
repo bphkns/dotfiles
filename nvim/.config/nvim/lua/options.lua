@@ -68,4 +68,6 @@ vim.g.maplocalleader = ","
 vim.opt.clipboard = "unnamedplus"
 
 -- Don't copy text deleted with 'c' command to clipboard
-vim.keymap.set({"n", "v"}, "c", '"_c', { noremap = true })
+vim.keymap.set({ "n", "v" }, "c", '"_c', { noremap = true })
+
+vim.opt.equalalways = false
