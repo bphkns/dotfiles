@@ -29,7 +29,7 @@ vim.keymap.set("n", "Q", "<nop>", opts)
 vim.keymap.set("n", "<leader>bsd", "<cmd>%bd|e#|bd#<cr>|'<cr>", { desc = "Delete surrounding buffers" })
 
 -- Add the following line to your init.lua
-vim.keymap.set('n', '<leader>bd', ':bd<CR>', { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>bd", ":bd<CR>", { noremap = true, silent = true })
 
 -- Search and replace word under cursor
 vim.keymap.set(
@@ -50,3 +50,15 @@ vim.keymap.set({ "n", "t", "v", "i" }, "<C-x>", "<cmd>echo &filetype<cr>", opts)
 
 -- Paste without yanking the replaced text
 vim.keymap.set("v", "p", '"_dP', opts)
+
+-- Go to next buffer
+vim.keymap.set("n", "<leader>bn", ":bnext<CR>", opts)
+
+-- Go to previous buffer
+vim.keymap.set("n", "<leader>bp", ":bprevious<CR>", opts)
+
+-- Go to first buffer
+vim.keymap.set("n", "<leader>bf", ":bfirst<CR>", opts)
+
+-- Go to last buffer
+vim.keymap.set("n", "<leader>bl", ":blast<CR>", opts)
