@@ -112,10 +112,8 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Shell integrations
 eval "$(fzf --zsh)"
-eval "$(zoxide init zsh)"
-
+eval "$(zoxide init --cmd cd zsh)"
 eval "$(starship init zsh)"
-source ~/.nx-completion/nx-completion.plugin.zsh
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 function yy() {
@@ -141,3 +139,6 @@ export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+source ~/.nx-completion/nx-completion.plugin.zsh
