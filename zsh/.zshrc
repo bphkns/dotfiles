@@ -114,6 +114,7 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 
 eval "$(starship init zsh)"
+source ~/.nx-completion/nx-completion.plugin.zsh
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 function yy() {
