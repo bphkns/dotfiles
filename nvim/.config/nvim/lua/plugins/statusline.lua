@@ -44,6 +44,20 @@ return {
           lualine_b = { "branch", "selectionCount" },
           lualine_c = {
             "%=",
+            {
+              function()
+                local reg = vim.fn.reg_recording()
+                if reg ~= "" then
+                  return "Recording @" .. reg
+                else
+                  return "" -- Or return nil if you want the component to be hidden when not recording
+                end
+              end,
+              -- You can add styling if you like
+              color = { fg = "#ff9e64" }, -- Example: a warm orange color
+              draw_empty = false,         -- Set to true if you want the component to always be drawn, even when empty
+            },
+
           },
           lualine_x = { "searchcount" },
           lualine_y = { "filetype", "progress" },

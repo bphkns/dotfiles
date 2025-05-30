@@ -67,6 +67,10 @@ return {
         vim.keymap.set("n", "<leader>cu", function()
           require("vtsls").commands.organize_imports(vim.api.nvim_get_current_buf())
         end, vim.tbl_extend("force", bufopts, { desc = "Organize Imports" }))
+
+        vim.keymap.set("n", "<leader>cr", function()
+          require("vtsls").commands.remove_unused_imports(vim.api.nvim_get_current_buf())
+        end, vim.tbl_extend("force", bufopts, { desc = "Rename" }))
       end
 
       -- Setup Mason and ensure servers are installed
