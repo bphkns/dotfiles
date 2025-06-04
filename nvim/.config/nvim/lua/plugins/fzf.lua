@@ -8,11 +8,12 @@ return {
         width = 0.80,
       },
       files = {
-        cmd = "fd --type f --hidden --follow --exclude .git",
+        cmd = "fd --type f --hidden --follow --exclude .git node_modules --no-ignore-vcs ",
       },
       grep = {
         cwd_prompt = true, -- Show the current working directory
-        rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -g '!.git/' -g '!node_modules/' -g '!.nx/' -g '!.angular/'",
+        rg_opts =
+        "--hidden --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -g '!.git/' -g '!node_modules/' -g '!.nx/' -g '!.angular/'",
       },
     },
     events = { "VeryLazy" },
