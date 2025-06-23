@@ -71,13 +71,71 @@ return {
         vim.keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help,
           vim.tbl_extend("force", bufopts, { desc = "Signature Help" }))
 
+        -- Debug: Print client name
+        print("LSP client attached:", client.name)
+
+        -- VTSLS specific keymaps
         if client.name == "vtsls" then
-          vim.keymap.set("n", "<leader>cu", function()
-            require("vtsls").commands.organize_imports(0)
-          end, vim.tbl_extend("force", bufopts, { desc = "Organize Imports" }))
-          vim.keymap.set("n", "<leader>cr", function()
-            require("vtsls").commands.remove_unused_imports(0)
-          end, vim.tbl_extend("force", bufopts, { desc = "Remove Unused Imports" }))
+          -- Check if vtsls module is available
+          local vtsls_ok, vtsls = pcall(require, "vtsls")
+          if vtsls_ok then
+            -- Import organization
+            vim.keymap.set("n", "<leader>co", function()
+              vtsls.commands.organize_imports(bufnr)
+            end, vim.tbl_extend("force", bufopts, { desc = "Organize Imports" }))
+
+            vim.keymap.set("n", "<leader>cs", function()
+              vtsls.commands.sort_imports(bufnr)
+            end, vim.tbl_extend("force", bufopts, { desc = "Sort Imports" }))
+
+            vim.keymap.set("n", "<leader>cu", function()
+              vtsls.commands.remove_unused_imports(bufnr)
+            end, vim.tbl_extend("force", bufopts, { desc = "Remove Unused Imports" }))
+
+            vim.keymap.set("n", "<leader>cr", function()
+              vtsls.commands.remove_unused(bufnr)
+            end, vim.tbl_extend("force", bufopts, { desc = "Remove Unused" }))
+
+            vim.keymap.set("n", "<leader>cm", function()
+              vtsls.commands.add_missing_imports(bufnr)
+            end, vim.tbl_extend("force", bufopts, { desc = "Add Missing Imports" }))
+
+            vim.keymap.set("n", "<leader>cf", function()
+              vtsls.commands.fix_all(bufnr)
+            end, vim.tbl_extend("force", bufopts, { desc = "Fix All" }))
+
+            -- Source actions (whole buffer actions)
+            vim.keymap.set("n", "<leader>cA", function()
+              vtsls.commands.source_actions(bufnr)
+            end, vim.tbl_extend("force", bufopts, { desc = "Source Actions" }))
+
+            -- File operations
+            vim.keymap.set("n", "<leader>cR", function()
+              vtsls.commands.rename_file(bufnr)
+            end, vim.tbl_extend("force", bufopts, { desc = "Rename File" }))
+
+            -- Navigation
+            vim.keymap.set("n", "gd", function()
+              vtsls.commands.goto_source_definition(vim.api.nvim_get_current_win())
+            end, vim.tbl_extend("force", bufopts, { desc = "Goto Source Definition" }))
+
+            vim.keymap.set("n", "<leader>cF", function()
+              vtsls.commands.file_references(bufnr)
+            end, vim.tbl_extend("force", bufopts, { desc = "File References" }))
+
+            -- TypeScript server commands
+            vim.keymap.set("n", "<leader>cT", function()
+              vtsls.commands.select_ts_version(bufnr)
+            end, vim.tbl_extend("force", bufopts, { desc = "Select TS Version" }))
+
+            vim.keymap.set("n", "<leader>cP", function()
+              vtsls.commands.goto_project_config(bufnr)
+            end, vim.tbl_extend("force", bufopts, { desc = "Goto Project Config" }))
+
+            print("VTSLS keymaps set successfully")
+          else
+            print("VTSLS module not available:", vtsls)
+          end
         end
 
         -- Disable ESLint formatting
@@ -116,7 +174,7 @@ return {
         }
       end
 
-      -- VTSLS setup
+      -- VTSLS setup with enhanced configuration
       lspconfig.vtsls.setup({
         on_attach = on_attach,
         capabilities = require("blink.cmp").get_lsp_capabilities(),
