@@ -41,7 +41,7 @@ return {
         },
         sections = {
           lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
-          lualine_b = { "branch", "selectionCount" },
+          lualine_b = { "branch", "selectionCount", "diff" },
           lualine_c = {
             "%=",
             {
@@ -74,8 +74,10 @@ return {
           lualine_z = { "location" },
         },
         tabline = {
-          lualine_a = { "filename" },
-          lualine_b = { "diff" },
+          lualine_a = { "filename", },
+          lualine_b = {
+            'diagnostics'
+          },
           lualine_x = {
             { "filename", path = 1 },
           },

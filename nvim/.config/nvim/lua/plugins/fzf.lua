@@ -8,7 +8,8 @@ return {
         width = 0.80,
       },
       files = {
-        cmd = "fd --type f --hidden --follow --exclude .git node_modules --no-ignore-vcs ",
+        cmd =
+        "fd --type f --hidden --follow --no-ignore-vcs --exclude .git --exclude node_modules --exclude .nx --exclude .angular --exclude .cache --exclude dist",
       },
       grep = {
         cwd_prompt = true, -- Show the current working directory
