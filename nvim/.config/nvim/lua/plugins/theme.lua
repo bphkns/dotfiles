@@ -1,20 +1,31 @@
 return {
+  -- {
+  --   "rose-pine/neovim",
+  --   name = "rose-pine",
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     require("rose-pine").setup({
+  --       variant = "moon",
+  --       dark_variant = "moon",
+  --       styles = {
+  --         bold = true,
+  --         italic = false,
+  --         transparency = false,
+  --       },
+  --     })
+  --     vim.cmd("colorscheme rose-pine")
+  --   end,
+  -- },
   {
-    "rose-pine/neovim",
-    name = "rose-pine",
-    lazy = false,
+    "olimorris/onedarkpro.nvim",
+    name = "onedarkpro",
     priority = 1000,
+    lazy = false,
     config = function()
-      require("rose-pine").setup({
-        variant = "moon",
-        dark_variant = "moon",
-        styles = {
-          bold = true,
-          italic = false,
-          transparency = false,
-        },
+      require("onedarkpro").setup({
       })
-      vim.cmd("colorscheme rose-pine")
+      vim.cmd("colorscheme onedark_vivid")
     end,
-  },
+  }
 }
