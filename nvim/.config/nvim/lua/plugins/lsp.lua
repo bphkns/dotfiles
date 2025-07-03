@@ -74,6 +74,24 @@ return {
         -- Debug: Print client name
         print("LSP client attached:", client.name)
 
+        -- Auto format and organize imports on save for TypeScript files
+        if client.name == "vtsls" then
+          local augroup = vim.api.nvim_create_augroup("TypeScriptAutoSave", { clear = false })
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            group = augroup,
+            buffer = bufnr,
+            callback = function()
+              local vtsls_ok, vtsls = pcall(require, "vtsls")
+              if vtsls_ok then
+                -- Remove unused imports first
+                vtsls.commands.remove_unused_imports(bufnr)
+                -- Then organize imports
+                vtsls.commands.organize_imports(bufnr)
+              end
+            end,
+          })
+        end
+
         -- VTSLS specific keymaps
         if client.name == "vtsls" then
           -- Check if vtsls module is available
@@ -165,6 +183,7 @@ return {
         opts.servers.angularls.filetypes = { "typescript", "html", "typescriptreact" }
         opts.servers.angularls.cmd = {
           "node",
+          "--max-old-space-size=8192",
           angular_ls_path .. "/bin/ngserver",
           "--stdio",
           "--tsProbeLocations",
