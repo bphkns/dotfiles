@@ -1,23 +1,58 @@
+local hls = {
+  bg    = "PmenuSbar",
+  sel   = "PmenuSel",
+  title = "IncSearch"
+}
+
 return {
   {
     "ibhagwan/fzf-lua",
     dependencies = { "echasnovski/mini.icons" },
     opts = {
-      winopts = {
-        height = 0.85,
-        width = 0.80,
+      winopts    = {
+        border  = { " ", " ", " ", " ", " ", " ", " ", " " },
+        preview = {
+          scrollbar = "float",
+          scrolloff = "-2",
+          title_pos = "center",
+        },
       },
-      files = {
+      hls        = {
+        title          = hls.title,
+        border         = hls.bg,
+        preview_title  = hls.title,
+        preview_border = hls.bg,
+        scrollfloat_e  = "",
+        scrollfloat_f  = hls.sel,
+      },
+      fzf_colors = {
+        ["gutter"] = { "bg", hls.bg },
+        ["bg"]     = { "bg", hls.bg },
+        ["bg+"]    = { "bg", hls.sel },
+        ["fg+"]    = { "fg", hls.sel },
+      },
+      files      = {
         cmd =
         "fd --type f --hidden --follow --no-ignore-vcs --exclude .git --exclude node_modules --exclude .nx --exclude .angular --exclude .cache --exclude dist",
       },
-      grep = {
-        cwd_prompt = true, -- Show the current working directory
+      grep       = {
+        cwd_prompt = true,
         rg_opts =
-        "--hidden --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -g '!.git/' -g '!node_modules/' -g '!.nx/' -g '!.angular/'",
+        "--hidden --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -g '!.git/' -g '!node_modules/' -g '!.nx/' -g '!.angular/' --fixed-strings",
       },
+      keymap     = {
+        fzf = {
+          ["ctrl-q"] = "select-all+accept",
+        }
+      },
+      fzf_opts   = {
+
+        ['--prompt']  = ' ',
+        ['--pointer'] = ' ',
+        ['--marker']  = '✓ ',
+      }
     },
-    events = { "VeryLazy" },
+    event = "VeryLazy",
     keys = {
       {
         "<leader>ff",
@@ -110,31 +145,30 @@ return {
         end,
         desc = "[/] Live grep the current buffer",
       },
-      -- LSP-related keybindings (without the unsupported "has" field)
       {
         "gd",
-        "<cmd>FzfLua lsp_definitions jump1=true ignore_current_line=true<cr>",
+        function() require("fzf-lua").lsp_definitions({ jump_to_single_result = true, ignore_current_line = true }) end,
         desc = "Goto Definition",
       },
       {
         "gr",
-        "<cmd>FzfLua lsp_references jump1=true ignore_current_line=true<cr>",
+        function() require("fzf-lua").lsp_references({ jump_to_single_result = true, ignore_current_line = true }) end,
         desc = "References",
         nowait = true,
       },
       {
         "gI",
-        "<cmd>FzfLua lsp_implementations jump1=true ignore_current_line=true<cr>",
+        function() require("fzf-lua").lsp_implementations({ jump_to_single_result = true, ignore_current_line = true }) end,
         desc = "Goto Implementation",
       },
       {
         "gy",
-        "<cmd>FzfLua lsp_typedefs jump1=true ignore_current_line=true<cr>",
+        function() require("fzf-lua").lsp_typedefs({ jump_to_single_result = true, ignore_current_line = true }) end,
         desc = "Goto T[y]pe Definition",
       },
       {
         "<leader>ca",
-        ":lua require('fzf-lua').lsp_code_actions({ async = false })<cr>",
+        function() require('fzf-lua').lsp_code_actions({ async = false }) end,
         desc = "Code Actions",
         nowait = true,
       },
