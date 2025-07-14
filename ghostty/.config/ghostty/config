@@ -4,3 +4,4 @@ mouse-hide-while-typing=true
 macos-titlebar-style=tabs
 theme = rose-pine-moon
 title = 👻
+keybind = shift+enter=text:\n

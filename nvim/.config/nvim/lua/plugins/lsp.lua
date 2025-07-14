@@ -46,20 +46,6 @@ return {
         severity_sort = true,
       })
 
-      -- Filter duplicate diagnostics
-      local original_set = vim.diagnostic.set
-      vim.diagnostic.set = function(namespace, bufnr, diagnostics, opts)
-        local seen = {}
-        local filtered = {}
-        for _, diagnostic in ipairs(diagnostics) do
-          local key = diagnostic.lnum .. ":" .. diagnostic.col .. ":" .. diagnostic.message
-          if not seen[key] then
-            seen[key] = true
-            table.insert(filtered, diagnostic)
-          end
-        end
-        original_set(namespace, bufnr, filtered, opts)
-      end
 
       vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
 
@@ -74,23 +60,6 @@ return {
         -- Debug: Print client name
         print("LSP client attached:", client.name)
 
-        -- Auto format and organize imports on save for TypeScript files
-        if client.name == "vtsls" then
-          local augroup = vim.api.nvim_create_augroup("TypeScriptAutoSave", { clear = false })
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            group = augroup,
-            buffer = bufnr,
-            callback = function()
-              local vtsls_ok, vtsls = pcall(require, "vtsls")
-              if vtsls_ok then
-                -- Remove unused imports first
-                vtsls.commands.remove_unused_imports(bufnr)
-                -- Then organize imports
-                vtsls.commands.organize_imports(bufnr)
-              end
-            end,
-          })
-        end
 
         -- VTSLS specific keymaps
         if client.name == "vtsls" then
