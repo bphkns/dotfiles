@@ -18,7 +18,8 @@ return {
         "eslint",
       },
       servers = {
-        vtsls = {},
+        -- Use angularls ONLY for Angular workspaces (handles inline templates)
+        -- Use vtsls for non-Angular TypeScript projects
         angularls = {},
         emmet_ls = {},
         jsonls = {},
@@ -27,8 +28,11 @@ return {
           settings = {
             format = { enable = false },
             workingDirectories = { mode = "auto" },
-            run = "onType",
+            run = "onSave",
           },
+        },
+        ts_ls = {
+          enabled = false,
         },
       },
     },
@@ -100,16 +104,6 @@ return {
             vim.keymap.set("n", "<leader>cR", function()
               vtsls.commands.rename_file(bufnr)
             end, vim.tbl_extend("force", bufopts, { desc = "Rename File" }))
-
-            -- Navigation
-            vim.keymap.set("n", "gd", function()
-              vtsls.commands.goto_source_definition(vim.api.nvim_get_current_win())
-            end, vim.tbl_extend("force", bufopts, { desc = "Goto Source Definition" }))
-
-            vim.keymap.set("n", "<leader>cF", function()
-              vtsls.commands.file_references(bufnr)
-            end, vim.tbl_extend("force", bufopts, { desc = "File References" }))
-
             -- TypeScript server commands
             vim.keymap.set("n", "<leader>cT", function()
               vtsls.commands.select_ts_version(bufnr)
@@ -135,44 +129,62 @@ return {
       mason.setup()
       mason_lspconfig.setup({ ensure_installed = opts.ensure_installed })
 
-      -- Angular LS setup
-      local function get_angular_ls_path()
-        local workspace_root = util.root_pattern("nx.json")(vim.fn.getcwd())
-        if workspace_root then
-          return workspace_root .. "/node_modules/@angular/language-server"
-        end
-        return nil
+      -- Prevent duplicate servers: Only use angularls in Angular workspaces
+      local function is_angular_workspace()
+        return util.root_pattern("angular.json", "nx.json")(vim.fn.getcwd()) ~= nil
       end
 
-      local angular_ls_path = get_angular_ls_path()
-      if angular_ls_path then
-        opts.servers.angularls.root_dir = function(fname)
-          return util.root_pattern("angular.json", "nx.json")(fname)
+      if is_angular_workspace() then
+        -- Angular workspace: Use angularls for TS/HTML (supports inline templates)
+        local function get_angular_ls_path()
+          local workspace_root = util.root_pattern("nx.json")(vim.fn.getcwd())
+          if workspace_root then
+            return workspace_root .. "/node_modules/@angular/language-server"
+          end
+          return nil
         end
-        opts.servers.angularls.filetypes = { "typescript", "html", "typescriptreact" }
-        opts.servers.angularls.cmd = {
-          "node",
-          "--max-old-space-size=8192",
-          angular_ls_path .. "/bin/ngserver",
-          "--stdio",
-          "--tsProbeLocations",
-          angular_ls_path .. "/node_modules",
-          "--ngProbeLocations",
-          angular_ls_path .. "/node_modules",
-        }
-      end
 
-      -- VTSLS setup with enhanced configuration
-      lspconfig.vtsls.setup({
-        on_attach = on_attach,
-        capabilities = require("blink.cmp").get_lsp_capabilities(),
-        settings = {
-          typescript = {
-            preferences = { importModuleSpecifier = "project-relative" },
-            diagnostics = { ignoredCodes = { 6133, 6196 } }, -- Avoid ESLint overlap
+        local angular_ls_path = get_angular_ls_path()
+        if angular_ls_path then
+          opts.servers.angularls.root_dir = function(fname)
+            return util.root_pattern("angular.json", "nx.json")(fname)
+          end
+          opts.servers.angularls.filetypes = { "typescript", "typescriptreact", "html" }
+          opts.servers.angularls.cmd = {
+            "node",
+            "--max-old-space-size=8192",
+            angular_ls_path .. "/bin/ngserver",
+            "--stdio",
+            "--tsProbeLocations",
+            angular_ls_path .. "/node_modules",
+            "--ngProbeLocations",
+            angular_ls_path .. "/node_modules",
+          }
+        end
+      else
+        -- Non-Angular workspace: Use vtsls for TypeScript
+        opts.servers.vtsls = {}
+        lspconfig.vtsls.setup({
+          on_attach = on_attach,
+          capabilities = require("blink.cmp").get_lsp_capabilities(),
+          settings = {
+            vtsls = {
+              enableMoveToFileCodeAction = true,
+              autoUseWorkspaceTsdk = true,
+              experimental = {
+                maxInlayHintLength = 30,
+                completion = {
+                  enableServerSideFuzzyMatch = true,
+                },
+              },
+            },
+            typescript = {
+              preferences = { importModuleSpecifier = "project-relative" },
+              diagnostics = { ignoredCodes = { 6133, 6196 } }, -- Avoid ESLint overlap
+            },
           },
-        },
-      })
+        })
+      end
 
       -- Lua LS setup
       lspconfig.lua_ls.setup({
@@ -189,9 +201,9 @@ return {
         },
       })
 
-      -- Setup remaining servers
+      -- Setup remaining servers (excluding conditionally managed ones)
       for server, config in pairs(opts.servers) do
-        if server ~= "vtsls" and server ~= "lua_ls" then
+        if server ~= "vtsls" and server ~= "lua_ls" and server ~= "angularls" then
           config.on_attach = on_attach
           config.capabilities = require("blink.cmp").get_lsp_capabilities()
           lspconfig[server].setup(config)

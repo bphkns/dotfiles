@@ -147,23 +147,23 @@ return {
       },
       {
         "gd",
-        function() require("fzf-lua").lsp_definitions({ jump_to_single_result = true, ignore_current_line = true }) end,
+        function() require("fzf-lua").lsp_definitions() end,
         desc = "Goto Definition",
       },
       {
         "gr",
-        function() require("fzf-lua").lsp_references({ jump_to_single_result = true, ignore_current_line = true }) end,
+        function() require("fzf-lua").lsp_references() end,
         desc = "References",
         nowait = true,
       },
       {
         "gI",
-        function() require("fzf-lua").lsp_implementations({ jump_to_single_result = true, ignore_current_line = true }) end,
+        function() require("fzf-lua").lsp_implementations() end,
         desc = "Goto Implementation",
       },
       {
         "gy",
-        function() require("fzf-lua").lsp_typedefs({ jump_to_single_result = true, ignore_current_line = true }) end,
+        function() require("fzf-lua").lsp_typedefs() end,
         desc = "Goto T[y]pe Definition",
       },
       {
