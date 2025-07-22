@@ -195,7 +195,7 @@ return {
             diagnostics = { globals = { "vim" } },
             workspace = {
               library = { [vim.fn.expand("$VIMRUNTIME/lua")] = true },
-              checkThirdParty = false
+              checkThirdParty = false,
             },
           },
         },
@@ -203,10 +203,12 @@ return {
 
       -- Setup remaining servers (excluding conditionally managed ones)
       for server, config in pairs(opts.servers) do
-        if server ~= "vtsls" and server ~= "lua_ls" and server ~= "angularls" then
-          config.on_attach = on_attach
-          config.capabilities = require("blink.cmp").get_lsp_capabilities()
-          lspconfig[server].setup(config)
+        if server ~= "vtsls" and server ~= "lua_ls" and server ~= "angularls" and server ~= "ts_ls" then
+          if config.enabled ~= false then
+            config.on_attach = on_attach
+            config.capabilities = require("blink.cmp").get_lsp_capabilities()
+            lspconfig[server].setup(config)
+          end
         end
       end
     end,
