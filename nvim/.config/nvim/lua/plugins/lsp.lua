@@ -8,39 +8,23 @@ return {
       "saghen/blink.cmp",
       "yioneko/nvim-vtsls",
     },
-    opts = {
-      ensure_installed = {
-        "angularls",
-        "emmet_ls",
-        "jsonls",
-        "vtsls",
-        "lua_ls",
-        "eslint",
-      },
-      servers = {
-        -- Use angularls ONLY for Angular workspaces (handles inline templates)
-        -- Use vtsls for non-Angular TypeScript projects
-        angularls = {},
-        emmet_ls = {},
-        jsonls = {},
-        lua_ls = {},
-        eslint = {
-          settings = {
-            format = { enable = false },
-            workingDirectories = { mode = "auto" },
-            run = "onSave",
-          },
-        },
-        ts_ls = {
-          enabled = false,
-        },
-      },
-    },
-    config = function(_, opts)
+    config = function()
       local lspconfig = require("lspconfig")
       local mason = require("mason")
       local mason_lspconfig = require("mason-lspconfig")
-      local util = require("lspconfig.util")
+
+      -- Setup Mason
+      mason.setup()
+      mason_lspconfig.setup({
+        ensure_installed = {
+          "angularls",
+          "vtsls",
+          "eslint",
+          "lua_ls",
+          "emmet_ls",
+          "jsonls",
+        },
+      })
 
       -- Diagnostic configuration
       vim.diagnostic.config({
@@ -50,72 +34,48 @@ return {
         severity_sort = true,
       })
 
+      -- Global keymaps
+      vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, { desc = "Open diagnostic float" })
 
-      vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
-
-      -- Common on_attach
+      -- Common on_attach function for all LSP servers
       local on_attach = function(client, bufnr)
         local bufopts = { buffer = bufnr }
-        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename,
-          vim.tbl_extend("force", bufopts, { desc = "Rename Symbol" }))
-        vim.keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help,
-          vim.tbl_extend("force", bufopts, { desc = "Signature Help" }))
 
-        -- Debug: Print client name
-        print("LSP client attached:", client.name)
+        -- Common LSP keymaps
+        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename Symbol" })
+        vim.keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "Signature Help" })
 
-
-        -- VTSLS specific keymaps
-        if client.name == "vtsls" then
-          -- Check if vtsls module is available
-          local vtsls_ok, vtsls = pcall(require, "vtsls")
-          if vtsls_ok then
-            -- Import organization
+        -- TypeScript/JavaScript specific keymaps
+        if client.name == "vtsls" or client.name == "angularls" then
+          local ok, vtsls = pcall(require, "vtsls")
+          if ok then
             vim.keymap.set("n", "<leader>co", function()
               vtsls.commands.organize_imports(bufnr)
-            end, vim.tbl_extend("force", bufopts, { desc = "Organize Imports" }))
-
-            vim.keymap.set("n", "<leader>cs", function()
-              vtsls.commands.sort_imports(bufnr)
-            end, vim.tbl_extend("force", bufopts, { desc = "Sort Imports" }))
+            end, { buffer = bufnr, desc = "Organize Imports" })
 
             vim.keymap.set("n", "<leader>cu", function()
               vtsls.commands.remove_unused_imports(bufnr)
-            end, vim.tbl_extend("force", bufopts, { desc = "Remove Unused Imports" }))
+            end, { buffer = bufnr, desc = "Remove Unused Imports" })
 
             vim.keymap.set("n", "<leader>cr", function()
               vtsls.commands.remove_unused(bufnr)
-            end, vim.tbl_extend("force", bufopts, { desc = "Remove Unused" }))
+            end, { buffer = bufnr, desc = "Remove Unused" })
 
             vim.keymap.set("n", "<leader>cm", function()
               vtsls.commands.add_missing_imports(bufnr)
-            end, vim.tbl_extend("force", bufopts, { desc = "Add Missing Imports" }))
+            end, { buffer = bufnr, desc = "Add Missing Imports" })
 
             vim.keymap.set("n", "<leader>cf", function()
               vtsls.commands.fix_all(bufnr)
-            end, vim.tbl_extend("force", bufopts, { desc = "Fix All" }))
+            end, { buffer = bufnr, desc = "Fix All" })
 
-            -- Source actions (whole buffer actions)
             vim.keymap.set("n", "<leader>cA", function()
               vtsls.commands.source_actions(bufnr)
-            end, vim.tbl_extend("force", bufopts, { desc = "Source Actions" }))
+            end, { buffer = bufnr, desc = "Source Actions" })
 
-            -- File operations
             vim.keymap.set("n", "<leader>cR", function()
               vtsls.commands.rename_file(bufnr)
-            end, vim.tbl_extend("force", bufopts, { desc = "Rename File" }))
-            -- TypeScript server commands
-            vim.keymap.set("n", "<leader>cT", function()
-              vtsls.commands.select_ts_version(bufnr)
-            end, vim.tbl_extend("force", bufopts, { desc = "Select TS Version" }))
-
-            vim.keymap.set("n", "<leader>cP", function()
-              vtsls.commands.goto_project_config(bufnr)
-            end, vim.tbl_extend("force", bufopts, { desc = "Goto Project Config" }))
-
-            print("VTSLS keymaps set successfully")
-          else
-            print("VTSLS module not available:", vtsls)
+            end, { buffer = bufnr, desc = "Rename File" })
           end
         end
 
@@ -125,48 +85,13 @@ return {
         end
       end
 
-      -- Setup Mason
-      mason.setup()
-      mason_lspconfig.setup({ ensure_installed = opts.ensure_installed })
+      -- Get LSP capabilities
+      local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-      -- Prevent duplicate servers: Only use angularls in Angular workspaces
-      local function is_angular_workspace()
-        return util.root_pattern("angular.json", "nx.json")(vim.fn.getcwd()) ~= nil
-      end
-
-      if is_angular_workspace() then
-        -- Angular workspace: Use angularls for TS/HTML (supports inline templates)
-        local function get_angular_ls_path()
-          local workspace_root = util.root_pattern("nx.json")(vim.fn.getcwd())
-          if workspace_root then
-            return workspace_root .. "/node_modules/@angular/language-server"
-          end
-          return nil
-        end
-
-        local angular_ls_path = get_angular_ls_path()
-        if angular_ls_path then
-          opts.servers.angularls.root_dir = function(fname)
-            return util.root_pattern("angular.json", "nx.json")(fname)
-          end
-          opts.servers.angularls.filetypes = { "typescript", "typescriptreact", "html" }
-          opts.servers.angularls.cmd = {
-            "node",
-            "--max-old-space-size=8192",
-            angular_ls_path .. "/bin/ngserver",
-            "--stdio",
-            "--tsProbeLocations",
-            angular_ls_path .. "/node_modules",
-            "--ngProbeLocations",
-            angular_ls_path .. "/node_modules",
-          }
-        end
-      else
-        -- Non-Angular workspace: Use vtsls for TypeScript
-        opts.servers.vtsls = {}
-        lspconfig.vtsls.setup({
-          on_attach = on_attach,
-          capabilities = require("blink.cmp").get_lsp_capabilities(),
+      -- Server configurations
+      local servers = {
+        -- TypeScript/JavaScript
+        vtsls = {
           settings = {
             vtsls = {
               enableMoveToFileCodeAction = true,
@@ -180,37 +105,82 @@ return {
             },
             typescript = {
               preferences = { importModuleSpecifier = "project-relative" },
-              diagnostics = { ignoredCodes = { 6133, 6196 } }, -- Avoid ESLint overlap
-            },
-          },
-        })
-      end
-
-      -- Lua LS setup
-      lspconfig.lua_ls.setup({
-        on_attach = on_attach,
-        capabilities = require("blink.cmp").get_lsp_capabilities(),
-        settings = {
-          Lua = {
-            diagnostics = { globals = { "vim" } },
-            workspace = {
-              library = { [vim.fn.expand("$VIMRUNTIME/lua")] = true },
-              checkThirdParty = false,
+              diagnostics = { ignoredCodes = { 6133, 6196 } },
             },
           },
         },
-      })
 
-      -- Setup remaining servers (excluding conditionally managed ones)
-      for server, config in pairs(opts.servers) do
-        if server ~= "vtsls" and server ~= "lua_ls" and server ~= "angularls" and server ~= "ts_ls" then
-          if config.enabled ~= false then
-            config.on_attach = on_attach
-            config.capabilities = require("blink.cmp").get_lsp_capabilities()
-            lspconfig[server].setup(config)
+        -- Angular
+        angularls = {
+          filetypes = { "typescript", "typescriptreact", "html" },
+          root_dir = lspconfig.util.root_pattern("angular.json", "nx.json"),
+        },
+
+        -- Lua
+        lua_ls = {
+          settings = {
+            Lua = {
+              diagnostics = { globals = { "vim" } },
+              workspace = {
+                library = { [vim.fn.expand("$VIMRUNTIME/lua")] = true },
+                checkThirdParty = false,
+              },
+            },
+          },
+        },
+
+        -- ESLint
+        eslint = {
+          settings = {
+            format = { enable = false },
+            workingDirectories = { mode = "auto" },
+            run = "onSave",
+          },
+        },
+
+        -- Others
+        emmet_ls = {},
+        jsonls = {},
+      }
+
+      -- Special handling for Angular in nx workspaces
+      local util = require("lspconfig.util")
+      local function get_angular_ls_cmd()
+        local workspace_root = util.root_pattern("nx.json")(vim.fn.getcwd())
+        if workspace_root then
+          local angular_ls_path = workspace_root .. "/node_modules/@angular/language-server"
+          if vim.fn.isdirectory(angular_ls_path) == 1 then
+            return {
+              "node",
+              "--max-old-space-size=8192",
+              angular_ls_path .. "/bin/ngserver",
+              "--stdio",
+              "--tsProbeLocations",
+              angular_ls_path .. "/node_modules",
+              "--ngProbeLocations",
+              angular_ls_path .. "/node_modules",
+            }
           end
         end
+        return nil
+      end
+
+      -- Setup all servers
+      for server, config in pairs(servers) do
+        config.on_attach = on_attach
+        config.capabilities = capabilities
+        
+        -- Use custom cmd for Angular in nx workspaces
+        if server == "angularls" then
+          local custom_cmd = get_angular_ls_cmd()
+          if custom_cmd then
+            config.cmd = custom_cmd
+          end
+        end
+        
+        lspconfig[server].setup(config)
       end
     end,
   },
 }
+
