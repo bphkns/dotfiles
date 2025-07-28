@@ -45,37 +45,40 @@ return {
         vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename Symbol" })
         vim.keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "Signature Help" })
 
-        -- TypeScript/JavaScript specific keymaps
-        if client.name == "vtsls" or client.name == "angularls" then
+        -- TypeScript/JavaScript specific keymaps - only set up once for vtsls
+        if client.name == "vtsls" then
           local ok, vtsls = pcall(require, "vtsls")
           if ok then
+            -- Set up keymaps with unique names to avoid conflicts
+            local keymap_opts = { buffer = bufnr, silent = true }
+            
             vim.keymap.set("n", "<leader>co", function()
               vtsls.commands.organize_imports(bufnr)
-            end, { buffer = bufnr, desc = "Organize Imports" })
+            end, vim.tbl_extend("force", keymap_opts, { desc = "Organize Imports" }))
 
             vim.keymap.set("n", "<leader>cu", function()
               vtsls.commands.remove_unused_imports(bufnr)
-            end, { buffer = bufnr, desc = "Remove Unused Imports" })
+            end, vim.tbl_extend("force", keymap_opts, { desc = "Remove Unused Imports" }))
 
             vim.keymap.set("n", "<leader>cr", function()
               vtsls.commands.remove_unused(bufnr)
-            end, { buffer = bufnr, desc = "Remove Unused" })
+            end, vim.tbl_extend("force", keymap_opts, { desc = "Remove Unused" }))
 
             vim.keymap.set("n", "<leader>cm", function()
               vtsls.commands.add_missing_imports(bufnr)
-            end, { buffer = bufnr, desc = "Add Missing Imports" })
+            end, vim.tbl_extend("force", keymap_opts, { desc = "Add Missing Imports" }))
 
             vim.keymap.set("n", "<leader>cf", function()
               vtsls.commands.fix_all(bufnr)
-            end, { buffer = bufnr, desc = "Fix All" })
+            end, vim.tbl_extend("force", keymap_opts, { desc = "Fix All" }))
 
             vim.keymap.set("n", "<leader>cA", function()
               vtsls.commands.source_actions(bufnr)
-            end, { buffer = bufnr, desc = "Source Actions" })
+            end, vim.tbl_extend("force", keymap_opts, { desc = "Source Actions" }))
 
             vim.keymap.set("n", "<leader>cR", function()
               vtsls.commands.rename_file(bufnr)
-            end, { buffer = bufnr, desc = "Rename File" })
+            end, vim.tbl_extend("force", keymap_opts, { desc = "Rename File" }))
           end
         end
 
