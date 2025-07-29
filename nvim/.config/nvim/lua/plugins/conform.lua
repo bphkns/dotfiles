@@ -18,6 +18,7 @@ return {
         ["scss"] = { "prettierd", "prettier" },
         ["less"] = { "prettierd", "prettier" },
         ["html"] = { "prettierd", "prettier" },
+        ["mjml"] = { "prettierd", "prettier" },
         ["json"] = { "prettierd", "prettier" },
         ["jsonc"] = { "prettierd", "prettier" },
         ["yaml"] = { "prettierd", "prettier" },

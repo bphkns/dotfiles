@@ -298,16 +298,15 @@ return {
           end,
         },
 
-        -- HTML (for MJML support)
+        -- HTML
         html = {
-          filetypes = { "html", "mjml" },
+          filetypes = { "html" },
           settings = {
             html = {
               format = {
                 templating = true,
                 wrapLineLength = 120,
-                unformatted =
-                "wbr,mj-text,mj-button,mj-image,mj-section,mj-column,mj-divider,mj-spacer,mj-hero,mj-carousel,mj-carousel-image,mj-social,mj-social-element,mj-navbar,mj-navbar-link,mj-raw,mj-wrapper,mj-group,mj-style,mj-head,mj-title,mj-preview,mj-attributes,mj-all,mj-body,mj-class",
+                unformatted = "wbr",
                 indentInnerHtml = true
               },
               validate = true,
@@ -321,21 +320,14 @@ return {
             embeddedLanguages = {
               css = true,
               javascript = true
-            }
+            },
+            provideFormatter = true
           },
-          on_attach = function(client, bufnr)
-            local filetype = vim.bo[bufnr].filetype
-            if filetype == "mjml" then
-              mjml_on_attach(client, bufnr)
-            else
-              on_attach(client, bufnr)
-            end
-          end,
         },
 
-        -- CSS (for MJML inline styles)
+        -- CSS
         cssls = {
-          filetypes = { "css", "scss", "less", "mjml" },
+          filetypes = { "css", "scss", "less" },
           settings = {
             css = {
               validate = true,
@@ -391,10 +383,10 @@ return {
           ),
         },
 
-        -- Emmet (now includes MJML)
+        -- Emmet
         emmet_ls = {
           filetypes = {
-            "html", "css", "scss", "sass", "less", "mjml",
+            "html", "css", "scss", "sass", "less",
             "javascript", "javascriptreact", "typescript", "typescriptreact"
           },
         },
