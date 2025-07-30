@@ -3,6 +3,12 @@ return {
   lazy = true,
   config = function()
     require("nvim-treesitter.configs").setup({
+      -- Required fields to fix missing-fields warning
+      ensure_installed = {},
+      sync_install = false,
+      auto_install = false,
+      ignore_install = {},
+      modules = {},
       textobjects = {
         select = {
           enable = true,
@@ -46,13 +52,13 @@ return {
           enable = true,
           swap_next = {
             ["<leader>na"] = "@parameter.inner", -- swap parameters/argument with next
-            ["<leader>nm"] = "@function.outer", -- swap function with next
-            ["<leader>n:"] = "@property.outer", -- swap object property with next
+            ["<leader>nm"] = "@function.outer",  -- swap function with next
+            ["<leader>n:"] = "@property.outer",  -- swap object property with next
           },
           swap_previous = {
             ["<leader>pa"] = "@parameter.inner", -- swap parameters/argument with prev
-            ["<leader>pm"] = "@function.outer", -- swap function with previous,
-            ["<leader>p:"] = "@property.outer", -- swap object property with prev
+            ["<leader>pm"] = "@function.outer",  -- swap function with previous,
+            ["<leader>p:"] = "@property.outer",  -- swap object property with prev
           },
         },
         move = {
@@ -101,10 +107,10 @@ return {
     vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
     vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_opposite)
 
-    -- Optionally, make builtin f, F, t, T also repeatable with ; and ,
-    vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f)
-    vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F)
-    vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t)
-    vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T)
+    -- Updated to use non-deprecated functions with expr = true
+    vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f_expr, { expr = true })
+    vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F_expr, { expr = true })
+    vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t_expr, { expr = true })
+    vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T_expr, { expr = true })
   end,
 }
