@@ -24,8 +24,8 @@ return {
           "lua_ls",
           "emmet_ls",
           "jsonls",
-          "html",  -- Added for MJML support
-          "cssls", -- Added for MJML support
+          "html",
+          "cssls",
         },
       })
 
@@ -39,184 +39,109 @@ return {
 
       -- Global keymaps
       vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, { desc = "Open diagnostic float" })
+      vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
 
-      -- MJML-specific completion items
-      local mjml_completions = {
-        -- Core components
-        { label = "mjml",              kind = 9, detail = "Root MJML element" },
-        { label = "mj-head",           kind = 9, detail = "MJML head section" },
-        { label = "mj-body",           kind = 9, detail = "MJML body section" },
-        { label = "mj-section",        kind = 9, detail = "Email section" },
-        { label = "mj-column",         kind = 9, detail = "Column within section" },
-        { label = "mj-group",          kind = 9, detail = "Group columns" },
-        { label = "mj-wrapper",        kind = 9, detail = "Wrapper element" },
-
-        -- Content components
-        { label = "mj-text",           kind = 9, detail = "Text content" },
-        { label = "mj-button",         kind = 9, detail = "Button element" },
-        { label = "mj-image",          kind = 9, detail = "Image element" },
-        { label = "mj-divider",        kind = 9, detail = "Divider line" },
-        { label = "mj-spacer",         kind = 9, detail = "Spacing element" },
-        { label = "mj-table",          kind = 9, detail = "Table element" },
-        { label = "mj-raw",            kind = 9, detail = "Raw HTML" },
-
-        -- Navigation
-        { label = "mj-navbar",         kind = 9, detail = "Navigation bar" },
-        { label = "mj-navbar-link",    kind = 9, detail = "Navigation link" },
-
-        -- Social
-        { label = "mj-social",         kind = 9, detail = "Social media icons" },
-        { label = "mj-social-element", kind = 9, detail = "Social media link" },
-
-        -- Media
-        { label = "mj-hero",           kind = 9, detail = "Hero section" },
-        { label = "mj-carousel",       kind = 9, detail = "Image carousel" },
-        { label = "mj-carousel-image", kind = 9, detail = "Carousel image" },
-
-        -- Head elements
-        { label = "mj-title",          kind = 9, detail = "Email title" },
-        { label = "mj-preview",        kind = 9, detail = "Email preview text" },
-        { label = "mj-attributes",     kind = 9, detail = "Global attributes" },
-        { label = "mj-all",            kind = 9, detail = "Apply to all components" },
-        { label = "mj-class",          kind = 9, detail = "CSS class definition" },
-        { label = "mj-style",          kind = 9, detail = "Inline CSS styles" },
-      }
-
-      -- MJML-specific on_attach function
-      local mjml_on_attach = function(client, bufnr)
-        -- Common LSP keymaps
-        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename Symbol" })
-        vim.keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "Signature Help" })
-
-        -- MJML-specific keymaps
-        vim.keymap.set('n', '<leader>mv', function()
-          local filename = vim.fn.expand('%:p')
-          local cmd = string.format('mjml --validate "%s"', filename)
-          local output = vim.fn.system(cmd)
-
-          if vim.v.shell_error == 0 then
-            print('MJML is valid!')
-          else
-            print('MJML validation errors:')
-            print(output)
-          end
-        end, { buffer = bufnr, desc = 'Validate MJML' })
-
-        vim.keymap.set('n', '<leader>mc', function()
-          local filename = vim.fn.expand('%:p')
-          local output_file = vim.fn.expand('%:p:r') .. '.html'
-          local cmd = string.format('mjml "%s" -o "%s"', filename, output_file)
-
-          vim.fn.system(cmd)
-          if vim.v.shell_error == 0 then
-            print('MJML compiled successfully to ' .. output_file)
-          else
-            print('MJML compilation failed')
-          end
-        end, { buffer = bufnr, desc = 'Compile MJML to HTML' })
-
-        vim.keymap.set('n', '<leader>mp', function()
-          local html_file = vim.fn.expand('%:p:r') .. '.html'
-          if vim.fn.filereadable(html_file) == 1 then
-            local cmd = string.format('open "%s"', html_file) -- macOS
-            -- For Linux, use: local cmd = string.format('xdg-open "%s"', html_file)
-            -- For Windows, use: local cmd = string.format('start "%s"', html_file)
-            vim.fn.system(cmd)
-          else
-            print('HTML file not found. Compile MJML first with <leader>mc')
-          end
-        end, { buffer = bufnr, desc = 'Preview HTML in browser' })
-      end
-
-      -- Common on_attach function for all LSP servers
+      -- Common on_attach function
       local on_attach = function(client, bufnr)
+        local keymap_opts = { buffer = bufnr, silent = true }
+        
         -- Common LSP keymaps
         vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename Symbol" })
         vim.keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "Signature Help" })
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "Go to Definition" })
+        vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "Find References" })
+        vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { buffer = bufnr, desc = "Go to Implementation" })
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "Hover Documentation" })
 
-        -- TypeScript/JavaScript specific keymaps - only set up once for vtsls
+        -- TypeScript/JavaScript specific keymaps for vtsls only
         if client.name == "vtsls" then
-          local keymap_opts = { buffer = bufnr, silent = true }
-
-          -- Method 1: Using vtsls commands (preferred)
           local ok, vtsls = pcall(require, "vtsls")
           if ok then
             vim.keymap.set("n", "<leader>co", function()
               vtsls.commands.organize_imports(bufnr)
-            end, vim.tbl_extend("force", keymap_opts, { desc = "Organize Imports (vtsls)" }))
+            end, vim.tbl_extend("force", keymap_opts, { desc = "Organize Imports" }))
 
             vim.keymap.set("n", "<leader>cu", function()
               vtsls.commands.remove_unused_imports(bufnr)
-            end, vim.tbl_extend("force", keymap_opts, { desc = "Remove Unused Imports (vtsls)" }))
+            end, vim.tbl_extend("force", keymap_opts, { desc = "Remove Unused Imports" }))
 
             vim.keymap.set("n", "<leader>cr", function()
               vtsls.commands.remove_unused(bufnr)
-            end, vim.tbl_extend("force", keymap_opts, { desc = "Remove Unused (vtsls)" }))
-
-            vim.keymap.set("n", "<leader>cm", function()
-              vtsls.commands.add_missing_imports(bufnr)
-            end, vim.tbl_extend("force", keymap_opts, { desc = "Add Missing Imports (vtsls)" }))
-
-            vim.keymap.set("n", "<leader>cf", function()
-              vtsls.commands.fix_all(bufnr)
-            end, vim.tbl_extend("force", keymap_opts, { desc = "Fix All (vtsls)" }))
+            end, vim.tbl_extend("force", keymap_opts, { desc = "Remove Unused" }))
 
             vim.keymap.set("n", "<leader>cA", function()
               vtsls.commands.source_actions(bufnr)
-            end, vim.tbl_extend("force", keymap_opts, { desc = "Source Actions (vtsls)" }))
+            end, vim.tbl_extend("force", keymap_opts, { desc = "Source Actions" }))
+
+            vim.keymap.set("n", "<leader>cm", function()
+              vtsls.commands.add_missing_imports(bufnr)
+            end, vim.tbl_extend("force", keymap_opts, { desc = "Add Missing Imports" }))
+
+            vim.keymap.set("n", "<leader>cf", function()
+              vtsls.commands.fix_all(bufnr)
+            end, vim.tbl_extend("force", keymap_opts, { desc = "Fix All" }))
 
             vim.keymap.set("n", "<leader>cR", function()
               vtsls.commands.rename_file(bufnr)
-            end, vim.tbl_extend("force", keymap_opts, { desc = "Rename File (vtsls)" }))
-          else
-            -- Method 2: Fallback using LSP code actions
-            vim.keymap.set("n", "<leader>co", function()
-              vim.lsp.buf.code_action({
-                context = { only = { "source.organizeImports" } },
-                filter = function(action)
-                  return action.title and
-                      (action.title:match("Organize Imports") or action.kind == "source.organizeImports")
-                end,
-                apply = true,
-              })
-            end, vim.tbl_extend("force", keymap_opts, { desc = "Organize Imports (fallback)" }))
-
-            vim.keymap.set("n", "<leader>cu", function()
-              vim.lsp.buf.code_action({
-                context = { only = { "source.removeUnused" } },
-                filter = function(action)
-                  return action.title and (action.title:match("Remove unused") or action.kind == "source.removeUnused")
-                end,
-                apply = true,
-              })
-            end, vim.tbl_extend("force", keymap_opts, { desc = "Remove Unused Imports (fallback)" }))
+            end, vim.tbl_extend("force", keymap_opts, { desc = "Rename File" }))
           end
         end
 
-        -- Disable ESLint formatting to avoid conflicts
+        -- Disable formatting for ESLint
         if client.name == "eslint" then
           client.server_capabilities.documentFormattingProvider = false
           client.server_capabilities.documentRangeFormattingProvider = false
         end
+
+        -- For Angular Language Server, disable TypeScript features when vtsls is active
+        if client.name == "angularls" then
+          client.server_capabilities.documentFormattingProvider = false
+          client.server_capabilities.documentRangeFormattingProvider = false
+          
+          -- Check if we're in a TypeScript file and vtsls is attached
+          local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
+          local has_vtsls = vim.tbl_contains(vim.tbl_map(function(c) return c.name end, clients), "vtsls")
+          
+          if has_vtsls and (vim.bo[bufnr].filetype == "typescript" or vim.bo[bufnr].filetype == "typescriptreact") then
+            -- Disable overlapping features to prevent conflicts
+            client.server_capabilities.renameProvider = false
+            client.server_capabilities.codeActionProvider = false
+          end
+        end
       end
 
-      -- Get LSP capabilities with error handling
+      -- Get LSP capabilities
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       local ok, blink_cmp = pcall(require, "blink.cmp")
       if ok then
         capabilities = blink_cmp.get_lsp_capabilities(capabilities)
       end
+      
+      -- Enable folding capabilities for nvim-ufo
+      capabilities.textDocument.foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true
+      }
+
+      -- Common inlay hints settings
+      local inlay_hints = {
+        includeInlayParameterNameHints = "all",
+        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayVariableTypeHints = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayEnumMemberValueHints = true,
+      }
 
       -- Server configurations
       local servers = {
-        -- TypeScript/JavaScript
         vtsls = {
           filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
-          root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
+          root_dir = lspconfig.util.root_pattern("tsconfig.json", "package.json", "jsconfig.json", ".git"),
           single_file_support = true,
           init_options = {
             preferences = {
-              -- Ensure vtsls takes priority for imports and refactoring
               disableSuggestions = false,
             },
           },
@@ -239,15 +164,7 @@ return {
               suggest = {
                 autoImports = true,
               },
-              inlayHints = {
-                includeInlayParameterNameHints = "all",
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
+              inlayHints = inlay_hints,
             },
             javascript = {
               preferences = {
@@ -257,50 +174,19 @@ return {
               suggest = {
                 autoImports = true,
               },
-              inlayHints = {
-                includeInlayParameterNameHints = "all",
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
+              inlayHints = inlay_hints,
             },
           },
         },
 
-        -- Angular
         angularls = {
-          filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx" },
-          root_dir = lspconfig.util.root_pattern("angular.json", "project.json", "nx.json"),
+          filetypes = { "html", "typescript", "typescriptreact" },
+          root_dir = lspconfig.util.root_pattern("angular.json", "nx.json"),
           single_file_support = false,
-          on_attach = function(client, bufnr)
-            -- Disable conflicting capabilities but keep Angular-specific ones
-            client.server_capabilities.documentFormattingProvider = false
-            client.server_capabilities.documentRangeFormattingProvider = false
-
-            -- For TypeScript files, let vtsls handle most language features
-            local filetype = vim.bo[bufnr].filetype
-            if filetype == "typescript" or filetype == "typescriptreact" then
-              client.server_capabilities.hoverProvider = false
-              client.server_capabilities.definitionProvider = false
-              client.server_capabilities.referencesProvider = false
-              client.server_capabilities.documentSymbolProvider = false
-              client.server_capabilities.workspaceSymbolProvider = false
-              client.server_capabilities.completionProvider = false
-              client.server_capabilities.signatureHelpProvider = false
-            end
-
-            -- Set up common keymaps
-            vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename Symbol" })
-            vim.keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "Signature Help" })
-          end,
         },
 
-        -- HTML
         html = {
-          filetypes = { "html" },
+          filetypes = { "html", "mjml" },
           settings = {
             html = {
               format = {
@@ -325,7 +211,6 @@ return {
           },
         },
 
-        -- CSS
         cssls = {
           filetypes = { "css", "scss", "less" },
           settings = {
@@ -340,32 +225,24 @@ return {
           },
         },
 
-        -- Lua
         lua_ls = {
           settings = {
             Lua = {
-              runtime = {
-                version = "LuaJIT",
-              },
-              diagnostics = {
-                globals = { "vim" }
-              },
+              runtime = { version = "LuaJIT" },
+              diagnostics = { globals = { "vim" } },
               workspace = {
                 library = vim.api.nvim_get_runtime_file("", true),
                 checkThirdParty = false,
               },
-              telemetry = {
-                enable = false,
-              },
+              telemetry = { enable = false },
             },
           },
         },
 
-        -- ESLint
         eslint = {
           filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte" },
           settings = {
-            format = { enable = false }, -- Disable formatting to avoid conflicts
+            format = { enable = false },
             workingDirectories = { mode = "auto" },
             run = "onSave",
             validate = "on",
@@ -383,7 +260,6 @@ return {
           ),
         },
 
-        -- Emmet
         emmet_ls = {
           filetypes = {
             "html", "css", "scss", "sass", "less",
@@ -391,7 +267,6 @@ return {
           },
         },
 
-        -- JSON
         jsonls = {
           settings = {
             json = {
@@ -402,9 +277,9 @@ return {
         },
       }
 
-      -- Utility function to get Angular Language Server command for Nx workspaces
-      local util = require("lspconfig.util")
+      -- Check for Angular Language Server in Nx workspaces
       local function get_angular_ls_cmd()
+        local util = require("lspconfig.util")
         local workspace_root = util.root_pattern("nx.json")(vim.fn.getcwd())
         if workspace_root then
           local angular_ls_path = workspace_root .. "/node_modules/@angular/language-server"
@@ -426,10 +301,7 @@ return {
 
       -- Setup all servers
       for server, config in pairs(servers) do
-        -- Don't use common on_attach for angularls or html since they have their own
-        if server ~= "angularls" and server ~= "html" then
-          config.on_attach = on_attach
-        end
+        config.on_attach = on_attach
         config.capabilities = capabilities
 
         -- Use custom cmd for Angular in Nx workspaces
@@ -443,7 +315,7 @@ return {
         lspconfig[server].setup(config)
       end
 
-      -- MJML filetype detection and configuration
+      -- MJML filetype detection
       vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
         pattern = "*.mjml",
         callback = function()
@@ -452,20 +324,6 @@ return {
           vim.bo.tabstop = 2
           vim.bo.expandtab = true
           vim.bo.commentstring = "<!-- %s -->"
-        end
-      })
-
-      -- Setup blink.cmp for MJML completions
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "mjml",
-        callback = function()
-          local ok, blink_cmp = pcall(require, "blink.cmp")
-          if ok then
-            -- Add MJML-specific completions to blink.cmp
-            -- Note: This is a simplified approach - you may need to adjust based on blink.cmp's API
-            vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
-            print("MJML mode activated. Use <leader>m[v,c,p] for MJML commands")
-          end
         end
       })
     end,

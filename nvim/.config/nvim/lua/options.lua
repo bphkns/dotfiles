@@ -71,3 +71,5 @@ vim.opt.clipboard = "unnamedplus"
 vim.keymap.set({ "n", "v" }, "c", '"_c', { noremap = true })
 
 vim.opt.equalalways = false
+
+vim.opt.list = true
