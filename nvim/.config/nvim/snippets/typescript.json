@@ -1,0 +1,44 @@
+{
+  "Angular Component": {
+    "prefix": "ng-c",
+    "body": [
+      "import { Component, ChangeDetectionStrategy } from '@angular/core';",
+      "",
+      "@Component({",
+      "  selector: '${1:app-selector}',",
+      "  changeDetection: ChangeDetectionStrategy.OnPush,",
+      "  imports: [${2}],",
+      "  template: `${3:<div></div>}`,",
+      "  styles: [${4}],",
+      "})",
+      "export class ${5:NewComp} {}"
+    ],
+    "description": "Angular Component with OnPush change detection"
+  },
+  "Angular Service": {
+    "prefix": "ng-s",
+    "body": [
+      "import { Injectable } from '@angular/core';",
+      "",
+      "@Injectable({",
+      "  providedIn: 'root',",
+      "})",
+      "export class ${1:NewService} {",
+      "  constructor() { }",
+      "}"
+    ]
+  },
+  "Angular Routes": {
+    "prefix": "ng-r",
+    "body": [
+      "import { Routes } from '@angular/router';",
+      "",
+      "export const ${1:appRoutes}: Routes = [",
+      " {",
+      "   path: '',",
+      "   ${2}",
+      " }",
+      "];"
+    ]
+  }
+}
