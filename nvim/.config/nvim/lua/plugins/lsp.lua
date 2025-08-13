@@ -7,6 +7,7 @@ return {
       "williamboman/mason-lspconfig.nvim",
       "saghen/blink.cmp",
       "b0o/schemastore.nvim",
+      "yioneko/nvim-vtsls",
     },
     config = function()
       local lspconfig = require("lspconfig")
@@ -30,6 +31,37 @@ return {
         vim.keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help, opts)
         vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+        
+        -- TypeScript/JavaScript specific keymaps
+        if client.name == "vtsls" then
+          vim.keymap.set("n", "<leader>co", function()
+            vim.lsp.buf.execute_command({
+              command = "_typescript.organizeImports",
+              arguments = { vim.api.nvim_buf_get_name(0) }
+            })
+          end, vim.tbl_extend("force", opts, { desc = "Organize imports" }))
+          
+          vim.keymap.set("n", "<leader>cr", function()
+            vim.lsp.buf.execute_command({
+              command = "_typescript.removeUnused",
+              arguments = { vim.api.nvim_buf_get_name(0) }
+            })
+          end, vim.tbl_extend("force", opts, { desc = "Remove unused imports" }))
+        end
+
+        -- Auto organize imports on save for TypeScript/JavaScript files
+        if client.name == "vtsls" and client.server_capabilities.codeActionProvider then
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = bufnr,
+            callback = function()
+              local params = {
+                command = "_typescript.organizeImports",
+                arguments = { vim.api.nvim_buf_get_name(0) },
+              }
+              client.request("workspace/executeCommand", params, nil, bufnr)
+            end,
+          })
+        end
 
         if client.name == "vtsls" and vim.lsp.get_clients({ bufnr = bufnr, name = "angularls" })[1] then
           client.server_capabilities.documentFormattingProvider = false
