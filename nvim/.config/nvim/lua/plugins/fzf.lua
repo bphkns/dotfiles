@@ -168,9 +168,8 @@ return {
       },
       {
         "<leader>ca",
-        function() require('fzf-lua').lsp_code_actions({ async = false }) end,
+        function() require('fzf-lua').lsp_code_actions() end,
         desc = "Code Actions",
-        nowait = true,
       },
     },
     config = function(_, opts)
