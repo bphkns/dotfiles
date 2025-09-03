@@ -190,6 +190,10 @@ return {
 
       for server, config in pairs(opts.servers) do
         config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+        config.capabilities.textDocument.foldingRange = {
+          dynamicRegistration = false,
+          lineFoldingOnly = true
+        }
 
         if server == "vtsls" then
           config.settings.javascript = vim.tbl_deep_extend("force", {}, config.settings.typescript,

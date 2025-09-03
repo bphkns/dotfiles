@@ -73,9 +73,3 @@ vim.keymap.set({ "n", "v" }, "c", '"_c', { noremap = true })
 vim.opt.equalalways = false
 
 vim.opt.list = true
-
-vim.o.foldlevel = 99
-vim.o.foldlevelstart = 99
-vim.o.foldenable = true
-vim.o.fillchars = [[eob: ,foldopen:,foldsep: ,foldclose:]]
-vim.o.foldcolumn = '1'
