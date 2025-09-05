@@ -53,8 +53,12 @@ return {
       vim.keymap.set('n', '<leader>zr', function() require("ufo").openFoldsExceptKinds() end,
         { desc = "Open folds except kinds" })
       vim.keymap.set('n', '<leader>zm', function() require("ufo").closeFoldsWith() end, { desc = "Close folds with" })
-      vim.keymap.set('n', 'K', function() require("ufo").peekFoldedLinesUnderCursor() end,
-        { desc = "Peek fold or hover" })
+      vim.keymap.set('n', 'K', function()
+        local winid = require('ufo').peekFoldedLinesUnderCursor()
+        if not winid then
+          vim.lsp.buf.hover()
+        end
+      end, { desc = "Peek fold or hover" })
     end,
   }
 }

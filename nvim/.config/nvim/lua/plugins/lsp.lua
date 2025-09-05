@@ -110,22 +110,6 @@ return {
         },
       },
     },
-    keys = {
-      { "<space>e",   vim.diagnostic.open_float,  desc = "Open diagnostic float" },
-      { "<leader>rn", vim.lsp.buf.rename,         desc = "Rename" },
-      { "<leader>sh", vim.lsp.buf.signature_help, desc = "Signature Help" },
-      { "K",          vim.lsp.buf.hover,          desc = "Hover" },
-      {
-        "<leader>cr",
-        function() require('vtsls').commands.remove_unused_imports(0) end,
-        desc = "Remove unused imports"
-      },
-      {
-        "<leader>co",
-        function() require('vtsls').commands.organize_imports(0) end,
-        desc = "Organize imports"
-      },
-    },
     config = function(_, opts)
       local lspconfig = require("lspconfig")
       require("mason").setup()
@@ -135,6 +119,13 @@ return {
         automatic_enable = false,
       })
       vim.diagnostic.config(opts.diagnostics)
+
+      -- Set up LSP keymaps
+      vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, { desc = "Open diagnostic float" })
+      vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
+      vim.keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help, { desc = "Signature Help" })
+      vim.keymap.set("n", "<leader>cr", function() require('vtsls').commands.remove_unused_imports(0) end, { desc = "Remove unused imports" })
+      vim.keymap.set("n", "<leader>co", function() require('vtsls').commands.organize_imports(0) end, { desc = "Organize imports" })
 
       -- Setup vtsls with special move-to-file functionality
       local function setup_vtsls_move_to_file(client)
