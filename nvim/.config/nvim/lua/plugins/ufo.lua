@@ -41,7 +41,7 @@ return {
       vim.o.foldlevelstart = 99
       vim.o.foldenable = true
       vim.o.fillchars = [[eob: ,foldopen:,foldsep: ,foldclose:]]
-      vim.o.foldcolumn = '1'
+      vim.o.foldcolumn = '0'
 
       require('ufo').setup({
         fold_virt_text_handler = handler,
