@@ -86,15 +86,7 @@ return {
         emmet_ls = {
           filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
         },
-        jsonls = {
-          settings = {
-            json = {
-              schemas = function()
-                return require("schemastore").json.schemas()
-              end,
-            },
-          },
-        },
+        jsonls = {},
         lua_ls = {
           settings = {
             Lua = {
@@ -193,6 +185,15 @@ return {
           -- Setup with move-to-file functionality
           config.on_attach = function(client)
             setup_vtsls_move_to_file(client)
+          end
+        elseif server == "jsonls" then
+          local ok, schemastore = pcall(require, "schemastore")
+          if ok then
+            config.settings = {
+              json = {
+                schemas = schemastore.json.schemas(),
+              },
+            }
           end
         end
 
