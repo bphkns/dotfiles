@@ -2,6 +2,6 @@ font-family = IosevkaTerm Nerd Font
 font-size=14
 mouse-hide-while-typing=true
 macos-titlebar-style=tabs
-theme = rose-pine-moon
+theme = Rose Pine Moon
 title = 👻
 keybind = shift+enter=text:\n
