@@ -11,21 +11,10 @@ return {
         styles = {
           bold = true,
           italic = false,
-          transparency = false,
+          tranparency = true,
         },
       })
       vim.cmd("colorscheme rose-pine")
     end,
   },
-  -- {
-  --   "olimorris/onedarkpro.nvim",
-  --   name = "onedarkpro",
-  --   priority = 1000,
-  --   lazy = false,
-  --   config = function()
-  --     require("onedarkpro").setup({
-  --     })
-  --     vim.cmd("colorscheme vaporwave")
-  --   end,
-  -- }
 }

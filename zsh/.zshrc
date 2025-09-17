@@ -19,6 +19,7 @@ SAVEHIST=$HISTSIZE
 HISTDUP=erase
 setopt appendhistory sharehistory hist_ignore_space
 setopt hist_ignore_all_dups hist_save_no_dups hist_ignore_dups hist_find_no_dups
+fpath=(~/.config/zsh/completions $fpath)
 
 # Load completions early
 autoload -Uz compinit && compinit
@@ -75,7 +76,7 @@ export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
 # PostgreSQL
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
-
+export PATH=/home/bikash/.opencode/bin:$PATH
 # Certificates
 export NODE_EXTRA_CA_CERTS="$(mkcert -CAROOT)/rootCA.pem"
 
@@ -142,3 +143,15 @@ function yy() {
 function nx() {
     pnpm nx "$@"
 }
+
+# fnm
+FNM_PATH="/home/bikash/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "$(fnm env --use-on-cd --shell zsh)"
+  
+  # Regenerate completions if they don't exist
+  [ ! -f ~/.config/zsh/completions/_fnm ] && \
+    mkdir -p ~/.config/zsh/completions && \
+    fnm completions --shell zsh > ~/.config/zsh/completions/_fnm
+fi
