@@ -144,14 +144,20 @@ function nx() {
     pnpm nx "$@"
 }
 
-# fnm
-FNM_PATH="/home/bikash/.local/share/fnm"
+# fnm setup
+FNM_PATH="$HOME/.local/share/fnm"
+
 if [ -d "$FNM_PATH" ]; then
-  export PATH="$FNM_PATH:$PATH"
   eval "$(fnm env --use-on-cd --shell zsh)"
-  
-  # Regenerate completions if they don't exist
-  [ ! -f ~/.config/zsh/completions/_fnm ] && \
-    mkdir -p ~/.config/zsh/completions && \
-    fnm completions --shell zsh > ~/.config/zsh/completions/_fnm
+
+  # Generate completions if missing
+  if command -v fnm >/dev/null 2>&1; then
+    COMPLETIONS_DIR="$HOME/.config/zsh/completions"
+    COMPLETIONS_FILE="$COMPLETIONS_DIR/_fnm"
+
+    if [ ! -f "$COMPLETIONS_FILE" ]; then
+      mkdir -p "$COMPLETIONS_DIR"
+      fnm completions --shell zsh > "$COMPLETIONS_FILE"
+    fi
+  fi
 fi
