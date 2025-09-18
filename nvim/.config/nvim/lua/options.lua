@@ -73,3 +73,9 @@ vim.keymap.set({ "n", "v" }, "c", '"_c', { noremap = true })
 vim.opt.equalalways = false
 
 vim.opt.list = true
+
+-- Enable full transparency
+vim.cmd("highlight Normal guibg=none")
+vim.cmd("highlight NonText guibg=none")
+vim.cmd("highlight Normal ctermbg=none")
+vim.cmd("highlight NonText ctermbg=none")
