@@ -21,15 +21,22 @@ setopt appendhistory sharehistory hist_ignore_space
 setopt hist_ignore_all_dups hist_save_no_dups hist_ignore_dups hist_find_no_dups
 fpath=(~/.config/zsh/completions $fpath)
 
-# Load completions early
-autoload -Uz compinit && compinit
+# Load completions early with security check skip for speed
+autoload -Uz compinit && compinit -C -d ~/.cache/zcompdump
 
-# Zsh plugins
-zinit light zsh-users/zsh-syntax-highlighting
+# Zsh plugins (with lazy loading for performance)
 zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
-zinit light Aloxaf/fzf-tab
 zinit light g-plane/pnpm-shell-completion
+
+# Lazy load expensive plugins
+zinit ice wait"1" lucid
+zinit light zsh-users/zsh-syntax-highlighting
+
+zinit ice wait"1" lucid
+zinit light zsh-users/zsh-autosuggestions
+
+zinit ice wait"1" lucid
+zinit light Aloxaf/fzf-tab
 
 # Oh-My-Zsh plugin snippets
 zinit snippet OMZP::git
@@ -120,10 +127,10 @@ export CONFIG_DIR="$HOME/.config/lazygit"
 export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/openssl@3/lib"
 export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/openssl@3/include"
 
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+# nvm (commented out - using fnm instead for better performance)
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # nx completion
 source ~/.nx-completion/nx-completion.plugin.zsh
@@ -144,11 +151,16 @@ function nx() {
     pnpm nx "$@"
 }
 
-# fnm setup
+# fnm setup (cached for performance)
 FNM_PATH="$HOME/.local/share/fnm"
 
 if [ -d "$FNM_PATH" ]; then
-  eval "$(fnm env --use-on-cd --shell zsh)"
+  # Cache fnm initialization for faster startup
+  if [[ ! -f ~/.cache/fnm_init.zsh ]] || [[ ~/.zshrc -nt ~/.cache/fnm_init.zsh ]]; then
+    mkdir -p ~/.cache
+    fnm env --use-on-cd --shell zsh > ~/.cache/fnm_init.zsh
+  fi
+  source ~/.cache/fnm_init.zsh
 
   # Generate completions if missing
   if command -v fnm >/dev/null 2>&1; then
