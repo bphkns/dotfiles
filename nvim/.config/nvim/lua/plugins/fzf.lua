@@ -1,8 +1,3 @@
-local hls = {
-  bg    = "PmenuSbar",
-  sel   = "PmenuSel",
-  title = "IncSearch"
-}
 
 return {
   {
@@ -17,19 +12,10 @@ return {
           title_pos = "center",
         },
       },
-      hls        = {
-        title          = hls.title,
-        border         = hls.bg,
-        preview_title  = hls.title,
-        preview_border = hls.bg,
-        scrollfloat_e  = "",
-        scrollfloat_f  = hls.sel,
-      },
       fzf_colors = {
-        ["gutter"] = { "bg", hls.bg },
-        ["bg"]     = { "bg", hls.bg },
-        ["bg+"]    = { "bg", hls.sel },
-        ["fg+"]    = { "fg", hls.sel },
+        true, -- auto generate rest of fzf's highlights
+        bg = '-1',
+        gutter = '-1',
       },
       files      = {
         cmd =

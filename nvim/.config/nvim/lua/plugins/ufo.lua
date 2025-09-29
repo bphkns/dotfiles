@@ -45,7 +45,23 @@ return {
 
       require('ufo').setup({
         fold_virt_text_handler = handler,
+        provider_selector = function(bufnr, filetype, buftype)
+          return {'treesitter', 'indent'}
+        end,
+        close_fold_kinds_for_ft = {},
+        open_fold_hl_timeout = 0,
+        enable_get_fold_virt_text = true,
+        preview = {
+          win_config = {
+            winblend = 0
+          }
+        }
       })
+      
+      -- Prevent folds from auto-closing
+      vim.opt.foldlevel = 99
+      vim.opt.foldlevelstart = 99
+      vim.opt.foldclose = ""
 
 
       vim.keymap.set('n', '<leader>zR', function() require("ufo").openAllFolds() end, { desc = "Open all folds" })
