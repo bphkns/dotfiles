@@ -1,6 +1,6 @@
 return {
   {
-    'echasnovski/mini.pairs',
+    'nvim-mini/mini.pairs',
     version = '*',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
