@@ -75,6 +75,7 @@ return {
           enabled = true,
         },
         trigger = {
+          show_on_trigger_character = true,
           show_on_keyword = true,
         },
       },
