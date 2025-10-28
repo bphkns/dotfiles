@@ -1,14 +1,12 @@
 theme = Rose Pine Moon
 title = 👻
 font-family = IosevkaTerm Nerd Font
-font-size=14
+font-size=10
 
 mouse-hide-while-typing=true
 
 macos-titlebar-style = "hidden"
 window-decoration = true
-window-padding-x = 10
-window-padding-y = 10
-background-image = /Users/bikash/Downloads/1-futurism.jpg
-background-image-opacity = 0.09
-background-image-fit = cover
+
+custom-shader = ./shaders/cursor_warp.glsl
+custom-shader = ./shaders/ripple_cursor.glsl

@@ -91,7 +91,7 @@ export NODE_EXTRA_CA_CERTS="$(mkcert -CAROOT)/rootCA.pem"
 eval "$(starship init zsh)"
 
 # Zoxide (with correct completion setup)
-eval "$(zoxide init --cmd cd zsh)"
+eval "$(zoxide init zsh)"
 
 # FZF config
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
@@ -153,6 +153,9 @@ function nx() {
 
 # fnm setup (cached for performance)
 FNM_PATH="$HOME/.local/share/fnm"
+
+# Ensure fnm is on PATH before using it
+export PATH="$FNM_PATH:$PATH"
 
 if [ -d "$FNM_PATH" ]; then
   # Cache fnm initialization for faster startup
