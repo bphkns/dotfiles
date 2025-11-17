@@ -28,7 +28,7 @@ vim.keymap.set("n", "Q", "<nop>", opts)
 -- Delete all buffers except the current one and return to previous mark
 vim.keymap.set("n", "<leader>bsd", "<cmd>%bd|e#|bd#<cr>|'<cr>", { desc = "Delete surrounding buffers" })
 
--- Add the following line to your init.lua
+-- Delete the current buffer
 vim.keymap.set("n", "<leader>bd", ":bd<CR>", { noremap = true, silent = true })
 
 -- Search and replace word under cursor

@@ -7,7 +7,7 @@ return {
       "williamboman/mason-lspconfig.nvim",
       "saghen/blink.cmp",
       "b0o/schemastore.nvim",
-      "yioneko/nvim-vtsls"
+      "yioneko/nvim-vtsls",
     },
     opts = {
       diagnostics = {
@@ -65,7 +65,7 @@ return {
             "typescript",
             "typescriptreact",
             "typescript.tsx",
-            "htmlangular"
+            "htmlangular",
           },
           root_dir = function()
             local util = require("lspconfig.util")
@@ -112,14 +112,16 @@ return {
       })
       vim.diagnostic.config(opts.diagnostics)
 
-      -- Set up LSP keymaps
       vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, { desc = "Open diagnostic float" })
       vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
       vim.keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help, { desc = "Signature Help" })
-      vim.keymap.set("n", "<leader>cr", function() require('vtsls').commands.remove_unused_imports(0) end, { desc = "Remove unused imports" })
-      vim.keymap.set("n", "<leader>co", function() require('vtsls').commands.organize_imports(0) end, { desc = "Organize imports" })
+      vim.keymap.set("n", "<leader>cr", function()
+        require("vtsls").commands.remove_unused_imports(0)
+      end, { desc = "Remove unused imports" })
+      vim.keymap.set("n", "<leader>co", function()
+        require("vtsls").commands.organize_imports(0)
+      end, { desc = "Organize imports" })
 
-      -- Setup vtsls with special move-to-file functionality
       local function setup_vtsls_move_to_file(client)
         client.commands["_typescript.moveToFileRefactoring"] = function(command)
           ---@type string, string, lsp.Range
@@ -172,15 +174,15 @@ return {
       end
 
       for server, config in pairs(opts.servers) do
-        config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+        config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
         config.capabilities.textDocument.foldingRange = {
           dynamicRegistration = false,
-          lineFoldingOnly = true
+          lineFoldingOnly = true,
         }
 
         if server == "vtsls" then
-          config.settings.javascript = vim.tbl_deep_extend("force", {}, config.settings.typescript,
-            config.settings.javascript or {})
+          config.settings.javascript =
+            vim.tbl_deep_extend("force", {}, config.settings.typescript, config.settings.javascript or {})
 
           -- Setup with move-to-file functionality
           config.on_attach = function(client)

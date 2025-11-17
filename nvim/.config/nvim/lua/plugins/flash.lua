@@ -10,7 +10,7 @@ return {
         char = {
           jump_labels = true,
         },
-      }
+      },
     },
     keys = {
       {

@@ -81,6 +81,9 @@ export PATH="$PATH:$HOME/.rvm/bin"
 export PATH="$PATH:$HOME/usr/local/go/bin"
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
+# Bob (Neovim version manager)
+export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+
 # PostgreSQL
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 export PATH=/home/bikash/.opencode/bin:$PATH
@@ -119,6 +122,9 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
 "
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(fzf --zsh)"
+
+# fzf-git.sh - git integration for fzf
+zinit light junegunn/fzf-git.sh
 
 # LazyGit config
 export CONFIG_DIR="$HOME/.config/lazygit"

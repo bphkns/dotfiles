@@ -20,7 +20,7 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 
 -- Enables text wrapping for long lines
-vim.opt.wrap = true
+vim.opt.wrap = false
 
 -- Shows a symbol at the beginning of wrapped lines
 vim.o.showbreak = "↪ "
@@ -57,12 +57,6 @@ vim.opt.updatetime = 50
 
 -- Shows a vertical line at column 100 for code alignment
 vim.opt.colorcolumn = "100"
-
--- Sets the leader key to space
-vim.g.mapleader = " "
-
--- Sets the local leader key to comma
-vim.g.maplocalleader = ","
 
 -- Enable clipboard sync with system clipboard
 vim.opt.clipboard = "unnamedplus"

@@ -5,20 +5,18 @@ if not vim.loop.fs_stat(lazypath) then
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
+    "--branch=stable",
     lazypath,
   })
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Set mapleader before lazy
-vim.g.mapleader = " " -- Use space as leader key
+vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
 require("options")
 require("keymaps")
 require("autocmds")
-
 require("lazy").setup({
   spec = {
     { import = "plugins" }, -- Load plugin specs from the 'plugins' directory

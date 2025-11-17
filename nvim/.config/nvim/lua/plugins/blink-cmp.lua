@@ -5,7 +5,7 @@ return {
     opts = {
       library = {
         { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-        { path = "lazy.nvim",          words = { "LazyVim" } }
+        { path = "lazy.nvim", words = { "LazyVim" } },
       },
     },
   },
@@ -15,8 +15,9 @@ return {
       "rafamadriz/friendly-snippets",
       "moyiz/blink-emoji.nvim",
       "onsails/lspkind.nvim",
+      "giuxtaposition/blink-cmp-copilot",
     },
-    version = "v1.*",
+    version = "*",
     opts = {
       keymap = { preset = "default" },
       appearance = {
@@ -55,15 +56,15 @@ return {
       completion = {
         accept = {
           auto_brackets = {
-            enabled = true,
+            enabled = false,
           },
         },
         menu = {
           draw = {
             treesitter = { "lsp" },
             columns = {
-              { "label",     "label_description", gap = 1 },
-              { "kind_icon", "kind",              gap = 1 },
+              { "label", "label_description", gap = 1 },
+              { "kind_icon", "kind", gap = 1 },
             },
           },
         },
@@ -72,7 +73,7 @@ return {
           auto_show_delay_ms = 200,
         },
         ghost_text = {
-          enabled = true,
+          enabled = false,
         },
         trigger = {
           show_on_trigger_character = true,
@@ -80,8 +81,14 @@ return {
         },
       },
       sources = {
-        default = { "lazydev", "lsp", "path", "snippets", "buffer", "emoji", },
+        default = { "copilot", "lazydev", "lsp", "path", "snippets", "buffer", "emoji" },
         providers = {
+          copilot = {
+            name = "copilot",
+            module = "blink-cmp-copilot",
+            score_offset = 100,
+            async = true,
+          },
           emoji = {
             module = "blink-emoji",
             name = "Emoji",

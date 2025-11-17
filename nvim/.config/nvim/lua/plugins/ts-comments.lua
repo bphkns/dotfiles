@@ -6,10 +6,10 @@ return {
       require("ts-comments").setup({
         lang = {
           angular = {
-            "<!-- %s -->", -- Default to HTML comments
+            "<!-- %s -->",
           },
-        }
+        },
       })
     end,
-  }
+  },
 }
