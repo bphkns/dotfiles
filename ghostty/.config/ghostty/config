@@ -3,10 +3,12 @@ title = 👻
 font-family = IosevkaTerm Nerd Font
 font-size=10
 
+command = /usr/bin/zsh
+
 mouse-hide-while-typing=true
 
 macos-titlebar-style = "hidden"
-window-decoration = true
+window-decoration = false
 
 custom-shader = ./shaders/cursor_warp.glsl
 custom-shader = ./shaders/ripple_cursor.glsl

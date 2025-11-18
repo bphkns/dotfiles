@@ -84,6 +84,9 @@ export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 # Bob (Neovim version manager)
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 
+# Cargo (Rust package manager)
+export PATH="$HOME/.cargo/bin:$PATH"
+
 # PostgreSQL
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 export PATH=/home/bikash/.opencode/bin:$PATH
@@ -182,3 +185,4 @@ if [ -d "$FNM_PATH" ]; then
     fi
   fi
 fi
+export PATH="$HOME/.local/bin:$PATH"
