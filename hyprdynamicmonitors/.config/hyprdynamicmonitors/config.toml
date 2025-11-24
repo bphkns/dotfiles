@@ -51,26 +51,57 @@ member = "PropertiesChanged"
 name = "org.freedesktop.DBus.Properties.PropertiesChanged"
 body = "LidIsClosed"
 
-# Lid closed
-[profiles.lid_closed]
-config_file = "hyprconfigs/closed.conf"
+# Lid opened with external monitor
+[profiles.lid_opened_with_external]
+config_file = "hyprconfigs/both-monitors.conf"
 config_file_type = "static"
 
-[profiles.lid_closed.conditions]
-lid_state = "Closed"
+[profiles.lid_opened_with_external.conditions]
+lid_state = "Opened"
 
-[[profiles.lid_closed.conditions.required_monitors]]
+[[profiles.lid_opened_with_external.conditions.required_monitors]]
 name = "eDP-1"
 
-# Lid opened
-[profiles.lid_opened]
+[[profiles.lid_opened_with_external.conditions.required_monitors]]
+name = "DP-1"
+
+# Lid closed with external monitor
+[profiles.lid_closed_with_external]
+config_file = "hyprconfigs/external-only.conf"
+config_file_type = "static"
+
+[profiles.lid_closed_with_external.conditions]
+lid_state = "Closed"
+
+[[profiles.lid_closed_with_external.conditions.required_monitors]]
+name = "DP-1"
+
+# Lid opened without external monitor (laptop only)
+[profiles.lid_opened_laptop_only]
 config_file = "hyprconfigs/opened.conf"
 config_file_type = "static"
 
-[profiles.lid_opened.conditions]
+[profiles.lid_opened_laptop_only.conditions]
 lid_state = "Opened"
 
-[[profiles.lid_opened.conditions.required_monitors]]
+[[profiles.lid_opened_laptop_only.conditions.required_monitors]]
 name = "eDP-1"
+
+[[profiles.lid_opened_laptop_only.conditions.absent_monitors]]
+name = "DP-1"
+
+# Lid closed without external monitor (disable laptop screen)
+[profiles.lid_closed_laptop_only]
+config_file = "hyprconfigs/closed.conf"
+config_file_type = "static"
+
+[profiles.lid_closed_laptop_only.conditions]
+lid_state = "Closed"
+
+[[profiles.lid_closed_laptop_only.conditions.required_monitors]]
+name = "eDP-1"
+
+[[profiles.lid_closed_laptop_only.conditions.absent_monitors]]
+name = "DP-1"
 
 

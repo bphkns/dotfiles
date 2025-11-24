@@ -26,7 +26,6 @@ autoload -Uz compinit && compinit -C -d ~/.cache/zcompdump
 
 # Zsh plugins (with lazy loading for performance)
 zinit light zsh-users/zsh-completions
-zinit light g-plane/pnpm-shell-completion
 
 # Lazy load expensive plugins
 zinit ice wait"1" lucid
@@ -46,6 +45,9 @@ zinit snippet OMZP::command-not-found
 
 # Re-run compdefs if needed
 zinit cdreplay -q
+
+# Load pnpm completion
+[[ -f ~/.config/zsh/completions/_pnpm ]] && source ~/.config/zsh/completions/_pnpm
 
 # Keybindings for history search (Ctrl+P/N)
 bindkey '^P' history-beginning-search-backward
@@ -136,10 +138,6 @@ export CONFIG_DIR="$HOME/.config/lazygit"
 export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/openssl@3/lib"
 export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/openssl@3/include"
 
-# nvm (commented out - using fnm instead for better performance)
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # nx completion
 source ~/.nx-completion/nx-completion.plugin.zsh
@@ -160,29 +158,12 @@ function nx() {
     pnpm nx "$@"
 }
 
-# fnm setup (cached for performance)
-FNM_PATH="$HOME/.local/share/fnm"
-
-# Ensure fnm is on PATH before using it
-export PATH="$FNM_PATH:$PATH"
-
-if [ -d "$FNM_PATH" ]; then
-  # Cache fnm initialization for faster startup
-  if [[ ! -f ~/.cache/fnm_init.zsh ]] || [[ ~/.zshrc -nt ~/.cache/fnm_init.zsh ]]; then
-    mkdir -p ~/.cache
-    fnm env --use-on-cd --shell zsh > ~/.cache/fnm_init.zsh
-  fi
-  source ~/.cache/fnm_init.zsh
-
-  # Generate completions if missing
-  if command -v fnm >/dev/null 2>&1; then
-    COMPLETIONS_DIR="$HOME/.config/zsh/completions"
-    COMPLETIONS_FILE="$COMPLETIONS_DIR/_fnm"
-
-    if [ ! -f "$COMPLETIONS_FILE" ]; then
-      mkdir -p "$COMPLETIONS_DIR"
-      fnm completions --shell zsh > "$COMPLETIONS_FILE"
-    fi
-  fi
-fi
 export PATH="$HOME/.local/bin:$PATH"
+
+eval "$(/home/bikash/.local/bin/mise activate zsh)" # added by https://mise.run/zsh
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/bikash/google-cloud-sdk/path.zsh.inc' ]; then . '/home/bikash/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/bikash/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/bikash/google-cloud-sdk/completion.zsh.inc'; fi
