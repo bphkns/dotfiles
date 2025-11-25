@@ -9,7 +9,7 @@ return {
         function()
           require("oil").open()
         end,
-        desc = "[F]ormat buffer",
+        desc = "Open Oil file manager",
       },
     },
     opts = {

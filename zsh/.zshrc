@@ -63,7 +63,6 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
 # Aliases
 alias ls='ls --color'
-alias vim='nvim'
 alias c='clear'
 alias cat='bat'
 alias pyenv86="arch -x86_64 pyenv"

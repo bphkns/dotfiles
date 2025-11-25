@@ -18,6 +18,7 @@ return {
       },
       servers = {
         vtsls = {
+          cmd = { "vtsls", "--stdio" },
           filetypes = {
             "javascript",
             "javascriptreact",
@@ -26,10 +27,7 @@ return {
             "typescriptreact",
             "typescript.tsx",
           },
-          root_dir = function()
-            local util = require("lspconfig.util")
-            return util.root_pattern("nx.json", "angular.json", "package.json", ".git")(vim.fn.getcwd())
-          end,
+          root_markers = { "nx.json", "angular.json", "package.json", ".git" },
           single_file_support = false,
           settings = {
             complete_function_calls = false,
@@ -61,33 +59,55 @@ return {
           },
         },
         angularls = {
+          cmd = { "ngserver", "--stdio", "--tsProbeLocations", ".", "--ngProbeLocations", "." },
           filetypes = {
             "typescript",
             "typescriptreact",
             "typescript.tsx",
             "htmlangular",
           },
-          root_dir = function()
-            local util = require("lspconfig.util")
-            return util.root_pattern("angular.json", "nx.json")(vim.fn.getcwd())
-          end,
+          root_markers = { "angular.json", "nx.json" },
           single_file_support = false,
         },
         eslint = {
+          cmd = { "vscode-eslint-language-server", "--stdio" },
           filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "htmlangular" },
+          root_markers = {
+            ".eslintrc",
+            ".eslintrc.js",
+            ".eslintrc.cjs",
+            ".eslintrc.yaml",
+            ".eslintrc.yml",
+            ".eslintrc.json",
+            "eslint.config.js",
+            "package.json",
+          },
           settings = { format = { enable = false }, run = "onSave" },
         },
         html = {
+          cmd = { "vscode-html-language-server", "--stdio" },
           filetypes = { "html", "mjml" },
+          root_markers = { "package.json", ".git" },
         },
         cssls = {
+          cmd = { "vscode-css-language-server", "--stdio" },
           filetypes = { "css", "scss", "less" },
+          root_markers = { "package.json", ".git" },
         },
         emmet_ls = {
+          cmd = { "emmet-ls", "--stdio" },
           filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
+          root_markers = { "package.json", ".git" },
         },
-        jsonls = {},
+        jsonls = {
+          cmd = { "vscode-json-language-server", "--stdio" },
+          filetypes = { "json", "jsonc" },
+          root_markers = { ".git" },
+        },
         lua_ls = {
+          cmd = { "lua-language-server" },
+          filetypes = { "lua" },
+          root_markers = { ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", ".git" },
           settings = {
             Lua = {
               runtime = { version = "LuaJIT" },
@@ -100,21 +120,32 @@ return {
             },
           },
         },
+        -- Copilot LSP (for Sidekick NES support)
+        -- Install via :MasonInstall copilot-language-server
+        copilot = {},
       },
     },
     config = function(_, opts)
-      local lspconfig = require("lspconfig")
+      -- Setup Mason for LSP installation
       require("mason").setup()
+      -- Exclude servers not in mason-lspconfig mappings
+      local mason_exclude = { copilot = true }
+      local mason_servers = vim.tbl_filter(function(s)
+        return not mason_exclude[s]
+      end, vim.tbl_keys(opts.servers))
       require("mason-lspconfig").setup({
-        ensure_installed = vim.tbl_keys(opts.servers),
+        ensure_installed = mason_servers,
         automatic_installation = true,
-        automatic_enable = false,
       })
+
+      -- Configure diagnostics globally
       vim.diagnostic.config(opts.diagnostics)
 
+      -- Custom keybindings (Neovim 0.11 provides grn, gra, grr, gri, gO, <C-S> by default)
       vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, { desc = "Open diagnostic float" })
-      vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
-      vim.keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help, { desc = "Signature Help" })
+      vim.keymap.set("n", "<leader>ih", function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+      end, { desc = "Toggle inlay hints" })
       vim.keymap.set("n", "<leader>cr", function()
         require("vtsls").commands.remove_unused_imports(0)
       end, { desc = "Remove unused imports" })
@@ -122,6 +153,7 @@ return {
         require("vtsls").commands.organize_imports(0)
       end, { desc = "Organize imports" })
 
+      -- Setup vtsls move-to-file functionality
       local function setup_vtsls_move_to_file(client)
         client.commands["_typescript.moveToFileRefactoring"] = function(command)
           ---@type string, string, lsp.Range
@@ -173,25 +205,37 @@ return {
         end
       end
 
+      -- Configure servers using Neovim 0.11 native vim.lsp.config
       for server, config in pairs(opts.servers) do
-        config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
-        config.capabilities.textDocument.foldingRange = {
+        -- Setup capabilities from blink.cmp
+        local capabilities = require("blink.cmp").get_lsp_capabilities()
+        capabilities.textDocument.foldingRange = {
           dynamicRegistration = false,
           lineFoldingOnly = true,
         }
 
-        if server == "vtsls" then
-          config.settings.javascript =
-            vim.tbl_deep_extend("force", {}, config.settings.typescript, config.settings.javascript or {})
+        -- Prepare config for vim.lsp.config
+        local lsp_config = vim.tbl_extend("force", {
+          capabilities = capabilities,
+        }, config)
 
-          -- Setup with move-to-file functionality
-          config.on_attach = function(client)
+        -- Special handling for specific servers
+        if server == "vtsls" then
+          lsp_config.settings.javascript =
+            vim.tbl_deep_extend("force", {}, lsp_config.settings.typescript, lsp_config.settings.javascript or {})
+
+          -- Add on_attach for move-to-file functionality
+          local original_on_attach = lsp_config.on_attach
+          lsp_config.on_attach = function(client, bufnr)
             setup_vtsls_move_to_file(client)
+            if original_on_attach then
+              original_on_attach(client, bufnr)
+            end
           end
         elseif server == "jsonls" then
           local ok, schemastore = pcall(require, "schemastore")
           if ok then
-            config.settings = {
+            lsp_config.settings = {
               json = {
                 schemas = schemastore.json.schemas(),
               },
@@ -199,8 +243,41 @@ return {
           end
         end
 
-        lspconfig[server].setup(config)
+        -- Use vim.lsp.config (native Neovim 0.11 API)
+        vim.lsp.config(server, lsp_config)
       end
+
+      -- Enable all configured servers
+      vim.lsp.enable(vim.tbl_keys(opts.servers))
+
+      -- LspAttach autocmd for per-buffer configuration
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if not client then
+            return
+          end
+          local bufnr = args.buf
+
+          -- Enable LSP-based completion (Neovim 0.11 native)
+          vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
+
+          -- Enable LSP-based folding (window-local options)
+          if client.supports_method("textDocument/foldingRange") then
+            local win = vim.fn.bufwinid(bufnr)
+            if win ~= -1 then
+              vim.wo[win].foldmethod = "expr"
+              vim.wo[win].foldexpr = "v:lua.vim.lsp.foldexpr()"
+              vim.wo[win].foldenable = false
+            end
+          end
+
+          -- Inlay hints: disabled by default due to TypeScript 5.7.x bug with computed properties
+          -- Toggle with: vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+          -- or use the keymap below
+        end,
+      })
     end,
   },
 }

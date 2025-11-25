@@ -62,7 +62,7 @@ vim.opt.colorcolumn = "100"
 vim.opt.clipboard = "unnamedplus"
 
 -- Don't copy text deleted with 'c' command to clipboard
-vim.keymap.set({ "n", "v" }, "c", '"_c', { noremap = true })
+vim.keymap.set({ "n", "v" }, "c", '"_c', { noremap = true, desc = "Change without yanking" })
 
 vim.opt.equalalways = false
 

@@ -11,8 +11,7 @@ return {
     branch = "main",
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter").setup({})
-      require("nvim-treesitter").install(
+      local parsers = {
         "lua",
         "vim",
         "vimdoc",
@@ -26,8 +25,14 @@ return {
         "scss",
         "sql",
         "dockerfile",
-        "prisma"
-      )
+        "prisma",
+      }
+
+      -- Setup nvim-treesitter (main branch - no config table)
+      require("nvim-treesitter").setup()
+
+      -- Install parsers (main branch API takes a table, not varargs)
+      require("nvim-treesitter").install(parsers)
 
       require("nvim-treesitter-textobjects").setup({
         select = {
@@ -36,40 +41,40 @@ return {
         },
       })
 
-      local function map(lhs, obj)
+      local function map(lhs, obj, desc)
         vim.keymap.set({ "x", "o" }, lhs, function()
           require("nvim-treesitter-textobjects.select").select_textobject(obj, "textobjects")
-        end)
+        end, { desc = desc })
       end
       -- assignment
-      map("a=", "@assignment.outer")
-      map("i=", "@assignment.inner")
-      map("l=", "@assignment.lhs")
-      map("r=", "@assignment.rhs")
+      map("a=", "@assignment.outer", "Select outer assignment")
+      map("i=", "@assignment.inner", "Select inner assignment")
+      map("l=", "@assignment.lhs", "Select assignment LHS")
+      map("r=", "@assignment.rhs", "Select assignment RHS")
       -- property
-      map("a:", "@property.outer")
-      map("i:", "@property.inner")
-      map("l:", "@property.lhs")
-      map("r:", "@property.rhs")
+      map("a:", "@property.outer", "Select outer property")
+      map("i:", "@property.inner", "Select inner property")
+      map("l:", "@property.lhs", "Select property LHS")
+      map("r:", "@property.rhs", "Select property RHS")
 
-      map("ap", "@parameter.inner")
-      map("ip", "@parameter.inner")
+      map("ap", "@parameter.inner", "Select outer parameter")
+      map("ip", "@parameter.inner", "Select inner parameter")
 
-      map("af", "@function.outer")
-      map("if", "@function.inner")
+      map("af", "@function.outer", "Select outer function")
+      map("if", "@function.inner", "Select inner function")
 
-      map("ac", "@class.inner")
-      map("ic", "@class.inner")
+      map("ac", "@class.inner", "Select outer class")
+      map("ic", "@class.inner", "Select inner class")
 
-      map("ak", "@block.inner")
-      map("ik", "@block.inner")
+      map("ak", "@block.inner", "Select outer block")
+      map("ik", "@block.inner", "Select inner block")
 
       local ts_repeat_move = require("nvim-treesitter-textobjects.repeatable_move")
 
       -- Repeat movement with ; and ,
       -- ensure ; goes forward and , goes backward regardless of the last direction
-      vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
-      vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
+      vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next, { desc = "Repeat last move next" })
+      vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous, { desc = "Repeat last move previous" })
 
       --
       --         swap = {
