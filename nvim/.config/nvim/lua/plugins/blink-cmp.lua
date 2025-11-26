@@ -19,7 +19,15 @@ return {
     },
     version = "*",
     opts = {
-      keymap = { preset = "default" },
+      keymap = {
+        preset = "default",
+        ["<C-y>"] = { "select_and_accept" },
+        ["<C-p>"] = { "select_prev", "fallback" },
+        ["<C-n>"] = { "select_next", "fallback" },
+        ["<CR>"] = { "fallback" },
+        ["<Tab>"] = { "fallback" },
+        ["<S-Tab>"] = { "fallback" },
+      },
       appearance = {
         kind_icons = {
           Text = "󰉿",
@@ -68,16 +76,11 @@ return {
             },
           },
         },
-        documentation = {
-          auto_show = true,
-          auto_show_delay_ms = 200,
-        },
         ghost_text = {
           enabled = false,
         },
         trigger = {
           show_on_trigger_character = true,
-          show_on_keyword = true,
         },
       },
       sources = {

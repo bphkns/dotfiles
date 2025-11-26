@@ -5,8 +5,14 @@ return {
     dependencies = { "echasnovski/mini.icons" },
     opts = {
       winopts    = {
-        border  = { " ", " ", " ", " ", " ", " ", " ", " " },
-        preview = {
+        height     = 0.85,
+        width      = 0.80,
+        row        = 0.50,
+        col        = 0.50,
+        border     = "rounded",
+        backdrop   = 60,
+        preview    = {
+          layout    = "flex",
           scrollbar = "float",
           scrolloff = "-2",
           title_pos = "center",

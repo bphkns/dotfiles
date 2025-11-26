@@ -24,6 +24,9 @@ fpath=(~/.config/zsh/completions $fpath)
 # Load completions early with security check skip for speed
 autoload -Uz compinit && compinit -C -d ~/.cache/zcompdump
 
+zinit ice atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone"
+zinit light g-plane/pnpm-shell-completion
+
 # Zsh plugins (with lazy loading for performance)
 zinit light zsh-users/zsh-completions
 
@@ -46,8 +49,6 @@ zinit snippet OMZP::command-not-found
 # Re-run compdefs if needed
 zinit cdreplay -q
 
-# Load pnpm completion
-[[ -f ~/.config/zsh/completions/_pnpm ]] && source ~/.config/zsh/completions/_pnpm
 
 # Keybindings for history search (Ctrl+P/N)
 bindkey '^P' history-beginning-search-backward

@@ -1,4 +1,4 @@
-theme = Rose Pine Moon
+theme = Gruvbox Material Dark
 font-size=11
 
 command = /usr/bin/zsh
@@ -8,3 +8,4 @@ mouse-hide-while-typing=true
 macos-titlebar-style = "hidden"
 window-decoration = false
 
+keybind = shift+enter=text:\x1b\r
