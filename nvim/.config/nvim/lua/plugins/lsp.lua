@@ -260,10 +260,6 @@ return {
           end
           local bufnr = args.buf
 
-          -- Enable LSP-based completion (Neovim 0.11 native)
-          vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
-
-          -- Enable LSP-based folding (window-local options)
           if client.supports_method("textDocument/foldingRange") then
             local win = vim.fn.bufwinid(bufnr)
             if win ~= -1 then
@@ -272,10 +268,6 @@ return {
               vim.wo[win].foldenable = false
             end
           end
-
-          -- Inlay hints: disabled by default due to TypeScript 5.7.x bug with computed properties
-          -- Toggle with: vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-          -- or use the keymap below
         end,
       })
     end,

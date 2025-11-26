@@ -25,6 +25,10 @@ require("lazy").setup({
     lazy = true, -- Lazy-load all plugins
     version = "*", -- Use latest version for all plugins
   },
+  change_detection = {
+    enabled = true,
+    notify = true,
+  },
 })
 
 function EditLineFromLazygit(file_path, line)

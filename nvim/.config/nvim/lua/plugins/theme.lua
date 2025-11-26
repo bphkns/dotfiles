@@ -18,12 +18,22 @@ return {
   --   end,
   -- },
   {
-    "sainnhe/gruvbox-material",
+    "ellisonleao/gruvbox.nvim",
+    name = "gruvbox",
     lazy = false,
     priority = 1000,
     config = function()
-      vim.g.gruvbox_material_enable_italic = true
-      vim.cmd.colorscheme("gruvbox-material")
+      require("gruvbox").setup({
+        transparent_mode = true,
+        italic = {
+          strings = false,
+          emphasis = false,
+          comments = false,
+          operators = false,
+          folds = false,
+        },
+      })
+      vim.cmd("colorscheme gruvbox")
     end,
   },
 }

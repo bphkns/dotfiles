@@ -31,6 +31,12 @@ return {
         mappings = {
           ["/"] = "fuzzy_finder",
           ["<leader>P"] = { "toggle_image_preview", config = { use_float = true } },
+          ["gd"] = function(state)
+            local node = state.tree:get_node()
+            local path = node.type == "directory" and node:get_id() or vim.fn.fnamemodify(node:get_id(), ":h")
+            vim.cmd("cd " .. path)
+            print("CWD set to: " .. path)
+          end,
           ["Y"] = function(state)
             local node = state.tree:get_node()
             local filepath = node:get_id()

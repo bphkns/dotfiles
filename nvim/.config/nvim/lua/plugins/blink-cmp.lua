@@ -21,12 +21,9 @@ return {
     opts = {
       keymap = {
         preset = "default",
-        ["<C-y>"] = { "select_and_accept" },
         ["<C-p>"] = { "select_prev", "fallback" },
         ["<C-n>"] = { "select_next", "fallback" },
-        ["<CR>"] = { "fallback" },
-        ["<Tab>"] = { "fallback" },
-        ["<S-Tab>"] = { "fallback" },
+        ["<C-y>"] = { "select_and_accept" },
       },
       appearance = {
         kind_icons = {
@@ -59,28 +56,6 @@ return {
           Codeium = "",
           TabNine = "",
           Supermaven = "",
-        },
-      },
-      completion = {
-        accept = {
-          auto_brackets = {
-            enabled = false,
-          },
-        },
-        menu = {
-          draw = {
-            treesitter = { "lsp" },
-            columns = {
-              { "label", "label_description", gap = 1 },
-              { "kind_icon", "kind", gap = 1 },
-            },
-          },
-        },
-        ghost_text = {
-          enabled = false,
-        },
-        trigger = {
-          show_on_trigger_character = true,
         },
       },
       sources = {

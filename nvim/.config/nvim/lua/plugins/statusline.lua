@@ -5,11 +5,11 @@ return {
     event = { "VeryLazy" },
     dependencies = { "echasnovski/mini.icons" },
     config = function()
-      local lualine = require('lualine')
-      lualine.setup({
+      local gruvbox = require("lualine.themes.gruvbox")
+      require("lualine").setup({
         options = {
-          theme = 'gruvbox-material'
-        }
+          theme = gruvbox,
+        },
       })
     end,
   },
