@@ -25,7 +25,7 @@ return {
     config = function()
       require("gruvbox").setup({
         contrast = "hard",
-        transparent_mode = true,
+        transparent_mode = false,
         italic = {
           strings = false,
           emphasis = false,
