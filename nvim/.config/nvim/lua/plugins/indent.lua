@@ -1,8 +1,7 @@
 return {
   {
-    "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
-    event = "VeryLazy",
+    'saghen/blink.indent',
     opts = {},
+    event = 'VeryLazy',
   }
 }

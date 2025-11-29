@@ -74,7 +74,8 @@ return {
       -- Repeat movement with ; and ,
       -- ensure ; goes forward and , goes backward regardless of the last direction
       vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next, { desc = "Repeat last move next" })
-      vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous, { desc = "Repeat last move previous" })
+      vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous,
+        { desc = "Repeat last move previous" })
 
       --
       --         swap = {
@@ -152,4 +153,8 @@ return {
       })
     end,
   },
+  {
+    "bezhermoso/tree-sitter-ghostty",
+    build = "make nvim_install",
+  }
 }
