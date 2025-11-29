@@ -17,24 +17,45 @@ return {
   --     vim.cmd("colorscheme rose-pine")
   --   end,
   -- },
+  -- {
+  --   "ellisonleao/gruvbox.nvim",
+  --   name = "gruvbox",
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     require("gruvbox").setup({
+  --       contrast = "hard",
+  --       transparent_mode = false,
+  --       italic = {
+  --         strings = false,
+  --         emphasis = false,
+  --         comments = false,
+  --         operators = false,
+  --         folds = false,
+  --       },
+  --     })
+  --     vim.cmd("colorscheme gruvbox")
+  --   end,
+  -- },
   {
-    "ellisonleao/gruvbox.nvim",
-    name = "gruvbox",
-    lazy = false,
+    "tiagovla/tokyodark.nvim",
+    lazy     = false,
     priority = 1000,
-    config = function()
-      require("gruvbox").setup({
-        contrast = "hard",
-        transparent_mode = false,
-        italic = {
-          strings = false,
-          emphasis = false,
-          comments = false,
-          operators = false,
-          folds = false,
-        },
-      })
-      vim.cmd("colorscheme gruvbox")
+    opts     = {
+      transparent_background = false,
+      gamma = 1.00,
+      styles = {
+        comments = { italic = true },
+        keywords = {},
+        identifiers = {},
+        functions = {},
+        variables = {},
+      },
+      terminal_colors = true,
+    },
+    config   = function(_, opts)
+      require("tokyodark").setup(opts)
+      vim.cmd [[colorscheme tokyodark]]
     end,
-  },
+  }
 }
