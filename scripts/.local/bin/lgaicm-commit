@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# lgaicm-commit - Interactive AI commit with fzf
+set -euo pipefail
+
+# Type selection with fzf
+TYPE=$(printf "AI defined\nfeat\nfix\nchore\nrefactor\ndocs\ntest" | fzf --height=40% --reverse --header="Select commit type")
+
+# Convert "AI defined" to empty string
+[[ "$TYPE" == "AI defined" ]] && TYPE=""
+
+# Generate and select commit message
+MSG=$(lgaicm "$TYPE" | fzf --height=40% --reverse --header="Select commit message")
+
+# Commit if message selected
+if [[ -n "$MSG" ]]; then
+  git commit -m "$MSG"
+fi

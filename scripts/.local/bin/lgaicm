@@ -19,6 +19,30 @@ fi
 TYPE_HINT=""
 [[ -n "$COMMIT_TYPE" ]] && TYPE_HINT="Use type: ${COMMIT_TYPE}. "
 
-claude -p --model sonnet --max-turns 1 "${TYPE_HINT}Generate ${MAX_SUGGESTIONS} conventional commit messages for this diff. Output ONLY the messages, one per line, no numbers or bullets:
+# Spinner function
+spinner() {
+  local chars="⣾⣽⣻⢿⡿⣟⣯⣷"
+  local i=0
+  while true; do
+    printf "\r\033[K\033[33m%s\033[0m Generating commit messages..." "${chars:i++%${#chars}:1}" >&2
+    sleep 0.1
+  done
+}
 
-${DIFF}" 2>/dev/null | grep -E '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore)' | head -n "$MAX_SUGGESTIONS"
+# Start spinner in background
+spinner &
+SPINNER_PID=$!
+trap "kill $SPINNER_PID 2>/dev/null; printf '\r\033[K' >&2" EXIT
+
+# Generate messages
+RESULT=$(claude -p --model sonnet --max-turns 1 "${TYPE_HINT}Generate ${MAX_SUGGESTIONS} conventional commit messages for this diff. Output ONLY the messages, one per line, no numbers or bullets:
+
+${DIFF}" 2>/dev/null)
+
+# Stop spinner
+kill $SPINNER_PID 2>/dev/null
+printf '\r\033[K' >&2
+trap - EXIT
+
+# Output filtered results
+echo "$RESULT" | grep -E '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore)' | head -n "$MAX_SUGGESTIONS"
