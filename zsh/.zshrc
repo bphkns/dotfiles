@@ -54,12 +54,11 @@ zinit cdreplay -q
 # fzf-tab (must load after compinit, before other widgets)
 zinit light Aloxaf/fzf-tab
 
-# Other plugins with Turbo mode
-zinit wait lucid light-mode for \
-    junegunn/fzf-git.sh
+# fzf-git.sh - git helpers with fzf (Ctrl-G Ctrl-F/B/T/R/H/S/E)
+source "${XDG_DATA_HOME:-$HOME/.local/share}/zinit/plugins/junegunn---fzf-git.sh/fzf-git.sh"
 
 # pnpm completion (needs build step)
-zinit ice wait lucid atclone"./zplug.zsh" atpull"%atclone"
+zinit ice wait"0" lucid atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone"
 zinit light g-plane/pnpm-shell-completion
 
 # Syntax highlighting and autosuggestions (must load AFTER fzf-tab)

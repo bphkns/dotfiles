@@ -1,0 +1,104 @@
+[2025-12-01 14:00:36] INFO: Starting Dotfiles Installation...
+[2025-12-01 14:00:36] INFO: Logs will be written to /home/bikash/dotfiles/install.log
+[2025-12-01 14:00:36] INFO: Executing: 00-system.sh
+[2025-12-01 14:00:36] INFO: Step 00: System Preparation
+[2025-12-01 14:00:36] INFO: Detected apt package manager.
+[2025-12-01 14:00:36] INFO: [DRY-RUN] Would run: sudo apt-get update
+[2025-12-01 14:00:36] INFO: [DRY-RUN] Would run: sudo apt-get install -y git curl wget build-essential cmake pkg-config libssl-dev unzip tar python3 zsh stow ffmpeg jq poppler-utils imagemagick xclip wl-clipboard libmagickwand-dev tmux alacritty bat
+[2025-12-01 14:00:36] INFO: [DRY-RUN] Would run: sudo apt-get install -y 7zip
+[2025-12-01 14:00:36] SUCCESS: Completed: 00-system.sh
+[2025-12-01 14:00:36] INFO: Executing: 10-rust.sh
+[2025-12-01 14:00:36] INFO: Step 10: Rust/Cargo Setup
+[2025-12-01 14:00:36] SUCCESS: Cargo already installed.
+[2025-12-01 14:00:36] SUCCESS: Completed: 10-rust.sh
+[2025-12-01 14:00:36] INFO: Executing: 20-cargo-tools.sh
+[2025-12-01 14:00:36] INFO: Step 20: Core Cargo Tools
+[2025-12-01 14:00:36] SUCCESS: ripgrep already installed.
+[2025-12-01 14:00:36] SUCCESS: fd-find already installed.
+[2025-12-01 14:00:36] SUCCESS: eza already installed.
+[2025-12-01 14:00:36] SUCCESS: zoxide already installed.
+[2025-12-01 14:00:36] SUCCESS: Completed: 20-cargo-tools.sh
+[2025-12-01 14:00:36] INFO: Executing: 30-yazi.sh
+[2025-12-01 14:00:36] INFO: Step 30: Yazi File Manager
+[2025-12-01 14:00:36] SUCCESS: Yazi already installed.
+[2025-12-01 14:00:36] SUCCESS: Completed: 30-yazi.sh
+[2025-12-01 14:00:36] INFO: Executing: 40-fzf.sh
+[2025-12-01 14:00:36] INFO: Step 40: FZF
+[2025-12-01 14:00:36] SUCCESS: FZF already installed.
+[2025-12-01 14:00:36] SUCCESS: Completed: 40-fzf.sh
+[2025-12-01 14:00:36] INFO: Executing: 50-neovim.sh
+[2025-12-01 14:00:36] INFO: Step 50: Neovim (via Bob)
+[2025-12-01 14:00:36] SUCCESS: Neovim already installed.
+[2025-12-01 14:00:36] SUCCESS: Completed: 50-neovim.sh
+[2025-12-01 14:00:36] INFO: Executing: 60-mise.sh
+[2025-12-01 14:00:36] INFO: Step 60: Mise
+[2025-12-01 14:00:36] SUCCESS: Mise already installed.
+[2025-12-01 14:00:36] SUCCESS: Completed: 60-mise.sh
+[2025-12-01 14:00:36] INFO: Executing: 70-starship.sh
+[2025-12-01 14:00:36] INFO: Step 70: Starship
+[2025-12-01 14:00:36] SUCCESS: Starship already installed.
+[2025-12-01 14:00:36] SUCCESS: Completed: 70-starship.sh
+[2025-12-01 14:00:36] INFO: Executing: 80-tmux.sh
+[2025-12-01 14:00:36] INFO: Step 80: Tmux Plugin Manager
+[2025-12-01 14:00:36] SUCCESS: TPM already installed.
+[2025-12-01 14:00:36] SUCCESS: Completed: 80-tmux.sh
+[2025-12-01 14:00:36] INFO: Executing: 85-ghostty.sh
+[2025-12-01 14:00:36] INFO: Step 85: Ghostty Terminal
+[2025-12-01 14:00:36] SUCCESS: Ghostty already installed.
+[2025-12-01 14:00:36] SUCCESS: Completed: 85-ghostty.sh
+[2025-12-01 14:00:36] INFO: Executing: 90-lazygit.sh
+[2025-12-01 14:00:36] INFO: Step 90: Lazygit
+[2025-12-01 14:00:36] SUCCESS: Lazygit already installed.
+[2025-12-01 14:00:36] SUCCESS: Completed: 90-lazygit.sh
+[2025-12-01 14:00:36] INFO: Executing: 92-custom-tools.sh
+[2025-12-01 14:00:36] INFO: Step 92: Custom Tools (Mcphub, Hyprdynamicmonitors)
+[2025-12-01 14:00:36] INFO: Attempting to install hyprdynamicmonitors...
+[2025-12-01 14:00:38] WARNING: Could not install hyprdynamicmonitors via cargo (crate not found or build failed).
+[2025-12-01 14:00:38] WARNING: If this is a private tool, please build it manually.
+[2025-12-01 14:00:38] INFO: Attempting to install mcphub...
+[2025-12-01 14:00:39] WARNING: Could not install mcphub via cargo.
+[2025-12-01 14:00:39] INFO: Trying npm...
+[2025-12-01 14:00:41] WARNING: Could not install mcphub via npm.
+[2025-12-01 14:00:41] SUCCESS: Completed: 92-custom-tools.sh
+[2025-12-01 14:00:41] INFO: Executing: 95-stow.sh
+[2025-12-01 14:00:41] INFO: Step 95: Stowing Dotfiles
+[2025-12-01 14:00:41] INFO: Stowing alacritty...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R alacritty
+[2025-12-01 14:00:41] INFO: Stowing bash...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R bash
+[2025-12-01 14:00:41] INFO: Stowing bat...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R bat
+[2025-12-01 14:00:41] INFO: Stowing ghostty...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R ghostty
+[2025-12-01 14:00:41] INFO: Stowing hyprdynamicmonitors...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R hyprdynamicmonitors
+[2025-12-01 14:00:41] INFO: Stowing lazygit...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R lazygit
+[2025-12-01 14:00:41] INFO: Stowing mcphub...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R mcphub
+[2025-12-01 14:00:41] INFO: Stowing mise...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R mise
+[2025-12-01 14:00:41] INFO: Stowing nvim...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R nvim
+[2025-12-01 14:00:41] INFO: Stowing opencode...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R opencode
+[2025-12-01 14:00:41] INFO: Stowing ringboard...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R ringboard
+[2025-12-01 14:00:41] INFO: Stowing scripts...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R scripts
+[2025-12-01 14:00:41] INFO: Stowing starship...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R starship
+[2025-12-01 14:00:41] INFO: Stowing tmux...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R tmux
+[2025-12-01 14:00:41] INFO: Stowing xdph...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R xdph
+[2025-12-01 14:00:41] INFO: Stowing zsh...
+[2025-12-01 14:00:41] INFO: [DRY-RUN] Would run: stow -d /home/bikash/dotfiles -t /home/bikash -R zsh
+[2025-12-01 14:00:41] SUCCESS: Completed: 95-stow.sh
+[2025-12-01 14:00:41] INFO: Executing: 99-finalize.sh
+[2025-12-01 14:00:41] INFO: Step 99: Final Setup
+[2025-12-01 14:00:41] INFO: Running Ringboard setup...
+[2025-12-01 14:00:41] SUCCESS: Installation steps completed.
+[2025-12-01 14:00:41] SUCCESS: Completed: 99-finalize.sh
+[2025-12-01 14:00:41] SUCCESS: All installation steps finished successfully!
+[2025-12-01 14:00:41] INFO: Please restart your shell or log out/in for changes to take full effect.
