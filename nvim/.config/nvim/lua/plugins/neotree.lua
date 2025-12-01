@@ -75,7 +75,8 @@ return {
         toggle_image_preview = function(state)
           local node = state.tree:get_node()
           if node.type == "file" then
-            require("image_preview").PreviewImage(node.path)
+            -- Open image with system viewer
+            vim.fn.jobstart({ "xdg-open", node.path }, { detach = true })
           end
         end,
       },

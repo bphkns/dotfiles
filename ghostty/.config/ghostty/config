@@ -3,3 +3,39 @@ font-family = IosevkaTerm NFM
 mouse-hide-while-typing = true
 window-decoration = false
 keybind = shift+enter=text:\x1b\r
+
+# Splits (like tmux: C-a | and C-a -)
+keybind = ctrl+shift+backslash=new_split:right
+keybind = ctrl+shift+minus=new_split:down
+
+# New tab (like tmux: C-a c)
+keybind = ctrl+shift+t=new_tab
+
+# Close split/tab
+keybind = ctrl+shift+x=close_surface
+
+# Navigate splits (like tmux: C-h/j/k/l)
+# performable: only consume if there's a split to go to, else pass to app
+keybind = performable:ctrl+h=goto_split:left
+keybind = performable:ctrl+j=goto_split:down
+keybind = performable:ctrl+k=goto_split:up
+keybind = performable:ctrl+l=goto_split:right
+
+# Zoom split (like tmux: C-a m)
+keybind = ctrl+shift+m=toggle_split_zoom
+
+# Resize splits
+keybind = ctrl+shift+left=resize_split:left,20
+keybind = ctrl+shift+right=resize_split:right,20
+keybind = ctrl+shift+up=resize_split:up,10
+keybind = ctrl+shift+down=resize_split:down,10
+
+# Tab navigation
+keybind = ctrl+shift+n=next_tab
+keybind = ctrl+shift+p=previous_tab
+
+# Equalize splits
+keybind = ctrl+shift+e=equalize_splits
+
+# Scrollback: Ctrl+Alt+\ opens in new ghostty window with nvim
+keybind = ctrl+alt+backslash=write_screen_file:open
