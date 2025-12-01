@@ -134,6 +134,11 @@ bindkey '^N' history-search-forward
 # LazyGit config
 export LG_CONFIG_FILE="$HOME/.config/lazygit/config.yml"
 
+# lgaicm - AI commit message generation (3 tiers)
+export LGAICM_SMALL_MODEL="sonnet"                          # < 4k chars
+export LGAICM_MEDIUM_MODEL="google/gemini-2.5-flash-lite"   # < 50k chars
+export LGAICM_LARGE_MODEL="google/gemini-2.5-flash"         # >= 50k chars (truncate at 200k)
+
 # yazi integration - cd to directory on exit (q to cd, Q to stay)
 function yy() {
     local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd

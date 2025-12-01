@@ -2,16 +2,62 @@
 # lgaicm-commit - Interactive AI commit with fzf
 set -euo pipefail
 
-# Type selection with fzf
-TYPE=$(printf "AI defined\nfeat\nfix\nchore\nrefactor\ndocs\ntest" | fzf --height=40% --reverse --header="Select commit type")
+show_help() {
+  cat <<EOF
+Usage: lgaicm-commit
+
+Interactive AI-assisted commit using fzf for selection.
+Requires: lgaicm, fzf, git
+EOF
+  exit 0
+}
+
+[[ "${1:-}" == "-h" || "${1:-}" == "--help" ]] && show_help
+
+# Check dependencies
+for cmd in lgaicm fzf git; do
+  command -v "$cmd" >/dev/null 2>&1 || { echo "Error: '$cmd' not found" >&2; exit 1; }
+done
+
+# Check for staged changes first
+if git diff --cached --quiet 2>/dev/null; then
+  echo "No staged changes to commit" >&2
+  exit 1
+fi
+
+# Type selection with fzf (all conventional commit types)
+TYPES="AI defined\nfeat\nfix\nchore\nrefactor\ndocs\ntest\nperf\nbuild\nci\nstyle"
+TYPE=$(printf "%b" "$TYPES" | fzf --height=40% --reverse --header="Select commit type" --prompt="Type > ") || exit 0
 
 # Convert "AI defined" to empty string
 [[ "$TYPE" == "AI defined" ]] && TYPE=""
 
-# Generate and select commit message
-MSG=$(lgaicm "$TYPE" | fzf --height=40% --reverse --header="Select commit message")
+# Generate commit messages
+MESSAGES=$(lgaicm "$TYPE") || { echo "Failed to generate messages" >&2; exit 1; }
 
-# Commit if message selected
-if [[ -n "$MSG" ]]; then
-  git commit -m "$MSG"
+# Select commit message
+MSG=$(echo "$MESSAGES" | fzf --height=40% --reverse --header="Select commit message (ctrl-e to edit)" --prompt="Message > " --bind "ctrl-e:execute(echo {q})+abort" --print-query | tail -1) || exit 0
+
+# Exit if no message
+[[ -z "$MSG" ]] && exit 0
+
+# Confirmation
+echo ""
+echo -e "\033[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "\033[1;33m Commit message:\033[0m"
+echo -e "\033[1;32m $MSG\033[0m"
+echo -e "\033[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo ""
+
+CONFIRM=$(printf "Yes, commit\nNo, cancel" | fzf --height=20% --reverse --header="Confirm commit?" --prompt="Confirm > ") || exit 0
+
+if [[ "$CONFIRM" == "Yes, commit" ]]; then
+  if git commit -m "$MSG"; then
+    echo -e "\n\033[1;32m✓ Committed successfully!\033[0m"
+  else
+    echo -e "\n\033[1;31m✗ Commit failed\033[0m" >&2
+    exit 1
+  fi
+else
+  echo -e "\n\033[1;31m✗ Cancelled\033[0m"
 fi

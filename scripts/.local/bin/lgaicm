@@ -1,9 +1,58 @@
 #!/usr/bin/env bash
-# lgaicm - LazyGit AI Commit Message (using Claude Code)
+# lgaicm - LazyGit AI Commit Message (tiered model selection)
 set -euo pipefail
 
-MAX_DIFF_CHARS="${LGAICM_MAX_DIFF_CHARS:-8000}"
+# Thresholds (in characters) - roughly 4 chars per token
+SMALL_THRESHOLD="${LGAICM_SMALL_THRESHOLD:-4000}"       # Below: use small model (Claude)
+MEDIUM_THRESHOLD="${LGAICM_MEDIUM_THRESHOLD:-50000}"    # Below: use medium model (flash-lite)
+LARGE_THRESHOLD="${LGAICM_LARGE_THRESHOLD:-200000}"     # Above: truncate
 MAX_SUGGESTIONS="${LGAICM_MAX_SUGGESTIONS:-5}"
+
+# Models (3 tiers)
+SMALL_MODEL="${LGAICM_SMALL_MODEL:-sonnet}"                         # Claude for small diffs
+MEDIUM_MODEL="${LGAICM_MEDIUM_MODEL:-google/gemini-2.5-flash-lite}" # Fast/cheap for medium
+LARGE_MODEL="${LGAICM_LARGE_MODEL:-google/gemini-2.5-flash}"        # Full power for large
+
+# Check dependencies
+HAS_CLAUDE=false
+HAS_OPENCODE=false
+command -v claude >/dev/null 2>&1 && HAS_CLAUDE=true
+command -v opencode >/dev/null 2>&1 && HAS_OPENCODE=true
+
+if [[ "$HAS_CLAUDE" == "false" && "$HAS_OPENCODE" == "false" ]]; then
+  echo "Error: Neither 'claude' nor 'opencode' CLI found" >&2
+  exit 1
+fi
+
+show_help() {
+  cat <<EOF
+Usage: lgaicm [TYPE]
+
+Generate AI commit messages for staged changes.
+
+Model selection (based on diff size):
+  < ${SMALL_THRESHOLD} chars    → Claude (${SMALL_MODEL})
+  < ${MEDIUM_THRESHOLD} chars   → opencode (${MEDIUM_MODEL})
+  < ${LARGE_THRESHOLD} chars    → opencode (${LARGE_MODEL})
+  >= ${LARGE_THRESHOLD} chars   → opencode (${LARGE_MODEL}, truncated)
+
+Arguments:
+  TYPE    Optional commit type (feat, fix, docs, etc.)
+
+Environment:
+  LGAICM_SMALL_MODEL       Small diff model (default: sonnet)
+  LGAICM_MEDIUM_MODEL      Medium diff model (default: google/gemini-2.5-flash-lite)
+  LGAICM_LARGE_MODEL       Large diff model (default: google/gemini-2.5-flash)
+  LGAICM_SMALL_THRESHOLD   Small threshold (default: 4000)
+  LGAICM_MEDIUM_THRESHOLD  Medium threshold (default: 50000)
+  LGAICM_LARGE_THRESHOLD   Truncation threshold (default: 200000)
+  LGAICM_MAX_SUGGESTIONS   Number of suggestions (default: 5)
+EOF
+  exit 0
+}
+
+[[ "${1:-}" == "-h" || "${1:-}" == "--help" ]] && show_help
+
 COMMIT_TYPE="${1:-}"
 
 DIFF=$(git diff --cached --no-color 2>/dev/null || true)
@@ -13,36 +62,92 @@ if [[ -z "$DIFF" ]]; then
   exit 1
 fi
 
-# Truncate diff if too large
-[[ ${#DIFF} -gt $MAX_DIFF_CHARS ]] && DIFF="${DIFF:0:$MAX_DIFF_CHARS}"
+DIFF_SIZE=${#DIFF}
+
+# Determine which model to use (3 tiers)
+if [[ $DIFF_SIZE -lt $SMALL_THRESHOLD && "$HAS_CLAUDE" == "true" ]]; then
+  CLI="claude"
+  MODEL="$SMALL_MODEL"
+elif [[ $DIFF_SIZE -lt $MEDIUM_THRESHOLD && "$HAS_OPENCODE" == "true" ]]; then
+  CLI="opencode"
+  MODEL="$MEDIUM_MODEL"
+elif [[ "$HAS_OPENCODE" == "true" ]]; then
+  CLI="opencode"
+  MODEL="$LARGE_MODEL"
+elif [[ "$HAS_CLAUDE" == "true" ]]; then
+  CLI="claude"
+  MODEL="$SMALL_MODEL"
+else
+  echo "Error: No suitable AI CLI available" >&2
+  exit 1
+fi
+
+# Truncate if above large threshold
+TRUNCATED=""
+if [[ $DIFF_SIZE -ge $LARGE_THRESHOLD ]]; then
+  DIFF="${DIFF:0:$LARGE_THRESHOLD}"
+  TRUNCATED=" [truncated]"
+fi
 
 TYPE_HINT=""
 [[ -n "$COMMIT_TYPE" ]] && TYPE_HINT="Use type: ${COMMIT_TYPE}. "
 
-# Spinner function
-spinner() {
-  local chars="⣾⣽⣻⢿⡿⣟⣯⣷"
+PROMPT="${TYPE_HINT}Generate ${MAX_SUGGESTIONS} conventional commit messages for this diff. Output ONLY the messages, one per line, no numbers or bullets:
+
+${DIFF}"
+
+SPIN_PID=""
+SPIN_FIFO=$(mktemp -u)
+mkfifo "$SPIN_FIFO"
+
+cleanup() {
+  [[ -n "$SPIN_PID" ]] && kill "$SPIN_PID" 2>/dev/null
+  wait "$SPIN_PID" 2>/dev/null || true
+  rm -f "$SPIN_FIFO"
+  printf "\r\033[K\033[?25h" >&2
+}
+trap cleanup EXIT
+
+# Extract display name from model (e.g., "google/gemini-2.5-flash" -> "gemini-2.5-flash")
+DISPLAY_MODEL="${MODEL##*/}"
+
+spin() {
+  local frames=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
   local i=0
-  while true; do
-    printf "\r\033[K\033[33m%s\033[0m Generating commit messages..." "${chars:i++%${#chars}:1}" >&2
-    sleep 0.1
+  printf "\033[?25l" >&2
+  while ! read -t 0.1 <>"$SPIN_FIFO"; do
+    printf "\r\033[33m%s Generating (%s%s)...\033[0m" "${frames[i]}" "$DISPLAY_MODEL" "$TRUNCATED" >&2
+    i=$(( (i + 1) % ${#frames[@]} ))
   done
+  printf "\r\033[K\033[?25h" >&2
 }
 
-# Start spinner in background
-spinner &
-SPINNER_PID=$!
-trap "kill $SPINNER_PID 2>/dev/null; printf '\r\033[K' >&2" EXIT
+spin &
+SPIN_PID=$!
 
-# Generate messages
-RESULT=$(claude -p --model sonnet --max-turns 1 "${TYPE_HINT}Generate ${MAX_SUGGESTIONS} conventional commit messages for this diff. Output ONLY the messages, one per line, no numbers or bullets:
-
-${DIFF}" 2>/dev/null)
+# Generate messages with selected model
+if [[ "$CLI" == "claude" ]]; then
+  RESULT=$(claude -p --model "$MODEL" --max-turns 1 "$PROMPT" 2>/dev/null)
+else
+  RESULT=$(opencode run -m "$MODEL" "$PROMPT" 2>/dev/null)
+fi
 
 # Stop spinner
-kill $SPINNER_PID 2>/dev/null
-printf '\r\033[K' >&2
-trap - EXIT
+echo "stop" > "$SPIN_FIFO"
+wait "$SPIN_PID" 2>/dev/null || true
+SPIN_PID=""
 
-# Output filtered results
-echo "$RESULT" | grep -E '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore)' | head -n "$MAX_SUGGESTIONS"
+if [[ -z "$RESULT" ]]; then
+  echo "Error: $CLI ($MODEL) returned empty response" >&2
+  exit 1
+fi
+
+# Filter valid conventional commit messages
+MESSAGES=$(echo "$RESULT" | grep -E '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore)(\([^)]+\))?!?:' | head -n "$MAX_SUGGESTIONS")
+
+if [[ -z "$MESSAGES" ]]; then
+  echo "Failed to generate valid commit messages" >&2
+  exit 1
+fi
+
+echo "$MESSAGES"
