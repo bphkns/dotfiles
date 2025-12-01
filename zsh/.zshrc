@@ -29,6 +29,9 @@ esac
 # Rustup/Cargo completions (pre-generated)
 fpath=(~/.local/share/zsh/completions $fpath)
 
+# Mise completions (cached)
+fpath=(~/.cache/zsh $fpath)
+
 # Zinit
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [[ ! -d $ZINIT_HOME ]] && mkdir -p "$(dirname $ZINIT_HOME)"
@@ -41,7 +44,7 @@ autoload -Uz compinit
 if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
     compinit
 else
-    compinit -C  # Skip security check, use cache
+    compinit -C
 fi
 zinit cdreplay -q
 
@@ -102,8 +105,17 @@ export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
 export FZF_ALT_C_OPTS="--preview 'eza --icons --group-directories-first {}'"
 export FZF_COMPLETION_OPTS="--bind 'tab:down,shift-tab:up'"
 
-# Mise
-eval "$(mise activate zsh)"
+# Mise (cached activation + completions)
+_mise_cache_dir="$HOME/.cache/zsh"
+_mise_activate="$_mise_cache_dir/mise-activate.zsh"
+_mise_comp="$_mise_cache_dir/_mise"
+_mise_bin="$(command -v mise)"
+if [[ ! -f "$_mise_activate" || "$_mise_bin" -nt "$_mise_activate" ]]; then
+    mkdir -p "$_mise_cache_dir"
+    mise activate zsh > "$_mise_activate"
+    mise completion zsh > "$_mise_comp"
+fi
+source "$_mise_activate"
 
 # Starship prompt
 eval "$(starship init zsh)"
