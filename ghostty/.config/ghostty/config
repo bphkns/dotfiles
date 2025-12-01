@@ -16,10 +16,10 @@ keybind = ctrl+shift+x=close_surface
 
 # Navigate splits (like tmux: C-h/j/k/l)
 # performable: only consume if there's a split to go to, else pass to app
-keybind = performable:ctrl+h=goto_split:left
-keybind = performable:ctrl+j=goto_split:down
-keybind = performable:ctrl+k=goto_split:up
-keybind = performable:ctrl+l=goto_split:right
+keybind = performable:ctrl+shift+h=goto_split:left
+keybind = performable:ctrl+shift+j=goto_split:down
+keybind = performable:ctrl+shift+k=goto_split:up
+keybind = performable:ctrl+shift+l=goto_split:right
 
 # Zoom split (like tmux: C-a m)
 keybind = ctrl+shift+m=toggle_split_zoom
@@ -37,5 +37,5 @@ keybind = ctrl+shift+p=previous_tab
 # Equalize splits
 keybind = ctrl+shift+e=equalize_splits
 
-# Scrollback: Ctrl+Alt+\ opens in new ghostty window with nvim
-keybind = ctrl+alt+backslash=write_screen_file:open
+# Scrollback: Ctrl+Shift+Alt+\ opens in new ghostty window with nvim
+keybind = ctrl+shift+alt+backslash=write_screen_file:open
