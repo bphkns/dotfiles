@@ -119,9 +119,9 @@ return {
       {
         "<leader>fo",
         function()
-          require("fzf-lua").oldfiles()
+          require("fzf-lua").oldfiles({ cwd_only = true })
         end,
-        desc = "[F]ind [O]ld Files",
+        desc = "[F]ind [O]ld Files (cwd only)",
       },
       {
         "<leader><leader>",
