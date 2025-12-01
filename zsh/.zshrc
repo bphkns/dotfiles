@@ -1,3 +1,6 @@
+zmodload zsh/datetime
+_zsh_start_time=$EPOCHREALTIME
+
 # History - larger sizes for better searchability
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
@@ -75,8 +78,9 @@ if [[ -d "$HOME/google-cloud-sdk" ]]; then
     source "$HOME/google-cloud-sdk/completion.zsh.inc"
 fi
 
-# Zoxide - smart directory jumping (z, zi)
+# Zoxide - smart directory jumping (z, zz for interactive)
 eval "$(zoxide init zsh)"
+alias zz='__zoxide_zi'
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -147,3 +151,5 @@ function yy() {
     [[ -n "$cwd" && "$cwd" != "$PWD" ]] && builtin cd -- "$cwd"
     rm -f -- "$tmp"
 }
+
+printf "zsh startup: %.0fms\n" $(( (EPOCHREALTIME - _zsh_start_time) * 1000 ))
