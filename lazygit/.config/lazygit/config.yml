@@ -30,8 +30,31 @@ os:
   edit: '[ -z "$NVIM" ] && (nvim -- {{filename}}) || (nvim --server $NVIM --remote-send ''<cmd>close<cr><cmd>lua EditFromLazygit({{filename}})<CR>'')'
   editAtLine: '[ -z "$NVIM" ] && (nvim +{{line}} -- {{filename}}) || nvim --server $NVIM --remote-send ''<cmd>close<CR><cmd>lua EditLineFromLazygit({{filename}},{{line}})<CR>'''
 customCommands:
-  - key: "A"
-    context: "files"
-    command: "msg=$(~/dotfiles/scripts/lgaicm.sh | fzf --height=40% --reverse) && git commit -m \"$msg\""
+  - key: "<c-a>"
+    context: "global"
     description: "AI commit message"
-    output: terminal
+    command: "git commit -m \"{{.Form.CommitMsg}}\""
+    loadingText: "Generating commit messages..."
+    prompts:
+      - type: "menu"
+        title: "Commit type"
+        key: "Type"
+        options:
+          - name: "AI defined"
+            value: ""
+          - name: "feat"
+            value: "feat"
+          - name: "fix"
+            value: "fix"
+          - name: "chore"
+            value: "chore"
+          - name: "refactor"
+            value: "refactor"
+          - name: "docs"
+            value: "docs"
+          - name: "test"
+            value: "test"
+      - type: "menuFromCommand"
+        title: "Commit message"
+        key: "CommitMsg"
+        command: "lgaicm {{.Form.Type}}"
