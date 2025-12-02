@@ -29,13 +29,8 @@ git:
 os:
   edit: '[ -z "$NVIM" ] && (nvim -- {{filename}}) || (nvim --server $NVIM --remote-send ''<cmd>close<cr><cmd>lua EditFromLazygit({{filename}})<CR>'')'
   editAtLine: '[ -z "$NVIM" ] && (nvim +{{line}} -- {{filename}}) || nvim --server $NVIM --remote-send ''<cmd>close<CR><cmd>lua EditLineFromLazygit({{filename}},{{line}})<CR>'''
-keybinding:
-  universal:
-    filteringMenu: "<disabled>"
-  commits:
-    filteringMenu: "<disabled>"
 customCommands:
-  - key: "<c-b>"
+  - key: "X"
     context: "global"
     description: "AI commit message"
     command: "lgaicm-commit"

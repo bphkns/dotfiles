@@ -143,7 +143,7 @@ if [[ -z "$RESULT" ]]; then
 fi
 
 # Filter valid conventional commit messages
-MESSAGES=$(echo "$RESULT" | grep -E '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore)(\([^)]+\))?!?:' | head -n "$MAX_SUGGESTIONS")
+MESSAGES=$(echo "$RESULT" | sed 's/^[0-9. *-]*//' | grep -E '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore)(\([^)]+\))?!?:' | head -n "$MAX_SUGGESTIONS")
 
 if [[ -z "$MESSAGES" ]]; then
   echo "Failed to generate valid commit messages" >&2
