@@ -53,20 +53,36 @@ return {
                 parameterNames = { enabled = "literals" },
                 parameterTypes = { enabled = true },
                 propertyDeclarationTypes = { enabled = true },
-                variableTypes = { enabled = false },
+                variableTypes = { enabled = true },
               },
             },
           },
         },
         angularls = {
           cmd = { "ngserver", "--stdio", "--tsProbeLocations", ".", "--ngProbeLocations", "." },
-          filetypes = {
-            "typescript",
-            "typescriptreact",
-            "typescript.tsx",
-            "htmlangular",
-          },
-          root_markers = { "angular.json", "nx.json" },
+          filetypes = { "typescript", "typescriptreact", "typescript.tsx", "htmlangular" },
+          root_dir = function(bufnr, on_dir)
+            local fname = vim.api.nvim_buf_get_name(bufnr)
+            -- Check for angular.json first (standard Angular project)
+            local angular_root = vim.fs.root(fname, { "angular.json" })
+            if angular_root then
+              on_dir(angular_root)
+              return
+            end
+            -- For Nx projects, check for nx.json AND @angular/core in package.json
+            local nx_root = vim.fs.root(fname, { "nx.json" })
+            if nx_root then
+              local pkg_path = nx_root .. "/package.json"
+              local pkg_file = io.open(pkg_path, "r")
+              if pkg_file then
+                local content = pkg_file:read("*a")
+                pkg_file:close()
+                if content:find("@angular/core") then
+                  on_dir(nx_root)
+                end
+              end
+            end
+          end,
           single_file_support = false,
         },
         eslint = {
@@ -82,7 +98,7 @@ return {
             "eslint.config.js",
             "package.json",
           },
-          settings = { format = { enable = false }, run = "onSave" },
+          settings = { format = { enable = true }, run = "onSave" },
         },
         html = {
           cmd = { "vscode-html-language-server", "--stdio" },
@@ -222,7 +238,12 @@ return {
         -- Special handling for specific servers
         if server == "vtsls" then
           lsp_config.settings.javascript =
-            vim.tbl_deep_extend("force", {}, lsp_config.settings.typescript, lsp_config.settings.javascript or {})
+              vim.tbl_deep_extend("force", {}, lsp_config.settings.typescript, lsp_config.settings.javascript or {})
+          -- Disable formatting from vtsls, let ESLint handle it
+          lsp_config.on_init = function(client)
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+          end
 
           -- Add on_attach for move-to-file functionality
           local original_on_attach = lsp_config.on_attach
@@ -259,6 +280,11 @@ return {
             return
           end
           local bufnr = args.buf
+
+          -- Enable inlay hints if supported
+          if client.supports_method("textDocument/inlayHint") then
+            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+          end
 
           if client.supports_method("textDocument/foldingRange") then
             local win = vim.fn.bufwinid(bufnr)

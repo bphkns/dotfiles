@@ -11,8 +11,8 @@ return {
         ["htmlangular"] = { "prettierd", "prettier" },
         ["javascript"] = { "prettierd", "prettier" },
         ["javascriptreact"] = { "prettierd", "prettier" },
-        ["typescript"] = { "prettierd", "prettier" },
-        ["typescriptreact"] = { "prettierd", "prettier" },
+        ["typescript"] = { "prettierd", "prettier", lsp_format = "prefer" },
+        ["typescriptreact"] = { "prettierd", "prettier", lsp_format = "prefer" },
         ["vue"] = { "prettierd", "prettier" },
         ["css"] = { "prettierd", "prettier" },
         ["scss"] = { "prettierd", "prettier" },
@@ -43,14 +43,14 @@ return {
           end
         end
 
-        return { timeout_ms = 500, lsp_fallback = true }, on_format
+        return { timeout_ms = 500, lsp_format = "fallback" }, on_format
       end,
 
       format_after_save = function(bufnr)
         if not slow_format_filetypes[vim.bo[bufnr].filetype] then
           return
         end
-        return { lsp_fallback = true }
+        return { lsp_format = "fallback" }
       end,
     },
   },

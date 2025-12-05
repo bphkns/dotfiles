@@ -15,7 +15,6 @@ return {
       "rafamadriz/friendly-snippets",
       "moyiz/blink-emoji.nvim",
       "onsails/lspkind.nvim",
-      "giuxtaposition/blink-cmp-copilot",
     },
     version = "*",
     opts = {
@@ -59,14 +58,8 @@ return {
         },
       },
       sources = {
-        default = { "copilot", "lazydev", "lsp", "path", "snippets", "buffer", "emoji" },
+        default = { "lazydev", "lsp", "path", "snippets", "buffer", "emoji" },
         providers = {
-          copilot = {
-            name = "copilot",
-            module = "blink-cmp-copilot",
-            score_offset = 100,
-            async = true,
-          },
           emoji = {
             module = "blink-emoji",
             name = "Emoji",
@@ -79,6 +72,13 @@ return {
             score_offset = 100,
           },
         },
+      },
+      completion = {
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 200,
+        },
+        ghost_text = { enabled = false },
       },
       fuzzy = { implementation = "rust" },
       signature = { enabled = true },
