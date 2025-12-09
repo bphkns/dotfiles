@@ -1,0 +1,58 @@
+
+vim.tbl_flatten is deprecated. Run ":checkhealth vim.deprecated" for more information
+[Fzf-lua] ':e src/types.ts' failed: vim/_editor.lua:0: nvim_exec2()[1]..BufReadPost Autocommands for "*": Vim(append):Lua callback: ....local/share/bob/nightly/share/nvim/runtime/filetype.lua:28: nvim_exec2()[1]..BufReadPost Autocommands for "*"..FileType Autocommands for "*": Vim(append):Lua callback: .../.local/share/nvim/lazy/nvim-lspconfig/lsp/angularls.lua:36: Expected object key string but found T_OBJ_END at character 297
+stack traceback:
+	[C]: in function 'decode'
+	.../.local/share/nvim/lazy/nvim-lspconfig/lsp/angularls.lua:36: in function 'get_angular_core_version'
+	.../.local/share/nvim/lazy/nvim-lspconfig/lsp/angularls.lua:49: in main chunk
+	...cal/share/bob/nightly/share/nvim/runtime/lua/vim/lsp.lua:369: in function '__index'
+	...cal/share/bob/nightly/share/nvim/runtime/lua/vim/lsp.lua:497: in function 'lsp_enable_callback'
+	...cal/share/bob/nightly/share/nvim/runtime/lua/vim/lsp.lua:577: in function <...cal/share/bob/nightly/share/nvim/runtime/lua/vim/lsp.lua:576>
+	[C]: in function 'nvim_cmd'
+	....local/share/bob/nightly/share/nvim/runtime/filetype.lua:28: in function <....local/share/bob/nightly/share/nvim/runtime/filetype.lua:27>
+	[C]: in function 'pcall'
+	vim/shared.lua: in function <vim/shared.lua:0>
+	[C]: in function '_with'
+	....local/share/bob/nightly/share/nvim/runtime/filetype.lua:27: in function <....local/share/bob/nightly/share/nvim/runtime/filetype.lua:10>
+	[C]: in function 'resume'
+	...ikash/.local/share/nvim/lazy/fzf-lua/lua/fzf-lua/fzf.lua:325: in function <...ikash/.local/share/nvim/lazy/fzf-lua/lua/fzf-lua/fzf.lua:306>
+stack traceback:
+	[C]: in function '_with'
+	....local/share/bob/nightly/share/nvim/runtime/filetype.lua:27: in function <....local/share/bob/nightly/share/nvim/runtime/filetype.lua:10>
+	[C]: in function 'resume'
+	...ikash/.local/share/nvim/lazy/fzf-lua/lua/fzf-lua/fzf.lua:325: in function <...ikash/.local/share/nvim/lazy/fzf-lua/lua/fzf-lua/fzf.lua:306>
+Failed to run `config` for nvim-lspconfig
+
+...cal/share/bob/nightly/share/nvim/runtime/lua/vim/lsp.lua:585: nvim_exec2()[1]..BufReadPre Autocommands for "*"..FileType Autocommands for "*": Vim(append):Lua callback: .../.local/share/nvim/lazy/nvim-lspconfig/lsp/angularls.lua:36: Expected object key string but found T_OBJ_END at character 297
+stack traceback:
+	[C]: in function 'decode'
+	.../.local/share/nvim/lazy/nvim-lspconfig/lsp/angularls.lua:36: in function 'get_angular_core_version'
+	.../.local/share/nvim/lazy/nvim-lspconfig/lsp/angularls.lua:49: in main chunk
+	...cal/share/bob/nightly/share/nvim/runtime/lua/vim/lsp.lua:369: in function '__index'
+	...cal/share/bob/nightly/share/nvim/runtime/lua/vim/lsp.lua:497: in function 'lsp_enable_callback'
+	...cal/share/bob/nightly/share/nvim/runtime/lua/vim/lsp.lua:577: in function <...cal/share/bob/nightly/share/nvim/runtime/lua/vim/lsp.lua:576>
+	[C]: in function 'doautoall'
+	...cal/share/bob/nightly/share/nvim/runtime/lua/vim/lsp.lua:585: in function 'enable'
+	...g.nvim/lua/mason-lspconfig/features/automatic_enable.lua:47: in function 'fn'
+	.../nvim/lazy/mason.nvim/lua/mason-core/functional/list.lua:116: in function 'each'
+	...g.nvim/lua/mason-lspconfig/features/automatic_enable.lua:56: in function 'init'
+	...m/lazy/mason-lspconfig.nvim/lua/mason-lspconfig/init.lua:43: in function 'setup'
+	/home/bikash/.config/nvim/lua/plugins/lsp.lua:139: in function 'config'
+	...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:380: in function <...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:378>
+	[C]: in function 'xpcall'
+	.../.local/share/nvim/lazy/lazy.nvim/lua/lazy/core/util.lua:135: in function 'try'
+	...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:395: in function 'config'
+	...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:362: in function '_load'
+	...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:197: in function 'load'
+	...hare/nvim/lazy/lazy.nvim/lua/lazy/core/handler/event.lua:85: in function <...hare/nvim/lazy/lazy.nvim/lua/lazy/core/handler/event.lua:72>
+	[C]: in function 'resume'
+	...ikash/.local/share/nvim/lazy/fzf-lua/lua/fzf-lua/fzf.lua:325: in function <...ikash/.local/share/nvim/lazy/fzf-lua/lua/fzf-lua/fzf.lua:306>
+
+# stacktrace:
+  - ~/.local/share/bob/nightly/share/nvim/runtime/lua/vim/lsp.lua:585 _in_ **enable**
+  - /mason-lspconfig.nvim/lua/mason-lspconfig/features/automatic_enable.lua:47 _in_ **fn**
+  - /mason.nvim/lua/mason-core/functional/list.lua:116 _in_ **each**
+  - /mason-lspconfig.nvim/lua/mason-lspconfig/features/automatic_enable.lua:56 _in_ **init**
+  - /mason-lspconfig.nvim/lua/mason-lspconfig/init.lua:43 _in_ **setup**
+  - ~/.config/nvim/lua/plugins/lsp.lua:139 _in_ **config**
+  - /fzf-lua/lua/fzf-lua/fzf.lua:325
