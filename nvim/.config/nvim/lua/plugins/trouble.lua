@@ -1,7 +1,21 @@
 return {
   {
     "folke/trouble.nvim",
-    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    opts = {},
+    init = function()
+      -- Disable trouble treesitter (incompatible with nvim 0.12 nightly)
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "LazyLoad",
+        callback = function(event)
+          if event.data == "trouble.nvim" then
+            local ok, ts = pcall(require, "trouble.view.treesitter")
+            if ok then
+              ts.setup = function() end
+            end
+          end
+        end,
+      })
+    end,
     cmd = "Trouble",
     event = "VeryLazy",
     keys = {

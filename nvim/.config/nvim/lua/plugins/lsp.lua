@@ -5,6 +5,7 @@ return {
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
       "saghen/blink.cmp",
       "b0o/schemastore.nvim",
       "yioneko/nvim-vtsls",
@@ -18,7 +19,7 @@ return {
       },
       servers = {
         vtsls = {
-          cmd = { "vtsls", "--stdio" },
+          -- Explicitly defined vtsls settings (keeping as requested)
           filetypes = {
             "javascript",
             "javascriptreact",
@@ -27,17 +28,23 @@ return {
             "typescriptreact",
             "typescript.tsx",
           },
-          root_markers = { "nx.json", "angular.json", "package.json", ".git" },
-          single_file_support = false,
           settings = {
             complete_function_calls = false,
             vtsls = {
               enableMoveToFileCodeAction = true,
               autoUseWorkspaceTsdk = true,
               experimental = {
-                maxInlayHintLength = 30,
+                maxInlayHintLength = 45,
                 completion = {
                   enableServerSideFuzzyMatch = true,
+                },
+              },
+              tsserver = {
+                globalPlugins = {
+                  {
+                    name = "@effect/language-service",
+                    enableForWorkspaceTypeScriptVersions = true,
+                  },
                 },
               },
             },
@@ -59,71 +66,67 @@ return {
           },
         },
         angularls = {
-          cmd = { "ngserver", "--stdio", "--tsProbeLocations", ".", "--ngProbeLocations", "." },
-          filetypes = { "typescript", "typescriptreact", "typescript.tsx", "htmlangular" },
-          root_dir = function(bufnr, on_dir)
+          -- Custom root detection for Nx/Angular
+          root_dir = function(bufnr)
+            -- Get the actual filename from buffer number
             local fname = vim.api.nvim_buf_get_name(bufnr)
+
+            -- Skip non-file buffers (like oil://)
+            if not fname or fname == "" or fname:match("^%w+://") then
+              return nil
+            end
+
             -- Check for angular.json first (standard Angular project)
             local angular_root = vim.fs.root(fname, { "angular.json" })
             if angular_root then
-              on_dir(angular_root)
-              return
+              return angular_root
             end
+
             -- For Nx projects, check for nx.json AND @angular/core in package.json
             local nx_root = vim.fs.root(fname, { "nx.json" })
             if nx_root then
-              local pkg_path = nx_root .. "/package.json"
-              local pkg_file = io.open(pkg_path, "r")
-              if pkg_file then
-                local content = pkg_file:read("*a")
-                pkg_file:close()
-                if content:find("@angular/core") then
-                  on_dir(nx_root)
+              local pkg_path = vim.fs.joinpath(nx_root, "package.json")
+              local file = io.open(pkg_path, "r")
+              if file then
+                local content = file:read("*a")
+                file:close()
+                local ok, pkg = pcall(vim.json.decode, content)
+                if ok and pkg then
+                  local deps = pkg.dependencies or {}
+                  local dev_deps = pkg.devDependencies or {}
+                  if deps["@angular/core"] or dev_deps["@angular/core"] then
+                    return nx_root
+                  end
                 end
               end
             end
+
+            return nil
           end,
-          single_file_support = false,
+        },
+        biome = {
+          -- Biome LSP for formatting and linting
+          root_dir = function(bufnr)
+            local fname = vim.api.nvim_buf_get_name(bufnr)
+            if not fname or fname == "" or fname:match("^%w+://") then
+              return nil
+            end
+            -- Look for biome.json or biome.jsonc
+            return vim.fs.root(fname, { "biome.json", "biome.jsonc" })
+          end,
         },
         eslint = {
-          cmd = { "vscode-eslint-language-server", "--stdio" },
-          filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "htmlangular" },
-          root_markers = {
-            ".eslintrc",
-            ".eslintrc.js",
-            ".eslintrc.cjs",
-            ".eslintrc.yaml",
-            ".eslintrc.yml",
-            ".eslintrc.json",
-            "eslint.config.js",
-            "package.json",
-          },
           settings = { format = { enable = true }, run = "onSave" },
         },
         html = {
-          cmd = { "vscode-html-language-server", "--stdio" },
-          filetypes = { "html", "mjml" },
-          root_markers = { "package.json", ".git" },
+          filetypes = { "html", "mjml" }, -- Added mjml as per original
         },
-        cssls = {
-          cmd = { "vscode-css-language-server", "--stdio" },
-          filetypes = { "css", "scss", "less" },
-          root_markers = { "package.json", ".git" },
-        },
+        cssls = {},
         emmet_ls = {
-          cmd = { "emmet-ls", "--stdio" },
-          filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
-          root_markers = { "package.json", ".git" },
+           filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
         },
-        jsonls = {
-          cmd = { "vscode-json-language-server", "--stdio" },
-          filetypes = { "json", "jsonc" },
-          root_markers = { ".git" },
-        },
+        jsonls = {},
         lua_ls = {
-          cmd = { "lua-language-server" },
-          filetypes = { "lua" },
-          root_markers = { ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", ".git" },
           settings = {
             Lua = {
               runtime = { version = "LuaJIT" },
@@ -136,28 +139,30 @@ return {
             },
           },
         },
-        -- Copilot LSP (for Sidekick NES support)
-        -- Install via :MasonInstall copilot-language-server
-        copilot = {},
       },
     },
     config = function(_, opts)
       -- Setup Mason for LSP installation
       require("mason").setup()
-      -- Exclude servers not in mason-lspconfig mappings
-      local mason_exclude = { copilot = true }
-      local mason_servers = vim.tbl_filter(function(s)
-        return not mason_exclude[s]
-      end, vim.tbl_keys(opts.servers))
+      local mason_servers = vim.tbl_keys(opts.servers)
+      
       require("mason-lspconfig").setup({
         ensure_installed = mason_servers,
         automatic_installation = true,
       })
 
+      -- Install formatters and linters via mason-tool-installer
+      require("mason-tool-installer").setup({
+        ensure_installed = {
+          "prettierd",
+          "stylua",
+        },
+      })
+
       -- Configure diagnostics globally
       vim.diagnostic.config(opts.diagnostics)
 
-      -- Custom keybindings (Neovim 0.11 provides grn, gra, grr, gri, gO, <C-S> by default)
+      -- Custom keybindings
       vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, { desc = "Open diagnostic float" })
       vim.keymap.set("n", "<leader>ih", function()
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
@@ -222,7 +227,8 @@ return {
       end
 
       -- Configure servers using Neovim 0.11 native vim.lsp.config
-      for server, config in pairs(opts.servers) do
+      -- vim.lsp.config auto-discovers defaults from lsp/*.lua in nvim-lspconfig
+      for server, server_opts in pairs(opts.servers) do
         -- Setup capabilities from blink.cmp
         local capabilities = require("blink.cmp").get_lsp_capabilities()
         capabilities.textDocument.foldingRange = {
@@ -230,15 +236,16 @@ return {
           lineFoldingOnly = true,
         }
 
-        -- Prepare config for vim.lsp.config
-        local lsp_config = vim.tbl_extend("force", {
+        -- Merge capabilities with user options (vim.lsp.config handles lspconfig defaults)
+        local lsp_config = vim.tbl_deep_extend("force", {
           capabilities = capabilities,
-        }, config)
+        }, server_opts)
 
         -- Special handling for specific servers
         if server == "vtsls" then
           lsp_config.settings.javascript =
               vim.tbl_deep_extend("force", {}, lsp_config.settings.typescript, lsp_config.settings.javascript or {})
+          
           -- Disable formatting from vtsls, let ESLint handle it
           lsp_config.on_init = function(client)
             client.server_capabilities.documentFormattingProvider = false
@@ -256,20 +263,22 @@ return {
         elseif server == "jsonls" then
           local ok, schemastore = pcall(require, "schemastore")
           if ok then
-            lsp_config.settings = {
+            lsp_config.settings = vim.tbl_deep_extend("force", lsp_config.settings or {}, {
               json = {
                 schemas = schemastore.json.schemas(),
               },
-            }
+            })
           end
         end
 
-        -- Use vim.lsp.config (native Neovim 0.11 API)
-        vim.lsp.config(server, lsp_config)
+        -- Correct 0.11 API usage: Assign to the registry
+        vim.lsp.config[server] = lsp_config
       end
 
       -- Enable all configured servers
-      vim.lsp.enable(vim.tbl_keys(opts.servers))
+      for server, _ in pairs(opts.servers) do
+        vim.lsp.enable(server)
+      end
 
       -- LspAttach autocmd for per-buffer configuration
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -282,11 +291,11 @@ return {
           local bufnr = args.buf
 
           -- Enable inlay hints if supported
-          if client.supports_method("textDocument/inlayHint") then
+          if client.server_capabilities.inlayHintProvider then
             vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
           end
 
-          if client.supports_method("textDocument/foldingRange") then
+          if client.server_capabilities.foldingRangeProvider then
             local win = vim.fn.bufwinid(bufnr)
             if win ~= -1 then
               vim.wo[win].foldmethod = "expr"

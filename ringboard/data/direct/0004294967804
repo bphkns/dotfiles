@@ -1,0 +1,79 @@
+
+vim.tbl_flatten is deprecated. Run ":checkhealth vim.deprecated" for more information
+Failed to source `/home/bikash/.local/share/nvim/lazy/nvim-treesitter-textobjects/plugin/nvim-treesitter-textobjects.vim`
+
+vim/_editor.lua:0: User Autocommands for "VeryLazy"..script nvim_exec2() called at User Autocommands for "VeryLazy":0[1]../home/bikash/.local/share/nvim/lazy/nvim-treesitter-textobjects/plugin/nvim-treesitter-textobjects.vim, line 3: Vim(lua):E5108: Lua: ...eesitter-textobjects/lua/nvim-treesitter-textobjects.lua:1: module 'nvim-treesitter.configs' not found:
+	no field package.preload['nvim-treesitter.configs']
+	cache_loader: module 'nvim-treesitter.configs' not found
+	cache_loader_lib: module 'nvim-treesitter.configs' not found
+	no file './nvim-treesitter/configs.lua'
+	no file '/home/runner/work/neovim/neovim/.deps/usr/share/luajit-2.1/nvim-treesitter/configs.lua'
+	no file '/usr/local/share/lua/5.1/nvim-treesitter/configs.lua'
+	no file '/usr/local/share/lua/5.1/nvim-treesitter/configs/init.lua'
+	no file '/home/runner/work/neovim/neovim/.deps/usr/share/lua/5.1/nvim-treesitter/configs.lua'
+	no file '/home/runner/work/neovim/neovim/.deps/usr/share/lua/5.1/nvim-treesitter/configs/init.lua'
+	no file './nvim-treesitter/configs.so'
+	no file '/usr/local/lib/lua/5.1/nvim-treesitter/configs.so'
+	no file '/home/runner/work/neovim/neovim/.deps/usr/lib/lua/5.1/nvim-treesitter/configs.so'
+	no file '/usr/local/lib/lua/5.1/loadall.so'
+	no file '/home/bikash/.local/share/nvim/lazy/blink.cmp/lua/blink/cmp/fuzzy/rust/../../../../../target/release/libnvim-treesitter/configs.so'
+	no file '/home/bikash/.local/share/nvim/lazy/blink.cmp/lua/blink/cmp/fuzzy/rust/../../../../../target/release/nvim-treesitter/configs.so'
+	no file './nvim-treesitter.so'
+	no file '/usr/local/lib/lua/5.1/nvim-treesitter.so'
+	no file '/home/runner/work/neovim/neovim/.deps/usr/lib/lua/5.1/nvim-treesitter.so'
+	no file '/usr/local/lib/lua/5.1/loadall.so'
+	no file '/home/bikash/.local/share/nvim/lazy/blink.cmp/lua/blink/cmp/fuzzy/rust/../../../../../target/release/libnvim-treesitter.so'
+	no file '/home/bikash/.local/share/nvim/lazy/blink.cmp/lua/blink/cmp/fuzzy/rust/../../../../../target/release/nvim-treesitter.so'
+stack traceback:
+	[C]: in function 'require'
+	...eesitter-textobjects/lua/nvim-treesitter-textobjects.lua:1: in main chunk
+	[C]: in function 'require'
+	[string ":lua"]:1: in main chunk
+	[C]: in function 'nvim_exec2'
+	vim/_editor.lua: in function 'cmd'
+	...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:510: in function <...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:509>
+	[C]: in function 'xpcall'
+	.../.local/share/nvim/lazy/lazy.nvim/lua/lazy/core/util.lua:135: in function 'try'
+	...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:509: in function 'source'
+	...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:457: in function 'source_runtime'
+	...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:425: in function 'packadd'
+	...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:359: in function '_load'
+	...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:197: in function 'load'
+	...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:354: in function <...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:353>
+	[C]: in function 'xpcall'
+	.../.local/share/nvim/lazy/lazy.nvim/lua/lazy/core/util.lua:135: in function 'try'
+	...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:353: in function '_load'
+	...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:197: in function 'load'
+	...hare/nvim/lazy/lazy.nvim/lua/lazy/core/handler/event.lua:85: in function <...hare/nvim/lazy/lazy.nvim/lua/lazy/core/handler/event.lua:72>
+	[C]: in function 'nvim_exec_autocmds'
+	.../.local/share/nvim/lazy/lazy.nvim/lua/lazy/core/util.lua:175: in function <.../.local/share/nvim/lazy/lazy.nvim/lua/lazy/core/util.lua:169>
+
+# stacktrace:
+  - vim/_editor.lua:0 _in_ **cmd**
+Failed to run `config` for mini.ai
+
+/home/bikash/.config/nvim/lua/plugins/treesitter.lua:118: module 'nvim-treesitter-textobjects.repeatable_move' not found:
+	no field package.preload['nvim-treesitter-textobjects.repeatable_move']
+	cache_loader: module 'nvim-treesitter-textobjects.repeatable_move' not found
+	cache_loader_lib: module 'nvim-treesitter-textobjects.repeatable_move' not found
+	no file './nvim-treesitter-textobjects/repeatable_move.lua'
+	no file '/home/runner/work/neovim/neovim/.deps/usr/share/luajit-2.1/nvim-treesitter-textobjects/repeatable_move.lua'
+	no file '/usr/local/share/lua/5.1/nvim-treesitter-textobjects/repeatable_move.lua'
+	no file '/usr/local/share/lua/5.1/nvim-treesitter-textobjects/repeatable_move/init.lua'
+	no file '/home/runner/work/neovim/neovim/.deps/usr/share/lua/5.1/nvim-treesitter-textobjects/repeatable_move.lua'
+	no file '/home/runner/work/neovim/neovim/.deps/usr/share/lua/5.1/nvim-treesitter-textobjects/repeatable_move/init.lua'
+	no file './nvim-treesitter-textobjects/repeatable_move.so'
+	no file '/usr/local/lib/lua/5.1/nvim-treesitter-textobjects/repeatable_move.so'
+	no file '/home/runner/work/neovim/neovim/.deps/usr/lib/lua/5.1/nvim-treesitter-textobjects/repeatable_move.so'
+	no file '/usr/local/lib/lua/5.1/loadall.so'
+	no file '/home/bikash/.local/share/nvim/lazy/blink.cmp/lua/blink/cmp/fuzzy/rust/../../../../../target/release/libnvim-treesitter-textobjects/repeatable_move.so'
+	no file '/home/bikash/.local/share/nvim/lazy/blink.cmp/lua/blink/cmp/fuzzy/rust/../../../../../target/release/nvim-treesitter-textobjects/repeatable_move.so'
+	no file './nvim-treesitter-textobjects.so'
+	no file '/usr/local/lib/lua/5.1/nvim-treesitter-textobjects.so'
+	no file '/home/runner/work/neovim/neovim/.deps/usr/lib/lua/5.1/nvim-treesitter-textobjects.so'
+	no file '/usr/local/lib/lua/5.1/loadall.so'
+	no file '/home/bikash/.local/share/nvim/lazy/blink.cmp/lua/blink/cmp/fuzzy/rust/../../../../../target/release/libnvim-treesitter-textobjects.so'
+	no file '/home/bikash/.local/share/nvim/lazy/blink.cmp/lua/blink/cmp/fuzzy/rust/../../../../../target/release/nvim-treesitter-textobjects.so'
+
+# stacktrace:
+  - ~/.config/nvim/lua/plugins/treesitter.lua:118 _in_ **config**
