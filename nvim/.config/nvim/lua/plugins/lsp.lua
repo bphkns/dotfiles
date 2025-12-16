@@ -34,7 +34,7 @@ return {
               enableMoveToFileCodeAction = true,
               autoUseWorkspaceTsdk = true,
               experimental = {
-                maxInlayHintLength = 45,
+                maxInlayHintLength = 120,
                 completion = {
                   enableServerSideFuzzyMatch = true,
                 },
@@ -49,7 +49,7 @@ return {
               },
             },
             typescript = {
-              preferences = { importModuleSpecifier = "project-relative" },
+              preferences = { importModuleSpecifier = "relative" },
               updateImportsOnFileMove = { enabled = "always" },
               suggest = {
                 completeFunctionCalls = false,
@@ -60,7 +60,7 @@ return {
                 parameterNames = { enabled = "literals" },
                 parameterTypes = { enabled = true },
                 propertyDeclarationTypes = { enabled = true },
-                variableTypes = { enabled = true },
+                variableTypes = { enabled = true, suppressWhenTypeMatchesName = true },
               },
             },
           },
