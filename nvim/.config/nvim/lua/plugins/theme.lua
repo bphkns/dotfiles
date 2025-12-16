@@ -1,20 +1,12 @@
 return {
   {
-    "ellisonleao/gruvbox.nvim",
-    name = "gruvbox",
+    "uhs-robert/oasis.nvim",
+    name = "oasis",
     lazy = false,
     priority = 1000,
     config = function()
-      require("gruvbox").setup({
-        contrast = "", -- medium (matches ghostty and tmux)
-        italic = {
-          strings = false,
-          emphasis = false,
-          operators = false,
-        },
-      })
-      vim.cmd("colorscheme gruvbox")
+      require("oasis").setup()
+      vim.cmd.colorscheme("oasis-abyss")
     end,
   },
-
 }

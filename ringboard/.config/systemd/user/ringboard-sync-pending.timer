@@ -1,0 +1,10 @@
+[Unit]
+Description=Check for pending Ringboard syncs
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=10min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -101,7 +101,11 @@ alias c='clear'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # FZF config
-export FZF_DEFAULT_OPTS="--highlight-line --info=inline-right --ansi --layout=reverse --border=none"
+export FZF_DEFAULT_OPTS="--highlight-line --info=inline-right --ansi --layout=reverse --border=none \
+  --color=bg:#000000,fg:#F0EBE6,hl:#519BFF \
+  --color=bg+:#1A1A1A,fg+:#FFDACC,hl+:#519BFF \
+  --color=info:#546D79,prompt:#53D390,pointer:#FFA247 \
+  --color=marker:#C28EFF,spinner:#5ABAAE,header:#546D79"
 export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
@@ -129,6 +133,7 @@ export EDITOR="nvim"
 # Vi mode
 bindkey -v
 KEYTIMEOUT=10  # 100ms - balance between ESC responsiveness and fzf-git.sh two-key bindings
+bindkey -r "^G"  # Unbind list-expand to allow fzf-git.sh prefix
 
 # Ctrl+P/N history search (works in vi mode)
 bindkey '^P' history-search-backward

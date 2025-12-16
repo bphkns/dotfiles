@@ -1,0 +1,10 @@
+[Unit]
+Description=Watch Ringboard data for changes
+After=ringboard-server.service
+
+[Path]
+PathChanged=%h/.local/share/ringboard-data/main.ring
+Unit=ringboard-sync.service
+
+[Install]
+WantedBy=default.target
