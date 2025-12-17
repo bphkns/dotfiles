@@ -7,22 +7,21 @@ return {
       winopts    = {
         height     = 0.85,
         width      = 0.80,
-        row        = 0.50,
+        row        = 0.35,
         col        = 0.50,
         border     = "rounded",
         backdrop   = 60,
+        title_pos  = "center",
         preview    = {
-          layout    = "flex",
-          scrollbar = "float",
-          scrolloff = "-2",
-          title_pos = "center",
+          vertical   = "down:45%",
+          horizontal = "right:50%",
+          layout     = "vertical",
+          scrollbar  = "border",
+          scrolloff  = "-2",
+          title_pos  = "center",
         },
       },
-      fzf_colors = {
-        true, -- auto generate rest of fzf's highlights
-        bg = '-1',
-        gutter = '-1',
-      },
+      fzf_colors = true,
       files      = {
         cmd =
         "fd --type f --hidden --follow --no-ignore-vcs --exclude .git --exclude node_modules --exclude .nx --exclude .angular --exclude .cache --exclude dist",
@@ -38,9 +37,9 @@ return {
         }
       },
       fzf_opts   = {
-
-        ['--prompt']  = ' ',
-        ['--pointer'] = ' ',
+        ['--layout']  = 'reverse',
+        ['--prompt']  = ' ',
+        ['--pointer'] = ' ',
         ['--marker']  = '✓ ',
       }
     },

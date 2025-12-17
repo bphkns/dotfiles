@@ -34,7 +34,7 @@ return {
               enableMoveToFileCodeAction = true,
               autoUseWorkspaceTsdk = true,
               experimental = {
-                maxInlayHintLength = 120,
+                maxInlayHintLength = 40,
                 completion = {
                   enableServerSideFuzzyMatch = true,
                 },
@@ -49,7 +49,10 @@ return {
               },
             },
             typescript = {
-              preferences = { importModuleSpecifier = "relative" },
+              preferences = {
+                importModuleSpecifier = "relative",
+                includePackageJsonAutoImports = "on",
+              },
               updateImportsOnFileMove = { enabled = "always" },
               suggest = {
                 completeFunctionCalls = false,
@@ -57,7 +60,7 @@ return {
               inlayHints = {
                 enumMemberValues = { enabled = true },
                 functionLikeReturnTypes = { enabled = true },
-                parameterNames = { enabled = "literals" },
+                parameterNames = { enabled = "all", suppressWhenArgumentMatchesName = true },
                 parameterTypes = { enabled = true },
                 propertyDeclarationTypes = { enabled = true },
                 variableTypes = { enabled = true, suppressWhenTypeMatchesName = true },
@@ -123,7 +126,7 @@ return {
         },
         cssls = {},
         emmet_ls = {
-           filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
+          filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
         },
         jsonls = {},
         lua_ls = {
@@ -145,7 +148,7 @@ return {
       -- Setup Mason for LSP installation
       require("mason").setup()
       local mason_servers = vim.tbl_keys(opts.servers)
-      
+
       require("mason-lspconfig").setup({
         ensure_installed = mason_servers,
         automatic_installation = true,
@@ -161,6 +164,8 @@ return {
 
       -- Configure diagnostics globally
       vim.diagnostic.config(opts.diagnostics)
+
+
 
       -- Custom keybindings
       vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, { desc = "Open diagnostic float" })
@@ -244,8 +249,8 @@ return {
         -- Special handling for specific servers
         if server == "vtsls" then
           lsp_config.settings.javascript =
-              vim.tbl_deep_extend("force", {}, lsp_config.settings.typescript, lsp_config.settings.javascript or {})
-          
+            vim.tbl_deep_extend("force", {}, lsp_config.settings.typescript, lsp_config.settings.javascript or {})
+
           -- Disable formatting from vtsls, let ESLint handle it
           lsp_config.on_init = function(client)
             client.server_capabilities.documentFormattingProvider = false

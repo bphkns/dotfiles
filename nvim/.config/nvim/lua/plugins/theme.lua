@@ -1,12 +1,10 @@
 return {
   {
-    "uhs-robert/oasis.nvim",
-    name = "oasis",
+    "sainnhe/gruvbox-material",
     lazy = false,
     priority = 1000,
     config = function()
-      require("oasis").setup()
-      vim.cmd.colorscheme("oasis-abyss")
+      vim.cmd.colorscheme("gruvbox-material")
     end,
   },
 }

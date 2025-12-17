@@ -100,12 +100,12 @@ alias c='clear'
 # alert alias
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# FZF config
+# FZF config - Gruvbox Material Dark
 export FZF_DEFAULT_OPTS="--highlight-line --info=inline-right --ansi --layout=reverse --border=none \
-  --color=bg:#000000,fg:#F0EBE6,hl:#519BFF \
-  --color=bg+:#1A1A1A,fg+:#FFDACC,hl+:#519BFF \
-  --color=info:#546D79,prompt:#53D390,pointer:#FFA247 \
-  --color=marker:#C28EFF,spinner:#5ABAAE,header:#546D79"
+  --color=bg:#282828,fg:#d4be98,hl:#a9b665 \
+  --color=bg+:#3c3836,fg+:#d4be98,hl+:#a9b665 \
+  --color=info:#7daea3,prompt:#e78a4e,pointer:#d3869b \
+  --color=marker:#a9b665,spinner:#89b482,header:#7daea3"
 export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
@@ -156,4 +156,13 @@ function yy() {
     rm -f -- "$tmp"
 }
 
-printf "zsh startup: %.0fms\n" $(( (EPOCHREALTIME - _zsh_start_time) * 1000 ))
+# Startup time with nerd icon and color
+_zsh_startup_ms=$(( (EPOCHREALTIME - _zsh_start_time) * 1000 ))
+if (( _zsh_startup_ms < 100 )); then
+    printf '\033[38;2;83;211;144m󱐋 %.0fms\033[0m\n' $_zsh_startup_ms  # Green - blazing fast
+elif (( _zsh_startup_ms < 200 )); then
+    printf '\033[38;2;255;218;204m %.0fms\033[0m\n' $_zsh_startup_ms  # Cream - good
+else
+    printf '\033[38;2;255;162;71m󰔛 %.0fms\033[0m\n' $_zsh_startup_ms   # Orange - slow
+fi
+unset _zsh_startup_ms _zsh_start_time

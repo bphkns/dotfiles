@@ -87,13 +87,14 @@ return {
       },
     },
     window = {
-      position = "right",
+      position = "float",
     },
+    popup_border_style = { " ", " ", " ", " ", " ", " ", " ", " " },
   },
   config = function(_, opts)
     require("neo-tree").setup(opts)
 
-    vim.api.nvim_set_keymap("n", "<C-e>", "<cmd>Neotree toggle<cr>",
+    vim.api.nvim_set_keymap("n", "<C-e>", "<cmd>Neotree toggle reveal<cr>",
       { noremap = true, silent = true, desc = "Toggle Explorer" })
     vim.keymap.set("n", "<leader>f", "<cmd>Neotree toggle filter<cr>", { desc = "Toggle Filter" })
     vim.keymap.set(
