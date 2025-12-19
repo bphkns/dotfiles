@@ -4,6 +4,7 @@
   "autoshare": false,
   "autoupdate": true,
   "plugin": [
+    "oh-my-opencode",
     "@tarquinen/opencode-dcp@latest",
     "@franlol/opencode-md-table-formatter@0.0.3"
   ]
