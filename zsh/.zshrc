@@ -29,8 +29,11 @@ esac
 # Cargo
 [[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 
-# Rustup/Cargo completions (pre-generated)
+# Pre-generated completions (rustup, cargo, fd, rg, gh, starship, docker, bob, delta, bat, yazi, ghostty)
 fpath=(~/.local/share/zsh/completions $fpath)
+
+# Bun completions
+[[ -s "$HOME/.bun/_bun" ]] && fpath=("$HOME/.bun" $fpath)
 
 # Mise completions (cached)
 fpath=(~/.cache/zsh $fpath)
@@ -76,6 +79,9 @@ if [[ -d "$HOME/google-cloud-sdk" ]]; then
     source "$HOME/google-cloud-sdk/path.zsh.inc"
     source "$HOME/google-cloud-sdk/completion.zsh.inc"
 fi
+
+# npm completion
+(( $+commands[npm] )) && eval "$(npm completion)"
 
 # Zoxide - smart directory jumping (z, zz for interactive)
 eval "$(zoxide init zsh)"
