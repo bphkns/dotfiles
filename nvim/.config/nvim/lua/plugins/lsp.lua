@@ -12,7 +12,7 @@ return {
     },
     opts = {
       diagnostics = {
-        virtual_text = { prefix = "●", source = "if_many" },
+        virtual_text = false, -- Handled by tiny-inline-diagnostic
         signs = true,
         update_in_insert = false,
         severity_sort = true,
@@ -40,12 +40,8 @@ return {
                 },
               },
               tsserver = {
-                globalPlugins = {
-                  {
-                    name = "@effect/language-service",
-                    enableForWorkspaceTypeScriptVersions = true,
-                  },
-                },
+                globalPlugins = {},
+                pluginPaths = { "node_modules" },
               },
             },
             typescript = {

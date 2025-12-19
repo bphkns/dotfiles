@@ -159,7 +159,7 @@ return {
       },
       {
         "<leader>ca",
-        function() require('fzf-lua').lsp_code_actions() end,
+        function() require("fzf-lua").lsp_code_actions({ previewer = false }) end,
         desc = "Code Actions",
       },
     },

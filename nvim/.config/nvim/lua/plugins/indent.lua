@@ -1,7 +1,12 @@
 return {
   {
     'saghen/blink.indent',
-    opts = {},
+    opts = {
+      scope = {
+        enabled = true,
+        only_current = true,
+      },
+    },
     event = 'VeryLazy',
-  }
+  },
 }

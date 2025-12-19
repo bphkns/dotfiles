@@ -1,4 +1,4 @@
-theme =Gruvbox Material Dark 
+theme = gruvbox-soft
 font-family = IosevkaTerm NFM
 mouse-hide-while-typing = true
 window-decoration = false

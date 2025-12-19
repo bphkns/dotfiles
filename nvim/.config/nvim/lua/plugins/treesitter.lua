@@ -12,25 +12,82 @@ return {
     end,
   },
   {
-    "echasnovski/mini.ai",
-    version = false,
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
     event = "VeryLazy",
     config = function()
-      local ai = require("mini.ai")
-      local ts = ai.gen_spec.treesitter
+      local select = require("nvim-treesitter-textobjects.select")
+      local move = require("nvim-treesitter-textobjects.move")
+      local swap = require("nvim-treesitter-textobjects.swap")
 
-      ai.setup({
-        n_lines = 500,
-        custom_textobjects = {
-          f = ts({ a = "@function.outer", i = "@function.inner" }),
-          c = ts({ a = "@class.outer", i = "@class.inner" }),
-          k = ts({ a = "@block.outer", i = "@block.inner" }),
-          a = ts({ a = "@parameter.outer", i = "@parameter.inner" }),
-          o = ts({ a = { "@conditional.outer", "@loop.outer" }, i = { "@conditional.inner", "@loop.inner" } }),
-          ["="] = ts({ a = "@assignment.outer", i = "@assignment.inner" }),
-          [":"] = ts({ a = "@property.outer", i = "@property.inner" }),
+      -- Setup
+      require("nvim-treesitter-textobjects").setup({
+        select = {
+          lookahead = true,
+        },
+        move = {
+          set_jumps = true,
         },
       })
+
+      -- Textobject select mappings (vi/va style)
+      local select_maps = {
+        -- Function
+        { "af", "@function.outer" },
+        { "if", "@function.inner" },
+        -- Class
+        { "ac", "@class.outer" },
+        { "ic", "@class.inner" },
+        -- Block
+        { "ak", "@block.outer" },
+        { "ik", "@block.inner" },
+        -- Parameter/argument
+        { "aa", "@parameter.outer" },
+        { "ia", "@parameter.inner" },
+        -- Conditional
+        { "ao", "@conditional.outer" },
+        { "io", "@conditional.inner" },
+        -- Loop
+        { "al", "@loop.outer" },
+        { "il", "@loop.inner" },
+        -- Assignment
+        { "a=", "@assignment.outer" },
+        { "i=", "@assignment.inner" },
+        { "l=", "@assignment.lhs" },
+        { "r=", "@assignment.rhs" },
+      }
+
+      for _, map in ipairs(select_maps) do
+        vim.keymap.set({ "x", "o" }, map[1], function()
+          select.select_textobject(map[2], "textobjects")
+        end, { desc = "Select " .. map[2] })
+      end
+
+      -- Move to next/previous textobject
+      local function map_move(key, query, fn)
+        vim.keymap.set({ "n", "x", "o" }, key, function()
+          fn(query, "textobjects")
+        end, { desc = key .. " " .. query })
+      end
+
+      map_move("]f", "@function.outer", move.goto_next_start)
+      map_move("[f", "@function.outer", move.goto_previous_start)
+      map_move("]c", "@class.outer", move.goto_next_start)
+      map_move("[c", "@class.outer", move.goto_previous_start)
+      map_move("]a", "@parameter.outer", move.goto_next_start)
+      map_move("[a", "@parameter.outer", move.goto_previous_start)
+      map_move("]o", "@conditional.outer", move.goto_next_start)
+      map_move("[o", "@conditional.outer", move.goto_previous_start)
+      map_move("]l", "@loop.outer", move.goto_next_start)
+      map_move("[l", "@loop.outer", move.goto_previous_start)
+
+      -- Swap parameters
+      vim.keymap.set("n", "<leader>a", function()
+        swap.swap_next("@parameter.inner")
+      end, { desc = "Swap next parameter" })
+      vim.keymap.set("n", "<leader>A", function()
+        swap.swap_previous("@parameter.inner")
+      end, { desc = "Swap previous parameter" })
 
       -- Incremental selection
       local nodes = {}

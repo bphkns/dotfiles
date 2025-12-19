@@ -1,10 +1,22 @@
 return {
   {
-    "sainnhe/gruvbox-material",
+    "ellisonleao/gruvbox.nvim",
     lazy = false,
     priority = 1000,
-    config = function()
-      vim.cmd.colorscheme("gruvbox-material")
+    opts = {
+      contrast = "soft",
+      transparent_mode = false,
+      italic = {
+        strings = false,
+        emphasis = false,
+        comments = false,
+        operators = false,
+        folds = false,
+      },
+    },
+    config = function(_, opts)
+      require("gruvbox").setup(opts)
+      vim.cmd.colorscheme("gruvbox")
     end,
   },
 }
