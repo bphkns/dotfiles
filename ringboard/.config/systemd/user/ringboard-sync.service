@@ -1,6 +1,0 @@
-[Unit]
-Description=Sync Ringboard clipboard data to Cloudflare R2
-
-[Service]
-Type=oneshot
-ExecStart=%h/.local/bin/ringboard-sync sync

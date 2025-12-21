@@ -1,6 +1,0 @@
-[Unit]
-Description=Process pending Ringboard syncs
-
-[Service]
-Type=oneshot
-ExecStart=%h/.local/bin/ringboard-sync pending

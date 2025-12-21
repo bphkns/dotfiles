@@ -76,7 +76,11 @@ return {
       vim.keymap.set("n", "K", function()
         local winid = require("ufo").peekFoldedLinesUnderCursor()
         if not winid then
-          vim.lsp.buf.hover()
+          vim.lsp.buf.hover({
+            border = "rounded",
+            max_height = 25,
+            max_width = 120,
+          })
         end
       end, { desc = "Peek fold or hover" })
     end,

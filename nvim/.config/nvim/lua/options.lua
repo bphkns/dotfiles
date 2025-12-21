@@ -68,3 +68,4 @@ vim.opt.equalalways = false
 
 vim.opt.list = true
 
+vim.o.winborder = "rounded"

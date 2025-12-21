@@ -1,7 +1,0 @@
-[
-    (
-        enabled: true,
-        appid: "ringboard-egui",
-        title: "Ringboard",
-    ),
-]

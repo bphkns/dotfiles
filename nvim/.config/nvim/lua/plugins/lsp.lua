@@ -19,7 +19,6 @@ return {
       },
       servers = {
         vtsls = {
-          -- Explicitly defined vtsls settings (keeping as requested)
           filetypes = {
             "javascript",
             "javascriptreact",
@@ -161,7 +160,10 @@ return {
       -- Configure diagnostics globally
       vim.diagnostic.config(opts.diagnostics)
 
-
+      -- Configure hover with border
+      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = 'rounded',
+      })
 
       -- Custom keybindings
       vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, { desc = "Open diagnostic float" })

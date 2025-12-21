@@ -6,8 +6,21 @@ return {
     build = ":TSUpdate",
     config = function()
       require("nvim-treesitter").install({
-        "lua", "vim", "vimdoc", "angular", "tsx", "typescript",
-        "html", "yaml", "json", "css", "scss", "sql", "dockerfile", "prisma",
+        "lua",
+        "vim",
+        "vimdoc",
+        "angular",
+        "tsx",
+        "typescript",
+        "html",
+        "yaml",
+        "json",
+        "css",
+        "scss",
+        "sql",
+        "jsx",
+        "dockerfile",
+        "prisma",
       })
     end,
   },
@@ -15,6 +28,9 @@ return {
     "nvim-treesitter/nvim-treesitter-textobjects",
     branch = "main",
     event = "VeryLazy",
+    init = function()
+      vim.g.no_plugin_maps = true
+    end,
     config = function()
       local select = require("nvim-treesitter-textobjects.select")
       local move = require("nvim-treesitter-textobjects.move")
@@ -93,7 +109,9 @@ return {
       local nodes = {}
 
       local function select_node(node)
-        if not node then return end
+        if not node then
+          return
+        end
         local sr, sc, er, ec = node:range()
         vim.cmd("normal! \27") -- exit to normal first
         vim.api.nvim_win_set_cursor(0, { sr + 1, sc })
@@ -112,7 +130,9 @@ return {
 
       vim.keymap.set("x", "<C-Space>", function()
         local current = nodes[#nodes]
-        if not current then return end
+        if not current then
+          return
+        end
         local parent = current:parent()
         while parent do
           if not vim.deep_equal({ current:range() }, { parent:range() }) then
@@ -130,10 +150,19 @@ return {
           select_node(nodes[#nodes])
         end
       end, { desc = "Shrink selection" })
+
+      local ts_repeat_move = require("nvim-treesitter-textobjects.repeatable_move")
+
+      -- Repeat movement with ; and ,
+      -- ensure ; goes forward and , goes backward regardless of the last direction
+      vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
+      vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
+
+      -- Optionally, make builtin f, F, t, T also repeatable with ; and ,
+      vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f_expr, { expr = true })
+      vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F_expr, { expr = true })
+      vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t_expr, { expr = true })
+      vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T_expr, { expr = true })
     end,
-  },
-  {
-    "bezhermoso/tree-sitter-ghostty",
-    build = "make nvim_install",
   },
 }
