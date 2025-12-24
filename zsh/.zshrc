@@ -100,7 +100,12 @@ alias ls='eza --icons --group-directories-first'
 alias ll='eza -la --icons --git --group-directories-first --header'
 alias la='eza -a --icons --group-directories-first'
 alias l='eza --icons --group-directories-first'
-alias lt='eza -la --icons --tree --level=2 --group-directories-first'
+# lt [level] - tree view, defaults to 1
+unalias lt 2>/dev/null
+lt() { eza -la --icons --tree --level=${1:-1} --group-directories-first "${@:2}"; }
+alias lt2='lt 2'
+alias lt3='lt 3'
+alias lt4='lt 4'
 alias c='clear'
 
 # alert alias
