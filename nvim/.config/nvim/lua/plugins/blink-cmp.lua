@@ -14,7 +14,6 @@ return {
     dependencies = {
       "rafamadriz/friendly-snippets",
       "moyiz/blink-emoji.nvim",
-      "onsails/lspkind.nvim",
     },
     version = "*",
     opts = {

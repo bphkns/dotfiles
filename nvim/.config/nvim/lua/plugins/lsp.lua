@@ -128,11 +128,7 @@ return {
           settings = {
             Lua = {
               runtime = { version = "LuaJIT" },
-              diagnostics = { globals = { "vim" } },
-              workspace = {
-                library = vim.api.nvim_get_runtime_file("", true),
-                checkThirdParty = false,
-              },
+              workspace = { checkThirdParty = false },
               telemetry = { enable = false },
             },
           },
@@ -159,11 +155,6 @@ return {
 
       -- Configure diagnostics globally
       vim.diagnostic.config(opts.diagnostics)
-
-      -- Configure hover with border
-      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = 'rounded',
-      })
 
       -- Custom keybindings
       vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, { desc = "Open diagnostic float" })
@@ -204,6 +195,9 @@ return {
               },
             },
           }, function(_, result)
+            if not result or not result.body or not result.body.files then
+              return
+            end
             ---@type string[]
             local files = result.body.files
             table.insert(files, 1, "Enter new path...")

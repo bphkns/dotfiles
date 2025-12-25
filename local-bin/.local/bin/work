@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+SESSION="work"
+WORK_DIR="${1:-$PWD}"
+
+tmux has-session -t $SESSION 2>/dev/null
+if [ $? -eq 0 ]; then
+  tmux attach-session -t $SESSION
+  exit 0
+fi
+
+tmux new-session -d -s $SESSION -n editor -c $WORK_DIR
+
+tmux split-window -h -t $SESSION:editor -c $WORK_DIR
+tmux split-window -v -t $SESSION:editor.1 -c $WORK_DIR
+
+tmux send-keys -t $SESSION:editor.3 'nvim' C-m
+
+tmux new-window -t $SESSION -n ai-agent -c $WORK_DIR
+tmux new-window -t $SESSION -n dotfiles -c "$HOME/dotfiles"
+
+tmux select-window -t $SESSION:editor
+tmux select-pane -t $SESSION:editor.3
+
+tmux attach-session -t $SESSION

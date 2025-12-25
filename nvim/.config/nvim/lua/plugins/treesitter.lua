@@ -1,5 +1,36 @@
 return {
   {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = "BufReadPost",
+    opts = { max_lines = 3 },
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    event = "InsertEnter",
+    opts = {},
+  },
+  {
+    "folke/trouble.nvim",
+    branch = "main",
+    cmd = "Trouble",
+    keys = {
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
+      { "<leader>xs", "<cmd>Trouble symbols toggle<cr>", desc = "Symbols (Trouble)" },
+      { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix (Trouble)" },
+    },
+    opts = {
+      modes = {
+        diagnostics = { auto_preview = false },
+        symbols = { auto_preview = false },
+      },
+      preview = {
+        type = "main",
+        scratch = true,
+      },
+    },
+  },
+  {
     "nvim-treesitter/nvim-treesitter",
     lazy = false,
     branch = "main",
@@ -98,10 +129,10 @@ return {
       map_move("[l", "@loop.outer", move.goto_previous_start)
 
       -- Swap parameters
-      vim.keymap.set("n", "<leader>a", function()
+      vim.keymap.set("n", "<leader>sn", function()
         swap.swap_next("@parameter.inner")
       end, { desc = "Swap next parameter" })
-      vim.keymap.set("n", "<leader>A", function()
+      vim.keymap.set("n", "<leader>sp", function()
         swap.swap_previous("@parameter.inner")
       end, { desc = "Swap previous parameter" })
 

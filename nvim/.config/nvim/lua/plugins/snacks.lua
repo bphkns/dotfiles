@@ -7,14 +7,17 @@ return {
       dashboard = {
         enabled = true,
         preset = {
-          header = [[
-              ███╗   ██╗██╗   ██╗██╗███╗   ███╗
-              ████╗  ██║██║   ██║██║████╗ ████║
-              ██╔██╗ ██║██║   ██║██║██╔████╔██║
-              ██║╚██╗██║╚██╗ ██╔╝██║██║╚██╔╝██║
-              ██║ ╚████║ ╚████╔╝ ██║██║ ╚═╝ ██║
-              ╚═╝  ╚═══╝  ╚═══╝  ╚═╝╚═╝     ╚═╝
-          ]],
+        header = [[
+##    ## ##     ## #### ##     ## 
+###   ## ##     ##  ##  ###   ### 
+####  ## ##     ##  ##  #### #### 
+## ## ## ##     ##  ##  ## ### ## 
+##  ####  ##   ##   ##  ##     ## 
+##   ###   ## ##    ##  ##     ## 
+##    ##    ###    #### ##     ## 
+
+    01101110 01110110 01101001 01101101
+]],
           keys = {
             { icon = " ", key = "e", desc = "New file", action = ":ene | startinsert" },
             { icon = " ", key = "f", desc = "Find file", action = ":FzfLua files" },
@@ -25,12 +28,21 @@ return {
             { icon = " ", key = "q", desc = "Quit", action = ":qa" },
           },
         },
+        sections = {
+          { section = "header" },
+          { section = "keys", gap = 1, padding = 1 },
+          { section = "recent_files", title = "MRU", limit = 10, padding = 1, cwd = true },
+          { section = "recent_files", title = "MRU (Global)", limit = 5, padding = 1, cwd = false },
+          { section = "startup" },
+        },
       },
       quickfile = { enabled = true },
       bigfile = { enabled = true },
       scroll = { enabled = true },
       statuscolumn = { enabled = true },
       bufdelete = { enabled = true },
+      notifier = { enabled = true, style = "fancy" },
+      input = { enabled = true },
     },
     keys = {
       {

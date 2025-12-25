@@ -1,133 +1,121 @@
-local slow_format_filetypes = {}
+local effect_project_cache = {}
 
--- Check if file is in a project that uses ESLint for formatting (Effect/dprint)
--- by checking if .prettierignore exists and file would be ignored
-local function is_eslint_project(ctx)
-  local fname = ctx.filename
-  -- Check if prettier would ignore this file by looking for eslint config with effect plugin
-  local eslint_root = vim.fs.root(fname, { "eslint.config.mjs", "eslint.config.js" })
-  if not eslint_root then
+local function is_effect_project(ctx)
+  local dir = vim.fn.fnamemodify(ctx.filename, ":h")
+  if effect_project_cache[dir] ~= nil then
+    return effect_project_cache[dir]
+  end
+
+  local pkg_path = vim.fs.find("package.json", { path = ctx.filename, upward = true, stop = vim.uv.os_homedir() })[1]
+  if not pkg_path then
+    effect_project_cache[dir] = false
     return false
   end
-  -- Check if prettier config exists - if not, use ESLint
-  local prettier_root = vim.fs.root(fname, { ".prettierrc", "prettier.config.js", ".prettierrc.json" })
-  if not prettier_root then
-    return true
-  end
-  -- Check .prettierignore to see if this file should be ignored by prettier
-  local ignore_file = prettier_root .. "/.prettierignore"
-  local f = io.open(ignore_file, "r")
+
+  local f = io.open(pkg_path, "r")
   if not f then
+    effect_project_cache[dir] = false
     return false
   end
   local content = f:read("*a")
   f:close()
-  -- Get relative path from project root
-  local rel_path = fname:sub(#prettier_root + 2)
-  for line in content:gmatch("[^\r\n]+") do
-    -- Skip comments and empty lines
-    if not line:match("^#") and line ~= "" then
-      -- Simple glob matching for patterns like "apps/api/**"
-      local pattern = line:gsub("%*%*", ".*"):gsub("%*", "[^/]*")
-      if rel_path:match("^" .. pattern) then
-        return true
-      end
-    end
-  end
-  return false
+
+  local has_effect = content:match('"@effect/eslint%-plugin"') ~= nil
+  effect_project_cache[dir] = has_effect
+  return has_effect
 end
+
+vim.api.nvim_create_user_command("ConformDisable", function(args)
+  if args.bang then
+    vim.b.disable_autoformat = true
+  else
+    vim.g.disable_autoformat = true
+  end
+end, { desc = "Disable conform-autoformat-on-save", bang = true })
+
+vim.api.nvim_create_user_command("ConformEnable", function()
+  vim.b.disable_autoformat = false
+  vim.g.disable_autoformat = false
+end, { desc = "Re-enable conform-autoformat-on-save" })
 
 return {
   {
     "stevearc/conform.nvim",
-    event = { "VeryLazy" },
+    event = { "BufWritePre" },
     cmd = { "ConformInfo" },
     opts = {
-      formatters_by_ft = {
-        ["angular"] = { "biome", "prettierd", "prettier" },
-        ["htmlangular"] = { "prettierd", "prettier" },
-        ["javascript"] = { "biome", "prettierd", "prettier" },
-        ["javascriptreact"] = { "biome", "prettierd", "prettier" },
-        ["typescript"] = { "biome", "prettierd", "prettier" },
-        ["typescriptreact"] = { "biome", "prettierd", "prettier" },
-        ["vue"] = { "biome", "prettierd", "prettier" },
-        ["css"] = { "biome", "prettierd", "prettier" },
-        ["scss"] = { "prettierd", "prettier" },
-        ["less"] = { "prettierd", "prettier" },
-        ["html"] = { "prettierd", "prettier" },
-        ["mjml"] = { "prettierd", "prettier" },
-        ["json"] = { "biome", "prettierd", "prettier" },
-        ["jsonc"] = { "biome", "prettierd", "prettier" },
-        ["graphql"] = { "biome", "prettierd", "prettier" },
-        ["yaml"] = { "prettierd", "prettier" },
-        ["markdown"] = { "prettierd", "prettier" },
-        ["markdown.mdx"] = { "prettierd", "prettier" },
-        ["handlebars"] = { "prettierd", "prettier" },
-        ["lua"] = { "stylua" },
+      notify_on_error = false,
+      default_format_opts = {
+        async = true,
+        timeout_ms = 500,
+        lsp_format = "fallback",
       },
-      formatters = {
-        biome = {
-          command = "biome",
-          args = {
-            "check",
-            "--write",
-            "--unsafe",
-            "--stdin-file-path",
-            "$FILENAME",
-          },
-          stdin = true,
-          -- Only run biome if biome.json exists in project
-          condition = function(_, ctx)
-            return vim.fs.root(ctx.filename, { "biome.json", "biome.jsonc" }) ~= nil
-          end,
-        },
-        prettierd = {
-          -- Skip prettierd for ESLint/dprint projects
-          condition = function(_, ctx)
-            return not is_eslint_project(ctx)
-          end,
-        },
-        prettier = {
-          -- Skip prettier for ESLint/dprint projects
-          condition = function(_, ctx)
-            return not is_eslint_project(ctx)
-          end,
-        },
-      },
-      format_on_save = function(bufnr)
+      format_after_save = function(bufnr)
+        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+          return
+        end
         local bufname = vim.api.nvim_buf_get_name(bufnr)
         if bufname:match("/node_modules/") then
           return
         end
-
-        if slow_format_filetypes[vim.bo[bufnr].filetype] then
-          return
-        end
-        local function on_format(err)
-          if err and err:match("timeout$") then
-            slow_format_filetypes[vim.bo[bufnr].filetype] = true
-          end
-        end
-
-        -- For ESLint/dprint projects, use LSP formatting directly
-        local ctx = { filename = bufname, buf = bufnr }
-        if is_eslint_project(ctx) then
-          return { timeout_ms = 2000, lsp_format = "prefer" }, on_format
-        end
-
-        return { timeout_ms = 500, lsp_format = "fallback" }, on_format
+        return { async = true, timeout_ms = 500, lsp_format = "fallback" }
       end,
-
-      format_after_save = function(bufnr)
-        if not slow_format_filetypes[vim.bo[bufnr].filetype] then
-          return
-        end
-        local ctx = { filename = vim.api.nvim_buf_get_name(bufnr), buf = bufnr }
-        if is_eslint_project(ctx) then
-          return { lsp_format = "prefer" }
-        end
-        return { lsp_format = "fallback" }
-      end,
+      formatters_by_ft = {
+        javascript = { "eslint_d", "biome", "prettierd", stop_after_first = true },
+        javascriptreact = { "eslint_d", "biome", "prettierd", stop_after_first = true },
+        typescript = { "eslint_d", "biome", "prettierd", stop_after_first = true },
+        typescriptreact = { "eslint_d", "biome", "prettierd", stop_after_first = true },
+        vue = { "biome", "prettierd", stop_after_first = true },
+        astro = { "biome", "prettierd", stop_after_first = true },
+        angular = { "biome", "prettierd", stop_after_first = true },
+        htmlangular = { "prettierd" },
+        css = { "biome", "prettierd", stop_after_first = true },
+        scss = { "prettierd" },
+        less = { "prettierd" },
+        html = { "prettierd" },
+        mjml = { "prettierd" },
+        json = { "biome", "prettierd", stop_after_first = true },
+        jsonc = { "biome", "prettierd", stop_after_first = true },
+        graphql = { "biome", "prettierd", stop_after_first = true },
+        yaml = { "prettierd" },
+        markdown = { "prettierd" },
+        ["markdown.mdx"] = { "prettierd" },
+        handlebars = { "prettierd" },
+        lua = { "stylua" },
+      },
+      formatters = {
+        eslint_d = {
+          condition = function(_, ctx)
+            return is_effect_project(ctx)
+          end,
+        },
+        biome = {
+          condition = function(_, ctx)
+            return vim.fs.find({ "biome.json", "biome.jsonc" }, {
+              path = ctx.filename,
+              upward = true,
+              stop = vim.uv.os_homedir(),
+            })[1] ~= nil
+          end,
+        },
+        prettierd = {
+          condition = function(_, ctx)
+            if is_effect_project(ctx) then
+              return false
+            end
+            return vim.fs.find({
+              ".prettierrc",
+              ".prettierrc.json",
+              ".prettierrc.js",
+              ".prettierrc.cjs",
+              ".prettierrc.mjs",
+              "prettier.config.js",
+              "prettier.config.cjs",
+              "prettier.config.mjs",
+            }, { path = ctx.filename, upward = true, stop = vim.uv.os_homedir() })[1] ~= nil
+          end,
+        },
+      },
     },
   },
 }
