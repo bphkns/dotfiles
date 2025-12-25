@@ -6,6 +6,10 @@
   "plugin": [
     "oh-my-opencode",
     "@tarquinen/opencode-dcp@latest",
-    "@franlol/opencode-md-table-formatter@0.0.3"
+    "@franlol/opencode-md-table-formatter@0.0.3",
+    "@nick-vi/opencode-type-inject",
+    "opencode-websearch-cited",
+    "opencode-shell-strategy",
+    "opencode-morph-fast-apply"
   ]
 }
