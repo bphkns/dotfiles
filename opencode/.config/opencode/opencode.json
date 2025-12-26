@@ -4,14 +4,136 @@
   "autoshare": false,
   "autoupdate": true,
   "plugin": [
-    "oh-my-opencode@latest",
     "@tarquinen/opencode-dcp@latest",
     "@franlol/opencode-md-table-formatter@latest",
     "@nick-vi/opencode-type-inject@latest",
-    "/home/bikash/dev/oc-plugins/morph-fast-apply"
+    "/home/bikash/dev/oc-plugins/morph-fast-apply",
+    "oh-my-opencode",
+    "opencode-antigravity-auth@1.2.4",
+    "opencode-openai-codex-auth"
   ],
   "instructions": [
     "/home/bikash/.config/opencode/plugin/shell-strategy/shell_strategy.md",
     "/home/bikash/dev/oc-plugins/morph-fast-apply/MORPH_INSTRUCTIONS.md"
-  ]
+  ],
+  "provider": {
+    "google": {
+      "name": "Google",
+      "models": {
+        "gemini-3-pro-high": {
+          "name": "Gemini 3 Pro High (Antigravity)",
+          "thinking": true,
+          "attachment": true,
+          "limit": {
+            "context": 1048576,
+            "output": 65535
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gemini-3-pro-medium": {
+          "name": "Gemini 3 Pro Medium (Antigravity)",
+          "thinking": true,
+          "attachment": true,
+          "limit": {
+            "context": 1048576,
+            "output": 65535
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gemini-3-pro-low": {
+          "name": "Gemini 3 Pro Low (Antigravity)",
+          "thinking": true,
+          "attachment": true,
+          "limit": {
+            "context": 1048576,
+            "output": 65535
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gemini-3-flash": {
+          "name": "Gemini 3 Flash (Antigravity)",
+          "attachment": true,
+          "limit": {
+            "context": 1048576,
+            "output": 65536
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gemini-3-flash-lite": {
+          "name": "Gemini 3 Flash Lite (Antigravity)",
+          "attachment": true,
+          "limit": {
+            "context": 1048576,
+            "output": 65536
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        }
+      }
+    },
+    "openai": {
+      "name": "OpenAI",
+      "api": "codex",
+      "models": {
+        "gpt-5.2": {
+          "name": "GPT-5.2"
+        },
+        "o3": {
+          "name": "o3",
+          "thinking": true
+        },
+        "o4-mini": {
+          "name": "o4-mini",
+          "thinking": true
+        },
+        "codex-1": {
+          "name": "Codex-1"
+        }
+      }
+    }
+  }
 }
