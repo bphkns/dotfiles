@@ -14,9 +14,9 @@ error_symbol = "[󰘧](bold red)"
 success_symbol = "[󰘧](bold green)"
 
 [directory]
-truncate_to_repo = false
+truncate_to_repo = true
 truncation_symbol = "…/"
-fish_style_pwd_dir_length = 1
+truncation_length = 1
 
 [dotnet]
 detect_files = ["global.json", "Directory.Build.props", "Directory.Build.targets", "Packages.props"]
