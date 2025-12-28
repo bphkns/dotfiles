@@ -136,32 +136,7 @@ return {
         end,
         desc = "[/] Live grep the current buffer",
       },
-      {
-        "gd",
-        function() require("fzf-lua").lsp_definitions() end,
-        desc = "Goto Definition",
-      },
-      {
-        "gr",
-        function() require("fzf-lua").lsp_references() end,
-        desc = "References",
-        nowait = true,
-      },
-      {
-        "gI",
-        function() require("fzf-lua").lsp_implementations() end,
-        desc = "Goto Implementation",
-      },
-      {
-        "gy",
-        function() require("fzf-lua").lsp_typedefs() end,
-        desc = "Goto T[y]pe Definition",
-      },
-      {
-        "<leader>ca",
-        function() require("fzf-lua").lsp_code_actions({ previewer = false }) end,
-        desc = "Code Actions",
-      },
+
     },
     config = function(_, opts)
       require("fzf-lua").setup(opts)

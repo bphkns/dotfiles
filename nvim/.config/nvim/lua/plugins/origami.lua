@@ -33,20 +33,7 @@ return {
         end,
         desc = 'Close all folds',
       },
-      {
-        'K',
-        function()
-          local winid = require('origami').peekFold()
-          if not winid then
-            vim.lsp.buf.hover({
-              border = 'rounded',
-              max_height = 25,
-              max_width = 120,
-            })
-          end
-        end,
-        desc = 'Peek fold or hover',
-      },
+
     },
   },
 }

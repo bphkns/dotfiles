@@ -1,48 +1,40 @@
 return {
   {
-    "ellisonleao/gruvbox.nvim",
+    'ribru17/bamboo.nvim',
     lazy = false,
     priority = 1000,
     opts = {
-      contrast = "soft",
-      transparent_mode = false,
-      italic = {
-        strings = false,
-        emphasis = false,
-        comments = false,
-        operators = false,
-        folds = false,
+      style = 'vulgaris',
+      transparent = false,
+      dim_inactive = false,
+      term_colors = true,
+      code_style = {
+        comments = { italic = false },
+        conditionals = { italic = false },
+        keywords = { italic = false },
+        functions = {},
+        strings = {},
+        variables = {},
       },
-      overrides = {
-        -- Noice
-        NoiceCmdlinePopup = { bg = "#3c3836" },
-        NoiceCmdlinePopupBorder = { fg = "#83a598", bg = "#3c3836" },
-        NoiceCmdlinePopupTitle = { fg = "#83a598", bg = "#3c3836" },
-        NoiceCmdlineIcon = { fg = "#fabd2f" },
-        NoicePopup = { bg = "#3c3836" },
-        NoicePopupBorder = { fg = "#83a598", bg = "#3c3836" },
-        NoicePopupmenu = { bg = "#3c3836" },
-        NoicePopupmenuBorder = { fg = "#83a598", bg = "#3c3836" },
-        NoicePopupmenuSelected = { bg = "#504945" },
-
+      highlights = {
         -- WhichKey
-        WhichKey = { fg = "#fb4934" },
-        WhichKeyGroup = { fg = "#83a598" },
-        WhichKeyDesc = { fg = "#ebdbb2" },
-        WhichKeySeparator = { fg = "#928374" },
-        WhichKeyNormal = { bg = "#3c3836" },
-        WhichKeyBorder = { fg = "#83a598", bg = "#3c3836" },
-        WhichKeyValue = { fg = "#928374" },
+        WhichKey = { fg = '#e75a7c' },
+        WhichKeyGroup = { fg = '#57a5e5' },
+        WhichKeyDesc = { fg = '#f1e9d2' },
+        WhichKeySeparator = { fg = '#5b5e5a' },
+        WhichKeyNormal = { bg = '#2f312c' },
+        WhichKeyBorder = { fg = '#57a5e5', bg = '#2f312c' },
+        WhichKeyValue = { fg = '#5b5e5a' },
 
         -- Float windows
-        NormalFloat = { bg = "#3c3836" },
-        FloatBorder = { fg = "#83a598", bg = "#3c3836" },
-        FloatTitle = { fg = "#fabd2f", bg = "#3c3836" },
+        NormalFloat = { bg = '#2f312c' },
+        FloatBorder = { fg = '#57a5e5', bg = '#2f312c' },
+        FloatTitle = { fg = '#dbb651', bg = '#2f312c' },
       },
     },
     config = function(_, opts)
-      require("gruvbox").setup(opts)
-      vim.cmd.colorscheme("gruvbox")
+      require('bamboo').setup(opts)
+      require('bamboo').load()
     end,
   },
 }

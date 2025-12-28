@@ -1,53 +1,65 @@
-"$schema" = 'https://starship.rs/config-schema.json'
+format = "$os$directory$git_branch$git_status$nodejs$python$rust$golang$lua$nix_shell$cmd_duration$line_break$character"
 
-format = """
-$directory\
-$git_branch\
-$git_status\
-$line_break\
-$character"""
+[os]
+disabled = false
 
-palette = 'gruvbox_dark'
+[os.symbols]
+Pop = "🐧 "
 
-[palettes.gruvbox_dark]
-color_fg0 = '#fbf1c7'
-color_aqua = '#689d6a'
-color_green = '#98971a'
-color_orange = '#d65d0e'
-color_purple = '#b16286'
-color_red = '#cc241d'
-color_yellow = '#d79921'
+[buf]
+disabled = true
+
+[character]
+error_symbol = "[󰘧](bold red)"
+success_symbol = "[󰘧](bold green)"
 
 [directory]
-style = "bold color_yellow"
-format = "[$path]($style) "
-truncation_length = 3
-truncation_symbol = "…/"
+truncate_to_repo = false
+
+[dotnet]
+detect_files = ["global.json", "Directory.Build.props", "Directory.Build.targets", "Packages.props"]
 
 [git_branch]
 symbol = " "
-style = "color_aqua"
-format = "[$symbol$branch]($style)"
+truncation_length = 18
 
 [git_status]
-style = "color_aqua"
-format = "[ $all_status$ahead_behind]($style)"
-ahead = "⇡${count}"
-behind = "⇣${count}"
-diverged = "⇕⇡${ahead_count}⇣${behind_count}"
-staged = "+"
-modified = "!"
-untracked = "?"
-deleted = "✘"
-conflicted = "="
+staged = "[+$count](green)"
+modified = "[~$count](yellow)"
+untracked = "[?$count](blue)"
+deleted = "[-$count](red)"
+conflicted = "[!$count](bold red)"
+ahead = "[⇡$count](cyan)"
+behind = "[⇣$count](cyan)"
+diverged = "[⇕](cyan)"
 
-[line_break]
-disabled = false
+[git_commit]
+disabled = true
 
-[character]
-success_symbol = "[❯](bold color_green)"
-error_symbol = "[❯](bold color_red)"
-vimcmd_symbol = "[❮](bold color_green)"
-vimcmd_replace_one_symbol = "[❮](bold color_purple)"
-vimcmd_replace_symbol = "[❮](bold color_purple)"
-vimcmd_visual_symbol = "[❮](bold color_yellow)"
+[git_state]
+
+[golang]
+symbol = " "
+
+[lua]
+symbol = " "
+
+[nix_shell]
+symbol = " "
+
+[nodejs]
+symbol = "⬢ "
+
+[python]
+symbol = " "
+
+[rust]
+symbol = " "
+
+[cmd_duration]
+min_time = 500
+format = "[⏳ $duration]($style) "
+style = "yellow"
+
+[package]
+disabled = true

@@ -2,26 +2,24 @@ gui:
   nerdFontsVersion: "3"
   theme:
     activeBorderColor:
-      - "#a9b665"
+      - "#8fb573"
       - bold
     inactiveBorderColor:
-      - "#665c54"
+      - "#5b5e5a"
     optionsTextColor:
-      - "#7daea3"
+      - "#57a5e5"
     selectedLineBgColor:
-      - "#3c3836"
-    selectedRangeBgColor:
-      - "#3c3836"
+      - "#2f312c"
     cherryPickedCommitBgColor:
-      - "#45403d"
+      - "#383b35"
     cherryPickedCommitFgColor:
-      - "#a9b665"
+      - "#8fb573"
     unstagedChangesColor:
-      - "#ea6962"
+      - "#e75a7c"
     defaultFgColor:
-      - "#d4be98"
+      - "#f1e9d2"
     searchingActiveBorderColor:
-      - "#d8a657"
+      - "#dbb651"
 git:
   skipHookPrefix: WIP
   pagers:

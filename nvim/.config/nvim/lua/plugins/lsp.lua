@@ -300,6 +300,42 @@ return {
               vim.wo[win].foldenable = false
             end
           end
+
+          local function map(mode, lhs, rhs, desc)
+            vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
+          end
+
+          map("n", "gd", function()
+            require("fzf-lua").lsp_definitions()
+          end, "Goto Definition")
+
+          map("n", "gr", function()
+            require("fzf-lua").lsp_references()
+          end, "References")
+
+          map("n", "gI", function()
+            require("fzf-lua").lsp_implementations()
+          end, "Goto Implementation")
+
+          map("n", "gy", function()
+            require("fzf-lua").lsp_typedefs()
+          end, "Goto Type Definition")
+
+          map("n", "<leader>ca", function()
+            require("fzf-lua").lsp_code_actions({ previewer = false })
+          end, "Code Actions")
+
+          map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
+
+          map("n", "gD", vim.lsp.buf.declaration, "Goto Declaration")
+
+          map("n", "<leader>ds", function()
+            require("fzf-lua").lsp_document_symbols()
+          end, "Document Symbols")
+
+          map("n", "<leader>ws", function()
+            require("fzf-lua").lsp_workspace_symbols()
+          end, "Workspace Symbols")
         end,
       })
     end,
