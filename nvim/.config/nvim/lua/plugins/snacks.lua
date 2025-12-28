@@ -7,17 +7,6 @@ return {
       dashboard = {
         enabled = true,
         preset = {
-        header = [[
-##    ## ##     ## #### ##     ## 
-###   ## ##     ##  ##  ###   ### 
-####  ## ##     ##  ##  #### #### 
-## ## ## ##     ##  ##  ## ### ## 
-##  ####  ##   ##   ##  ##     ## 
-##   ###   ## ##    ##  ##     ## 
-##    ##    ###    #### ##     ## 
-
-    01101110 01110110 01101001 01101101
-]],
           keys = {
             { icon = " ", key = "e", desc = "New file", action = ":ene | startinsert" },
             { icon = " ", key = "f", desc = "Find file", action = ":FzfLua files" },
@@ -41,8 +30,6 @@ return {
       scroll = { enabled = true },
       statuscolumn = { enabled = true },
       bufdelete = { enabled = true },
-      notifier = { enabled = true, style = "fancy" },
-      input = { enabled = true },
     },
     keys = {
       {
