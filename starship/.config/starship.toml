@@ -26,14 +26,14 @@ symbol = " "
 truncation_length = 18
 
 [git_status]
-staged = "[+$count](green)"
-modified = "[~$count](yellow)"
-untracked = "[?$count](blue)"
-deleted = "[-$count](red)"
+staged = "[✓$count](green)"
+modified = "[✎$count](yellow)"
+untracked = "[★$count](blue)"
+deleted = "[✗$count](red)"
 conflicted = "[!$count](bold red)"
-ahead = "[⇡$count](cyan)"
-behind = "[⇣$count](cyan)"
-diverged = "[⇕](cyan)"
+ahead = "[↑$count](cyan)"
+behind = "[↓$count](cyan)"
+diverged = "[↕](cyan)"
 
 [git_commit]
 disabled = true
