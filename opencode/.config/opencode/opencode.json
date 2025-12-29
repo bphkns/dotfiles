@@ -8,11 +8,9 @@
     "@tarquinen/opencode-dcp@latest",
     "@franlol/opencode-md-table-formatter@latest",
     "@nick-vi/opencode-type-inject@latest",
-    "/home/bikash/dev/oc-plugins/morph-fast-apply",
     "oh-my-opencode"
   ],
   "instructions": [
-    "/home/bikash/.config/opencode/plugin/shell-strategy/shell_strategy.md",
-    "/home/bikash/dev/oc-plugins/morph-fast-apply/MORPH_INSTRUCTIONS.md"
+    "/home/bikash/.config/opencode/plugin/shell-strategy/shell_strategy.md"
   ]
 }
