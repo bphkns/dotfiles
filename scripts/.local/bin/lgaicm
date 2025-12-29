@@ -1,54 +1,41 @@
 #!/usr/bin/env bash
-# lgaicm - LazyGit AI Commit Message (tiered model selection)
+# lgaicm - LazyGit AI Commit Message
 set -euo pipefail
 
-# Thresholds (in characters) - roughly 4 chars per token
-SMALL_THRESHOLD="${LGAICM_SMALL_THRESHOLD:-4000}"       # Below: use small model (Claude)
-MEDIUM_THRESHOLD="${LGAICM_MEDIUM_THRESHOLD:-50000}"    # Below: use medium model (flash-lite)
-LARGE_THRESHOLD="${LGAICM_LARGE_THRESHOLD:-200000}"     # Above: truncate
+# Configuration
+MAX_DIFF_SIZE="${LGAICM_MAX_DIFF_SIZE:-200000}"
 MAX_SUGGESTIONS="${LGAICM_MAX_SUGGESTIONS:-5}"
+MODEL="${LGAICM_MODEL:-google/gemini-3-flash-preview}"
 
-# Models (3 tiers)
-SMALL_MODEL="${LGAICM_SMALL_MODEL:-sonnet}"                         # Claude for small diffs
-MEDIUM_MODEL="${LGAICM_MEDIUM_MODEL:-google/gemini-2.5-flash-lite}" # Fast/cheap for medium
-LARGE_MODEL="${LGAICM_LARGE_MODEL:-google/gemini-2.5-flash}"        # Full power for large
-
-# Check dependencies
-HAS_CLAUDE=false
-HAS_OPENCODE=false
-command -v claude >/dev/null 2>&1 && HAS_CLAUDE=true
-command -v opencode >/dev/null 2>&1 && HAS_OPENCODE=true
-
-if [[ "$HAS_CLAUDE" == "false" && "$HAS_OPENCODE" == "false" ]]; then
-  echo "Error: Neither 'claude' nor 'opencode' CLI found" >&2
-  exit 1
+# Check dependencies (prefer opencode, fallback to claude)
+CLI=""
+if command -v opencode >/dev/null 2>&1; then
+    CLI="opencode"
+elif command -v claude >/dev/null 2>&1; then
+    CLI="claude"
+    MODEL="${LGAICM_MODEL:-sonnet}"
+else
+    echo "Error: Neither 'opencode' nor 'claude' CLI found" >&2
+    exit 1
 fi
 
 show_help() {
-  cat <<EOF
+    cat <<EOF
 Usage: lgaicm [TYPE]
 
 Generate AI commit messages for staged changes.
 
-Model selection (based on diff size):
-  < ${SMALL_THRESHOLD} chars    → Claude (${SMALL_MODEL})
-  < ${MEDIUM_THRESHOLD} chars   → opencode (${MEDIUM_MODEL})
-  < ${LARGE_THRESHOLD} chars    → opencode (${LARGE_MODEL})
-  >= ${LARGE_THRESHOLD} chars   → opencode (${LARGE_MODEL}, truncated)
+Model: ${MODEL} (via ${CLI})
 
 Arguments:
   TYPE    Optional commit type (feat, fix, docs, etc.)
 
 Environment:
-  LGAICM_SMALL_MODEL       Small diff model (default: sonnet)
-  LGAICM_MEDIUM_MODEL      Medium diff model (default: google/gemini-2.5-flash-lite)
-  LGAICM_LARGE_MODEL       Large diff model (default: google/gemini-2.5-flash)
-  LGAICM_SMALL_THRESHOLD   Small threshold (default: 4000)
-  LGAICM_MEDIUM_THRESHOLD  Medium threshold (default: 50000)
-  LGAICM_LARGE_THRESHOLD   Truncation threshold (default: 200000)
-  LGAICM_MAX_SUGGESTIONS   Number of suggestions (default: 5)
+  LGAICM_MODEL            Model to use (default: google/gemini-3-flash-preview)
+  LGAICM_MAX_DIFF_SIZE    Truncation threshold (default: 200000)
+  LGAICM_MAX_SUGGESTIONS  Number of suggestions (default: 5)
 EOF
-  exit 0
+    exit 0
 }
 
 [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]] && show_help
@@ -58,42 +45,73 @@ COMMIT_TYPE="${1:-}"
 DIFF=$(git diff --cached --no-color 2>/dev/null || true)
 
 if [[ -z "$DIFF" ]]; then
-  echo "No staged changes" >&2
-  exit 1
+    echo "No staged changes" >&2
+    exit 1
 fi
 
 DIFF_SIZE=${#DIFF}
 
-# Determine which model to use (3 tiers)
-if [[ $DIFF_SIZE -lt $SMALL_THRESHOLD && "$HAS_CLAUDE" == "true" ]]; then
-  CLI="claude"
-  MODEL="$SMALL_MODEL"
-elif [[ $DIFF_SIZE -lt $MEDIUM_THRESHOLD && "$HAS_OPENCODE" == "true" ]]; then
-  CLI="opencode"
-  MODEL="$MEDIUM_MODEL"
-elif [[ "$HAS_OPENCODE" == "true" ]]; then
-  CLI="opencode"
-  MODEL="$LARGE_MODEL"
-elif [[ "$HAS_CLAUDE" == "true" ]]; then
-  CLI="claude"
-  MODEL="$SMALL_MODEL"
-else
-  echo "Error: No suitable AI CLI available" >&2
-  exit 1
-fi
-
-# Truncate if above large threshold
+# Truncate at newline boundary if above max size
 TRUNCATED=""
-if [[ $DIFF_SIZE -ge $LARGE_THRESHOLD ]]; then
-  DIFF="${DIFF:0:$LARGE_THRESHOLD}"
-  TRUNCATED=" [truncated]"
+if [[ $DIFF_SIZE -ge $MAX_DIFF_SIZE ]]; then
+    DIFF="${DIFF:0:$MAX_DIFF_SIZE}"
+    # Remove partial last line
+    DIFF="${DIFF%$'\n'*}"
+    TRUNCATED=" [truncated]"
 fi
 
 TYPE_HINT=""
 [[ -n "$COMMIT_TYPE" ]] && TYPE_HINT="Use type: ${COMMIT_TYPE}. "
 
-PROMPT="${TYPE_HINT}Generate ${MAX_SUGGESTIONS} conventional commit messages for this diff. Output ONLY the messages, one per line, no numbers or bullets:
+PROMPT="${TYPE_HINT}Generate ${MAX_SUGGESTIONS} conventional commits for this diff. Each commit has a title and a DETAILED description.
 
+GOOD commit examples:
+---
+feat(auth): add JWT refresh token rotation
+
+Why: Users were getting logged out unexpectedly when tokens expired
+during active sessions, causing frustration and data loss.
+
+What changed:
+- Added token refresh middleware that checks expiry 5 mins before timeout
+- Implemented rotation mechanism: new token issued on each refresh
+- Added refresh_token column to sessions table
+
+Technical notes: Uses Redis for token blacklisting to prevent replay attacks.
+---
+fix(api): handle race condition in batch processor
+
+Why: Production logs showed duplicate job processing causing data
+corruption in ~2% of batch runs.
+
+What changed:
+- Added distributed lock using Redis SETNX with 30s TTL
+- Jobs now acquire lock before processing, skip if already locked
+- Added metrics for lock contention monitoring
+
+Testing: Verified with 10 concurrent workers over 1000 jobs, 0 duplicates.
+---
+
+BAD commits (NEVER do this):
+- 'fix: fix bug' (no context - what bug? why did it happen?)
+- 'update code' (meaningless - what was updated?)
+- 'feat: add feature' (what feature? why is it needed?)
+- Single-line descriptions (too shallow, not useful for reviewers)
+
+Format EXACTLY like this (no markdown, no bullets, no numbers):
+---
+type(scope): imperative title under 72 chars
+
+Why: Explain the problem or motivation (1-2 sentences)
+
+What changed:
+- List the key changes made (2-4 items)
+- Be specific about files, functions, or components affected
+
+Technical notes: Any caveats, performance considerations, or migration steps.
+---
+
+Diff:
 ${DIFF}"
 
 SPIN_PID=""
@@ -101,25 +119,25 @@ SPIN_FIFO=$(mktemp -u)
 mkfifo "$SPIN_FIFO"
 
 cleanup() {
-  [[ -n "$SPIN_PID" ]] && kill "$SPIN_PID" 2>/dev/null
-  wait "$SPIN_PID" 2>/dev/null || true
-  rm -f "$SPIN_FIFO"
-  printf "\r\033[K\033[?25h" >&2
+    [[ -n "$SPIN_PID" ]] && kill "$SPIN_PID" 2>/dev/null
+    wait "$SPIN_PID" 2>/dev/null || true
+    rm -f "$SPIN_FIFO"
+    printf "\r\033[K\033[?25h" >&2
 }
 trap cleanup EXIT
 
-# Extract display name from model (e.g., "google/gemini-2.5-flash" -> "gemini-2.5-flash")
+# Extract display name from model (e.g., "google/gemini-3-flash-preview" -> "gemini-3-flash-preview")
 DISPLAY_MODEL="${MODEL##*/}"
 
 spin() {
-  local frames=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
-  local i=0
-  printf "\033[?25l" >&2
-  while ! read -t 0.1 <>"$SPIN_FIFO"; do
-    printf "\r\033[33m%s Generating (%s%s)...\033[0m" "${frames[i]}" "$DISPLAY_MODEL" "$TRUNCATED" >&2
-    i=$(( (i + 1) % ${#frames[@]} ))
-  done
-  printf "\r\033[K\033[?25h" >&2
+    local frames=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
+    local i=0
+    printf "\033[?25l" >&2
+    while ! read -t 0.1 <>"$SPIN_FIFO"; do
+        printf "\r\033[33m%s Generating (%s%s)...\033[0m" "${frames[i]}" "$DISPLAY_MODEL" "$TRUNCATED" >&2
+        i=$(( (i + 1) % ${#frames[@]} ))
+    done
+    printf "\r\033[K\033[?25h" >&2
 }
 
 spin &
@@ -127,9 +145,9 @@ SPIN_PID=$!
 
 # Generate messages with selected model
 if [[ "$CLI" == "claude" ]]; then
-  RESULT=$(claude -p --model "$MODEL" --max-turns 1 "$PROMPT" 2>/dev/null)
+    RESULT=$(claude -p --model "$MODEL" --max-turns 1 "$PROMPT" 2>/dev/null)
 else
-  RESULT=$(opencode run -m "$MODEL" "$PROMPT" 2>/dev/null)
+    RESULT=$(opencode run -m "$MODEL" "$PROMPT" 2>/dev/null)
 fi
 
 # Stop spinner
@@ -138,16 +156,49 @@ wait "$SPIN_PID" 2>/dev/null || true
 SPIN_PID=""
 
 if [[ -z "$RESULT" ]]; then
-  echo "Error: $CLI ($MODEL) returned empty response" >&2
-  exit 1
+    echo "Error: $CLI ($MODEL) returned empty response" >&2
+    exit 1
 fi
 
-# Filter valid conventional commit messages
-MESSAGES=$(echo "$RESULT" | sed 's/^[0-9. *-]*//' | grep -E '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore)(\([^)]+\))?!?:' | head -n "$MAX_SUGGESTIONS")
+# Parse commits separated by ---
+# Output format: TITLE<TAB>DESCRIPTION (one per line, description has \n escaped)
+COMMITS=""
+CURRENT_TITLE=""
+CURRENT_DESC=""
+IN_COMMIT=false
 
-if [[ -z "$MESSAGES" ]]; then
-  echo "Failed to generate valid commit messages" >&2
-  exit 1
+while IFS= read -r line; do
+    if [[ "$line" == "---" ]]; then
+        # Save previous commit if exists
+        if [[ -n "$CURRENT_TITLE" ]]; then
+            # Escape newlines in description
+            ESC_DESC=$(echo -n "$CURRENT_DESC" | tr '\n' '␤' | sed 's/^␤//;s/␤$//')
+            COMMITS+="${CURRENT_TITLE}\t${ESC_DESC}"$'\n'
+        fi
+        CURRENT_TITLE=""
+        CURRENT_DESC=""
+        IN_COMMIT=true
+    elif $IN_COMMIT && [[ -z "$CURRENT_TITLE" ]] && [[ "$line" =~ ^(feat|fix|docs|style|refactor|perf|test|build|ci|chore) ]]; then
+        CURRENT_TITLE="$line"
+    elif $IN_COMMIT && [[ -n "$CURRENT_TITLE" ]]; then
+        [[ -n "$CURRENT_DESC" ]] && CURRENT_DESC+=$'\n'
+        CURRENT_DESC+="$line"
+    fi
+done <<< "$RESULT"
+
+# Capture last commit
+if [[ -n "$CURRENT_TITLE" ]]; then
+    ESC_DESC=$(echo -n "$CURRENT_DESC" | tr '\n' '␤' | sed 's/^␤//;s/␤$//')
+    COMMITS+="${CURRENT_TITLE}\t${ESC_DESC}"$'\n'
 fi
 
-echo "$MESSAGES"
+COMMITS=$(echo -n "$COMMITS" | head -n "$MAX_SUGGESTIONS")
+
+if [[ -z "$COMMITS" ]]; then
+    echo "Failed to generate valid commit messages" >&2
+    echo "Raw output:" >&2
+    echo "$RESULT" >&2
+    exit 1
+fi
+
+echo -e "$COMMITS"

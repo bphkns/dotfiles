@@ -32,31 +32,68 @@ TYPE=$(printf "%b" "$TYPES" | fzf --height=40% --reverse --header="Select commit
 # Convert "AI defined" to empty string
 [[ "$TYPE" == "AI defined" ]] && TYPE=""
 
-# Generate commit messages
-MESSAGES=$(lgaicm "$TYPE") || { echo "Failed to generate messages" >&2; exit 1; }
+# Generate commit messages (format: TITLE<TAB>DESCRIPTION with ␤ for newlines)
+RAW_MESSAGES=$(lgaicm "$TYPE") || { echo "Failed to generate messages" >&2; exit 1; }
 
-# Select commit message
-MSG=$(echo "$MESSAGES" | fzf --height=40% --reverse --header="Select commit message (ctrl-e to edit)" --prompt="Message > " --bind "ctrl-e:execute(echo {q})+abort" --print-query | tail -1) || exit 0
+# Extract just titles for fzf display
+TITLES=$(echo "$RAW_MESSAGES" | cut -f1)
+
+# Select commit message with fzf
+# --print-query outputs: line1=query, line2=selection
+# ctrl-e allows custom editing (aborts fzf, uses query as message)
+FZF_OUTPUT=$(echo "$TITLES" | fzf --height=40% --reverse --header="Select commit message (ctrl-e to edit)" --prompt="Message > " --bind "ctrl-e:print-query+abort" --print-query 2>/dev/null) || true
+
+# Parse fzf output: prefer selection (line 2), fallback to query (line 1)
+QUERY=$(echo "$FZF_OUTPUT" | sed -n '1p')
+SELECTION=$(echo "$FZF_OUTPUT" | sed -n '2p')
+TITLE="${SELECTION:-$QUERY}"
 
 # Exit if no message
-[[ -z "$MSG" ]] && exit 0
+[[ -z "$TITLE" ]] && exit 0
 
-# Confirmation
+# Find description for selected title
+DESC=""
+if [[ -n "$SELECTION" ]]; then
+  # User selected from list, find matching description
+  DESC=$(echo "$RAW_MESSAGES" | grep -F "$TITLE" | head -1 | cut -f2 | tr '␤' '\n')
+fi
+
+# Confirmation - show both title and description with enhanced formatting
 echo ""
-echo -e "\033[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e "\033[1;33m Commit message:\033[0m"
-echo -e "\033[1;32m $MSG\033[0m"
-echo -e "\033[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "\033[1;34m┌─────────────────────────────────────────────────────────────────┐\033[0m"
+echo -e "\033[1;34m│\033[0m \033[1;33m📝 COMMIT PREVIEW\033[0m                                              \033[1;34m│\033[0m"
+echo -e "\033[1;34m├─────────────────────────────────────────────────────────────────┤\033[0m"
+echo -e "\033[1;34m│\033[0m \033[1;36mTitle:\033[0m                                                        \033[1;34m│\033[0m"
+echo -e "\033[1;34m│\033[0m   \033[1;32m$TITLE\033[0m"
+if [[ -n "$DESC" ]]; then
+  echo -e "\033[1;34m│\033[0m                                                                 \033[1;34m│\033[0m"
+  echo -e "\033[1;34m│\033[0m \033[1;36mDescription:\033[0m                                                  \033[1;34m│\033[0m"
+  # Word-wrap description at ~60 chars for readability
+  echo "$DESC" | fold -s -w 60 | while IFS= read -r line; do
+    echo -e "\033[1;34m│\033[0m   \033[0;37m$line\033[0m"
+  done
+fi
+echo -e "\033[1;34m└─────────────────────────────────────────────────────────────────┘\033[0m"
 echo ""
 
 CONFIRM=$(printf "Yes, commit\nNo, cancel" | fzf --height=20% --reverse --header="Confirm commit?" --prompt="Confirm > ") || exit 0
 
 if [[ "$CONFIRM" == "Yes, commit" ]]; then
-  if git commit -m "$MSG"; then
-    echo -e "\n\033[1;32m✓ Committed successfully!\033[0m"
+  # Commit with title and optional description
+  if [[ -n "$DESC" ]]; then
+    if git commit -m "$TITLE" -m "$DESC"; then
+      echo -e "\n\033[1;32m✓ Committed successfully!\033[0m"
+    else
+      echo -e "\n\033[1;31m✗ Commit failed\033[0m" >&2
+      exit 1
+    fi
   else
-    echo -e "\n\033[1;31m✗ Commit failed\033[0m" >&2
-    exit 1
+    if git commit -m "$TITLE"; then
+      echo -e "\n\033[1;32m✓ Committed successfully!\033[0m"
+    else
+      echo -e "\n\033[1;31m✗ Commit failed\033[0m" >&2
+      exit 1
+    fi
   fi
 else
   echo -e "\n\033[1;31m✗ Cancelled\033[0m"
