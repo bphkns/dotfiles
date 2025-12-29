@@ -60,3 +60,5 @@ vim.keymap.set("n", "<leader>bf", ":bfirst<CR>", { silent = true, desc = "First 
 
 -- Go to last buffer
 vim.keymap.set("n", "<leader>bl", ":blast<CR>", { silent = true, desc = "Last buffer" })
+
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
