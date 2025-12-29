@@ -54,26 +54,20 @@ TITLE="${SELECTION:-$QUERY}"
 # Find description for selected title
 DESC=""
 if [[ -n "$SELECTION" ]]; then
-  # User selected from list, find matching description
-  DESC=$(echo "$RAW_MESSAGES" | grep -F "$TITLE" | head -1 | cut -f2 | tr '␤' '\n')
+  # User selected from list, find matching description (--text forces text mode for special chars)
+  DESC=$(echo "$RAW_MESSAGES" | grep -aF "$TITLE" | head -1 | cut -f2 | tr '␤' '\n')
 fi
 
-# Confirmation - show both title and description with enhanced formatting
+# Confirmation - show both title and description
 echo ""
-echo -e "\033[1;34m┌─────────────────────────────────────────────────────────────────┐\033[0m"
-echo -e "\033[1;34m│\033[0m \033[1;33m📝 COMMIT PREVIEW\033[0m                                              \033[1;34m│\033[0m"
-echo -e "\033[1;34m├─────────────────────────────────────────────────────────────────┤\033[0m"
-echo -e "\033[1;34m│\033[0m \033[1;36mTitle:\033[0m                                                        \033[1;34m│\033[0m"
-echo -e "\033[1;34m│\033[0m   \033[1;32m$TITLE\033[0m"
+echo -e "\033[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "\033[1;33m Commit title:\033[0m"
+echo -e "\033[1;32m $TITLE\033[0m"
 if [[ -n "$DESC" ]]; then
-  echo -e "\033[1;34m│\033[0m                                                                 \033[1;34m│\033[0m"
-  echo -e "\033[1;34m│\033[0m \033[1;36mDescription:\033[0m                                                  \033[1;34m│\033[0m"
-  # Word-wrap description at ~60 chars for readability
-  echo "$DESC" | fold -s -w 60 | while IFS= read -r line; do
-    echo -e "\033[1;34m│\033[0m   \033[0;37m$line\033[0m"
-  done
+  echo -e "\033[1;33m Description:\033[0m"
+  echo -e "\033[0;37m$DESC\033[0m"
 fi
-echo -e "\033[1;34m└─────────────────────────────────────────────────────────────────┘\033[0m"
+echo -e "\033[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo ""
 
 CONFIRM=$(printf "Yes, commit\nNo, cancel" | fzf --height=20% --reverse --header="Confirm commit?" --prompt="Confirm > ") || exit 0
