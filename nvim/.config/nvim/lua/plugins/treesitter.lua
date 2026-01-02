@@ -34,8 +34,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     lazy = false,
     branch = "main",
-    build = ":TSUpdate",
-    config = function()
+    build = function()
       require("nvim-treesitter").install({
         "lua",
         "vim",
@@ -53,6 +52,9 @@ return {
         "dockerfile",
         "prisma",
       })
+    end,
+    config = function()
+      require("nvim-treesitter").setup({})
     end,
   },
   {
