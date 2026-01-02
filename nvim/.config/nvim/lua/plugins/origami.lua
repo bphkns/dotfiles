@@ -2,21 +2,17 @@ return {
   {
     'chrisgrieser/nvim-origami',
     event = 'VeryLazy',
-    opts = {},
+    opts = {
+      pauseFoldsOnSearch = true,
+      foldtext = { enabled = false },
+      foldKeymaps = {
+        setup = false,
+        closeOnlyOnFirstColumn = false,
+      },
+    },
     init = function()
       vim.opt.foldlevel = 99
       vim.opt.foldlevelstart = 99
-      vim.opt.foldtext = ''
-      vim.diagnostic.config({
-        signs = {
-          text = {
-            [vim.diagnostic.severity.ERROR] = ' ',
-            [vim.diagnostic.severity.WARN] = ' ',
-            [vim.diagnostic.severity.INFO] = ' ',
-            [vim.diagnostic.severity.HINT] = ' ',
-          },
-        },
-      })
     end,
     keys = {
       {

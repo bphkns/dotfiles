@@ -12,8 +12,15 @@ return {
     },
     opts = {
       diagnostics = {
-        virtual_text = false, -- Handled by tiny-inline-diagnostic
-        signs = true,
+        virtual_text = false,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = " ",
+            [vim.diagnostic.severity.WARN] = " ",
+            [vim.diagnostic.severity.INFO] = " ",
+            [vim.diagnostic.severity.HINT] = " ",
+          },
+        },
         update_in_insert = false,
         severity_sort = true,
       },

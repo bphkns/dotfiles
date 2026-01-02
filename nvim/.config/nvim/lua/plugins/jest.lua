@@ -7,7 +7,7 @@ return {
       "antoinemadec/FixCursorHold.nvim",
       "nvim-treesitter/nvim-treesitter",
       "haydenmeade/neotest-jest",
-      "marilari88/neotest-vitest",
+      { "marilari88/neotest-vitest", branch = "main" },
     },
     event = "VeryLazy",
     keys = {

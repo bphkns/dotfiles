@@ -11,7 +11,7 @@ vim.treesitter.language.register("html", "mjml")
 vim.b.autoformat = false
 
 -- Disable formatting for all currently attached LSP clients
-local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+local clients = vim.lsp.get_clients({ bufnr = 0 })
 for _, client in ipairs(clients) do
   client.server_capabilities.documentFormattingProvider = false
   client.server_capabilities.documentRangeFormattingProvider = false

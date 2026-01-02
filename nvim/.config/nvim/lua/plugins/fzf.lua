@@ -2,6 +2,7 @@
 return {
   {
     "ibhagwan/fzf-lua",
+    branch = "main",
     dependencies = { "echasnovski/mini.icons" },
     opts = {
       winopts    = {
