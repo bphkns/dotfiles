@@ -80,11 +80,21 @@ if [[ -d "$HOME/google-cloud-sdk" ]]; then
     source "$HOME/google-cloud-sdk/completion.zsh.inc"
 fi
 
-# npm completion
-(( $+commands[npm] )) && eval "$(npm completion)"
+# npm completion (deferred)
+zinit ice wait"1" lucid
+zinit light lukechilds/zsh-nvm 2>/dev/null || {
+    (( $+commands[npm] )) && zinit ice wait"1" lucid atload'eval "$(npm completion)"'; zinit light zdharma-continuum/null
+}
 
-# Zoxide - smart directory jumping (z, zz for interactive)
-eval "$(zoxide init zsh)"
+# Zoxide (cached)
+_zsh_cache_dir="$HOME/.cache/zsh"
+[[ -d "$_zsh_cache_dir" ]] || mkdir -p "$_zsh_cache_dir"
+_zoxide_cache="$_zsh_cache_dir/zoxide.zsh"
+_zoxide_bin="$(command -v zoxide)"
+if [[ ! -f "$_zoxide_cache" || "$_zoxide_bin" -nt "$_zoxide_cache" ]]; then
+    zoxide init zsh > "$_zoxide_cache"
+fi
+source "$_zoxide_cache"
 alias zz='__zoxide_zi'
 
 # enable color support of ls and also add handy aliases
@@ -111,12 +121,12 @@ alias c='clear'
 # alert alias
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# FZF config - Gruvbox Material Dark
+# FZF config - Vesper
 export FZF_DEFAULT_OPTS="--highlight-line --info=inline-right --ansi --layout=reverse --border=none \
-  --color=bg:#282828,fg:#d4be98,hl:#a9b665 \
-  --color=bg+:#3c3836,fg+:#d4be98,hl+:#a9b665 \
-  --color=info:#7daea3,prompt:#e78a4e,pointer:#d3869b \
-  --color=marker:#a9b665,spinner:#89b482,header:#7daea3"
+  --color=bg:#101010,fg:#FFFFFF,hl:#99FFE4 \
+  --color=bg+:#1A1A1A,fg+:#FFFFFF,hl+:#99FFE4 \
+  --color=info:#ADD1DE,prompt:#FFC799,pointer:#D9B3FF \
+  --color=marker:#99FFE4,spinner:#99FFE4,header:#ADD1DE"
 export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
@@ -124,7 +134,7 @@ export FZF_ALT_C_OPTS="--preview 'eza --icons --group-directories-first {}'"
 export FZF_COMPLETION_OPTS="--bind 'tab:down,shift-tab:up'"
 
 # Mise (cached activation + completions)
-_mise_cache_dir="$HOME/.cache/zsh"
+_mise_cache_dir="$_zsh_cache_dir"
 _mise_activate="$_mise_cache_dir/mise-activate.zsh"
 _mise_comp="$_mise_cache_dir/_mise"
 _mise_bin="$(command -v mise)"
@@ -135,8 +145,13 @@ if [[ ! -f "$_mise_activate" || "$_mise_bin" -nt "$_mise_activate" ]]; then
 fi
 source "$_mise_activate"
 
-# Starship prompt
-eval "$(starship init zsh)"
+# Starship prompt (cached)
+_starship_cache="$_mise_cache_dir/starship.zsh"
+_starship_bin="$(command -v starship)"
+if [[ ! -f "$_starship_cache" || "$_starship_bin" -nt "$_starship_cache" ]]; then
+    starship init zsh > "$_starship_cache"
+fi
+source "$_starship_cache"
 
 # Editor
 export EDITOR="nvim"

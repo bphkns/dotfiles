@@ -9,16 +9,17 @@ return {
         win = {
           kind = "float",
         },
+        mappings = {
+          ["<C-e>"] = "CloseView", -- toggle close with same key
+        },
       },
     },
   },
-  keys = {
-    {
-      "<C-e>",
-      function()
-        require("fyler").open({ kind = "float" })
-      end,
-      desc = "Toggle Explorer",
-    },
-  },
+  config = function(_, opts)
+    local fyler = require("fyler")
+    fyler.setup(opts)
+    vim.keymap.set("n", "<C-e>", function()
+      fyler.toggle({ kind = "float", dir = vim.fn.getcwd() })
+    end, { desc = "Toggle Explorer" })
+  end,
 }

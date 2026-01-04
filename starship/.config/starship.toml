@@ -1,7 +1,21 @@
 format = "$os$directory$git_branch$git_status$nodejs$python$rust$golang$lua$nix_shell$cmd_duration$line_break$character"
 
+# Vesper color palette
+palette = "vesper"
+
+[palettes.vesper]
+fg = "#FFFFFF"
+muted = "#A0A0A0"
+orange = "#FFC799"
+cyan = "#99FFE4"
+blue = "#ADD1DE"
+purple = "#D9B3FF"
+red = "#F5A191"
+grey = "#6C6C6C"
+
 [os]
 disabled = false
+style = "fg:orange"
 
 [os.symbols]
 Pop = "🐧 "
@@ -11,12 +25,13 @@ disabled = true
 
 [character]
 error_symbol = "[󰘧](bold red)"
-success_symbol = "[󰘧](bold green)"
+success_symbol = "[󰘧](bold cyan)"
 
 [directory]
 truncate_to_repo = true
 truncation_symbol = "…/"
 truncation_length = 1
+style = "fg:orange bold"
 
 [dotnet]
 detect_files = ["global.json", "Directory.Build.props", "Directory.Build.targets", "Packages.props"]
@@ -24,10 +39,11 @@ detect_files = ["global.json", "Directory.Build.props", "Directory.Build.targets
 [git_branch]
 symbol = " "
 truncation_length = 18
+style = "fg:purple"
 
 [git_status]
-staged = "[✓$count](green)"
-modified = "[✎$count](yellow)"
+staged = "[✓$count](cyan)"
+modified = "[✎$count](orange)"
 untracked = "[★$count](blue)"
 deleted = "[✗$count](red)"
 stashed = "[📦](purple)"
@@ -43,26 +59,32 @@ disabled = true
 
 [golang]
 symbol = " "
+style = "fg:cyan"
 
 [lua]
 symbol = " "
+style = "fg:blue"
 
 [nix_shell]
 symbol = " "
+style = "fg:purple"
 
 [nodejs]
 symbol = "⬢ "
+style = "fg:cyan"
 
 [python]
 symbol = " "
+style = "fg:orange"
 
 [rust]
 symbol = " "
+style = "fg:orange"
 
 [cmd_duration]
 min_time = 500
 format = "[⏳ $duration]($style) "
-style = "yellow"
+style = "fg:muted"
 
 [package]
 disabled = true
