@@ -5,3 +5,7 @@
 lazygit/.config/lazygit/state.yml
 .avante_chat_history
 opencode/.config/opencode/plugin/shell-strategy/
+
+# Nix
+result
+.direnv

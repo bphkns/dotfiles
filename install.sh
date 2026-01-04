@@ -1,57 +1,56 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Master Installation Script
-# Orchestrates the execution of modular scripts in install-scripts/
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-set -e
+echo "=== Dotfiles Installation (Nix + Stow) ==="
 
-# Parse args
-DRY_RUN=0
-for arg in "$@"; do
-    case $arg in
-        --dry-run)
-            DRY_RUN=1
-            export DRY_RUN
-            echo "!!! RUNNING IN DRY-RUN MODE !!!"
-            ;;
-    esac
-done
-
-DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
-SCRIPTS_DIR="$DOTFILES_DIR/install-scripts"
-LOG_FILE="$DOTFILES_DIR/install.log"
-
-# Source library for colors and logging
-if [ -f "$SCRIPTS_DIR/lib.sh" ]; then
-    source "$SCRIPTS_DIR/lib.sh"
-else
-    echo "Error: Library file not found at $SCRIPTS_DIR/lib.sh"
-    exit 1
+# Check if Nix is installed
+if ! command -v nix &> /dev/null; then
+    echo "Nix not found. Installing..."
+    curl -L https://nixos.org/nix/install | sh -s -- --daemon
+    echo "Please restart your shell and run this script again."
+    exit 0
 fi
 
-log_info "Starting Dotfiles Installation..."
-log_info "Logs will be written to $LOG_FILE"
+# Enable flakes if not already
+mkdir -p ~/.config/nix
+if ! grep -q "experimental-features" ~/.config/nix/nix.conf 2>/dev/null; then
+    echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+fi
 
-# Make scripts executable
-chmod +x "$SCRIPTS_DIR"/*.sh
+echo "=== Installing packages via home-manager ==="
+cd "$DOTFILES_DIR"
 
-# Find and run scripts
-for script in "$SCRIPTS_DIR"/[0-9][0-9]-*.sh; do
-    if [ -f "$script" ]; then
-        script_name=$(basename "$script")
-        log_info "Executing: $script_name"
-        
-        if "$script"; then
-            log_success "Completed: $script_name"
-        else
-            log_error "Failed: $script_name"
-            log_error "Please check the log file for details."
-            log_error "Fix the issue and rerun this script to continue."
-            exit 1
-        fi
-        echo "---------------------------------------------------"
+# Build and activate home-manager configuration
+nix run home-manager -- switch --flake .#bikash
+
+echo "=== Stowing config files ==="
+# List of stow packages (directories with configs)
+STOW_PACKAGES=(
+    alacritty
+    bash
+    bat
+    ghostty
+    lazygit
+    local-bin
+    mcphub
+    mise
+    nvim
+    opencode
+    scripts
+    starship
+    tmux
+    xdph
+    zsh
+)
+
+for pkg in "${STOW_PACKAGES[@]}"; do
+    if [[ -d "$DOTFILES_DIR/$pkg" ]]; then
+        echo "Stowing $pkg..."
+        stow -d "$DOTFILES_DIR" -t "$HOME" "$pkg" --restow
     fi
 done
 
-log_success "All installation steps finished successfully!"
-log_info "Please restart your shell or log out/in for changes to take full effect."
+echo "=== Installation complete! ==="
+echo "Restart your shell to apply changes."
