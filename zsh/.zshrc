@@ -153,6 +153,14 @@ if [[ ! -f "$_starship_cache" || "$_starship_bin" -nt "$_starship_cache" ]]; the
 fi
 source "$_starship_cache"
 
+# Opencode completion (cached)
+_opencode_comp="$_mise_cache_dir/_opencode"
+_opencode_bin="$(command -v opencode)"
+if [[ -n "$_opencode_bin" && (! -f "$_opencode_comp" || "$_opencode_bin" -nt "$_opencode_comp") ]]; then
+    opencode completion > "$_opencode_comp"
+fi
+[[ -f "$_opencode_comp" ]] && source "$_opencode_comp"
+
 # Editor
 export EDITOR="nvim"
 
