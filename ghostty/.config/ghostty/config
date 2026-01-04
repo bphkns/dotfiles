@@ -1,11 +1,7 @@
 theme = Vesper
 font-family = ZedMono NFM
 font-size = 10
-cursor-style = bar
-cursor-style-blink = true
 font-feature = +NWID
-custom-shader = ~/.config/ghostty/shaders/cursor_tail.glsl
-custom-shader-animation = always
 mouse-hide-while-typing = true
 unfocused-split-opacity = 1.0
 window-decoration = false
