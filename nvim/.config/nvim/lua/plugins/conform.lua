@@ -6,23 +6,28 @@ local function is_effect_project(ctx)
     return effect_project_cache[dir]
   end
 
-  local pkg_path = vim.fs.find("package.json", { path = ctx.filename, upward = true, stop = vim.uv.os_homedir() })[1]
-  if not pkg_path then
-    effect_project_cache[dir] = false
-    return false
+  -- Search ALL package.json files upward (monorepo support)
+  local pkg_paths = vim.fs.find("package.json", {
+    path = ctx.filename,
+    upward = true,
+    stop = vim.uv.os_homedir(),
+    limit = math.huge,
+  })
+
+  for _, pkg_path in ipairs(pkg_paths) do
+    local f = io.open(pkg_path, "r")
+    if f then
+      local content = f:read("*a")
+      f:close()
+      if content:match('"@effect/eslint%-plugin"') then
+        effect_project_cache[dir] = true
+        return true
+      end
+    end
   end
 
-  local f = io.open(pkg_path, "r")
-  if not f then
-    effect_project_cache[dir] = false
-    return false
-  end
-  local content = f:read("*a")
-  f:close()
-
-  local has_effect = content:match('"@effect/eslint%-plugin"') ~= nil
-  effect_project_cache[dir] = has_effect
-  return has_effect
+  effect_project_cache[dir] = false
+  return false
 end
 
 vim.api.nvim_create_user_command("ConformDisable", function(args)

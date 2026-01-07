@@ -121,7 +121,11 @@ return {
           end,
         },
         eslint = {
-          settings = { format = { enable = true }, run = "onSave" },
+          settings = {
+            format = { enable = true },
+            run = "onSave",
+            experimental = { useFlatConfig = true },
+          },
         },
         html = {
           filetypes = { "html", "mjml" }, -- Added mjml as per original
