@@ -1,0 +1,45 @@
+themes {
+    bamboo {
+        // Legacy colors (for panes/text)
+        fg "#f1e9d2"
+        bg "#252623"
+        black "#1c1e1b"
+        red "#e75a7c"
+        green "#8fb573"
+        yellow "#dbb651"
+        blue "#57a5e5"
+        magenta "#aaaaff"
+        cyan "#70c2be"
+        white "#f1e9dc"
+        orange "#dbb651"
+
+        // UI Components (for status bar)
+        ribbon_unselected {
+            base "#f1e9d2"
+            background "#1c1e1b"
+            emphasis_0 "#8fb573"
+            emphasis_1 "#dbb651"
+            emphasis_2 "#57a5e5"
+            emphasis_3 "#e75a7c"
+        }
+        ribbon_selected {
+            base "#252623"
+            background "#8fb573"
+            emphasis_0 "#f1e9d2"
+            emphasis_1 "#dbb651"
+            emphasis_2 "#57a5e5"
+            emphasis_3 "#e75a7c"
+        }
+        text {
+            base "#f1e9d2"
+            background "#252623"
+            emphasis_0 "#8fb573"
+            emphasis_1 "#dbb651"
+            emphasis_2 "#57a5e5"
+            emphasis_3 "#e75a7c"
+        }
+        frame {
+            base "#8fb573"
+        }
+    }
+}

@@ -1,27 +1,27 @@
-# Gruvbox Material Dark theme
+# Bamboo theme
 [colors.primary]
-background = "#282828"
-foreground = "#d4be98"
+background = "#252623"
+foreground = "#f1e9d2"
 
 [colors.normal]
-black = "#3c3836"
-red = "#ea6962"
-green = "#a9b665"
-yellow = "#d8a657"
-blue = "#7daea3"
-magenta = "#d3869b"
-cyan = "#89b482"
-white = "#d4be98"
+black = "#1c1e1b"
+red = "#e75a7c"
+green = "#8fb573"
+yellow = "#dbb651"
+blue = "#57a5e5"
+magenta = "#aaaaff"
+cyan = "#70c2be"
+white = "#f1e9dc"
 
 [colors.bright]
-black = "#5a524c"
-red = "#ea6962"
-green = "#a9b665"
-yellow = "#d8a657"
-blue = "#7daea3"
-magenta = "#d3869b"
-cyan = "#89b482"
-white = "#d4be98"
+black = "#5b5e5a"
+red = "#e75a7c"
+green = "#8fb573"
+yellow = "#dbb651"
+blue = "#57a5e5"
+magenta = "#aaaaff"
+cyan = "#70c2be"
+white = "#fff8f0"
 
 [env]
 TERM = "xterm-256color"

@@ -1,17 +1,18 @@
 format = "$os$directory$git_branch$git_status$nodejs$python$rust$golang$lua$nix_shell$cmd_duration$line_break$character"
 
-# Vesper color palette
-palette = "vesper"
+# Bamboo color palette
+palette = "bamboo"
 
-[palettes.vesper]
-fg = "#FFFFFF"
-muted = "#A0A0A0"
-orange = "#FFC799"
-cyan = "#99FFE4"
-blue = "#ADD1DE"
-purple = "#D9B3FF"
-red = "#F5A191"
-grey = "#6C6C6C"
+[palettes.bamboo]
+fg = "#f1e9d2"
+muted = "#5b5e5a"
+orange = "#dbb651"
+cyan = "#70c2be"
+blue = "#57a5e5"
+purple = "#aaaaff"
+red = "#e75a7c"
+grey = "#5b5e5a"
+green = "#8fb573"
 
 [os]
 disabled = false

@@ -121,12 +121,12 @@ alias c='clear'
 # alert alias
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# FZF config - Vesper
+# FZF config - Bamboo
 export FZF_DEFAULT_OPTS="--highlight-line --info=inline-right --ansi --layout=reverse --border=none \
-  --color=bg:#101010,fg:#FFFFFF,hl:#99FFE4 \
-  --color=bg+:#1A1A1A,fg+:#FFFFFF,hl+:#99FFE4 \
-  --color=info:#ADD1DE,prompt:#FFC799,pointer:#D9B3FF \
-  --color=marker:#99FFE4,spinner:#99FFE4,header:#ADD1DE"
+  --color=bg:#252623,fg:#f1e9d2,hl:#8fb573 \
+  --color=bg+:#3a3d37,fg+:#f1e9d2,hl+:#8fb573 \
+  --color=info:#57a5e5,prompt:#dbb651,pointer:#aaaaff \
+  --color=marker:#8fb573,spinner:#8fb573,header:#57a5e5"
 export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"

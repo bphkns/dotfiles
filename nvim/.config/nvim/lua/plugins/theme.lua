@@ -1,10 +1,11 @@
 return {
   {
-    "nexxeln/vesper.nvim",
+    "ribru17/bamboo.nvim",
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme("vesper")
+      require("bamboo").setup({})
+      require("bamboo").load()
     end,
   },
 }
