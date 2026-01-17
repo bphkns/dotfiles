@@ -1,33 +1,24 @@
 return {
-  "sudo-tee/opencode.nvim",
+  "NickvanDyke/opencode.nvim",
   keys = {
-    { "<leader>ag", desc = "Toggle opencode" },
-    { "<leader>ai", desc = "Open input (current session)" },
-    { "<leader>aI", desc = "Open input (new session)" },
-    { "<leader>ao", desc = "Open output window" },
-    { "<leader>at", desc = "Toggle focus" },
-    { "<leader>aq", desc = "Close opencode" },
-    { "<leader>as", desc = "Select session" },
-    { "<leader>ad", desc = "Open diff view" },
+    { "<leader>aa", desc = "Ask opencode" },
+    { "<leader>ax", desc = "Execute opencode action" },
+    { "<leader>at", desc = "Toggle opencode" },
+  },
+  dependencies = {
+    { "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} } },
   },
   config = function()
-    require("opencode").setup({
-      keymap_prefix = "<leader>a",
-      preferred_completion = "blink",
-      dependencies = {
-        "nvim-lua/plenary.nvim",
-        {
-          "MeanderingProgrammer/render-markdown.nvim",
-          opts = {
-            anti_conceal = { enabled = false },
-            file_types = { "markdown", "opencode_output" },
-          },
-          ft = { "markdown", "Avante", "copilot-chat", "opencode_output" },
-        },
-        "saghen/blink.cmp",
-        "ibhagwan/fzf-lua",
-      },
-    })
+    ---@type opencode.Opts
+    vim.g.opencode_opts = {}
+
+    vim.o.autoread = true
+
+    vim.keymap.set({ "n", "x" }, "<leader>aa", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "Ask opencode" })
+    vim.keymap.set({ "n", "x" }, "<leader>ax", function() require("opencode").select() end, { desc = "Execute opencode action" })
+    vim.keymap.set({ "n", "t" }, "<leader>at", function() require("opencode").toggle() end, { desc = "Toggle opencode" })
+
+    vim.keymap.set({ "n", "x" }, "<leader>ago", function() return require("opencode").operator("@this ") end, { desc = "Add range to opencode", expr = true })
+    vim.keymap.set("n", "<leader>agoo", function() return require("opencode").operator("@this ") .. "_" end, { desc = "Add line to opencode", expr = true })
   end,
-  preferred_picker = "fzf",
 }

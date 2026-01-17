@@ -142,18 +142,31 @@ return {
       -- Incremental selection
       local nodes = {}
 
+      local function has_parser()
+        local ok, parser = pcall(vim.treesitter.get_parser)
+        return ok and parser ~= nil
+      end
+
       local function select_node(node)
         if not node then
           return
         end
-        local sr, sc, er, ec = node:range()
+        local ok, sr, sc, er, ec = pcall(node.range, node)
+        if not ok then
+          nodes = {}
+          return
+        end
         vim.cmd("normal! \27") -- exit to normal first
         vim.api.nvim_win_set_cursor(0, { sr + 1, sc })
         vim.cmd("normal! v")
         vim.api.nvim_win_set_cursor(0, { er + 1, math.max(0, ec - 1) })
       end
 
-      vim.keymap.set("n", "<C-Space>", function()
+      vim.keymap.set("n", "<M-v>", function()
+        if not has_parser() then
+          vim.notify("Treesitter not available for this buffer", vim.log.levels.WARN)
+          return
+        end
         nodes = {}
         local node = vim.treesitter.get_node()
         if node then
@@ -162,7 +175,7 @@ return {
         end
       end, { desc = "Start incremental selection" })
 
-      vim.keymap.set("x", "<C-Space>", function()
+      vim.keymap.set("x", "<M-v>", function()
         local current = nodes[#nodes]
         if not current then
           return
