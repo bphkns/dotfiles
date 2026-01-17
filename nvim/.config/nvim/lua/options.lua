@@ -56,7 +56,7 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 -- Shows a vertical line at column 100 for code alignment
-vim.opt.colorcolumn = "100"
+vim.opt.colorcolumn = "80"
 
 -- Enable clipboard sync with system clipboard
 vim.opt.clipboard = "unnamedplus"

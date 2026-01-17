@@ -1,1 +1,3 @@
-Be extremely concise, less reading overhead. Sacrifice grammar for the sake of concision.
+- Be extremely concise, less reading overhead. Sacrifice grammar for the sake of concision.
+- Make the plan extremely concise. Sacrifice grammar for the sake of concision.
+- At the end of each plan, give me a list of unresolved questions to answer, if any.
