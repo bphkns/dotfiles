@@ -9,7 +9,7 @@ return {
   lazy = false,
   opts = {
     window = {
-      position = "float",
+      position = "right",
     },
   },
   config = function(_, opts)
@@ -19,7 +19,9 @@ return {
         toggle = true,
         source = "filesystem",
         dir = vim.fn.getcwd(),
-        position = "float",
+        position = "right",
+        reveal_file = vim.fn.expand("%:p"),
+        reveal_force_cwd = true,
       })
     end, { desc = "Toggle Explorer" })
   end,

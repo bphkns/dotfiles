@@ -124,7 +124,6 @@ return {
           settings = {
             format = { enable = true },
             run = "onSave",
-            experimental = { useFlatConfig = true },
           },
         },
         html = {

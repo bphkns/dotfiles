@@ -62,3 +62,9 @@ vim.keymap.set("n", "<leader>bf", ":bfirst<CR>", { silent = true, desc = "First 
 vim.keymap.set("n", "<leader>bl", ":blast<CR>", { silent = true, desc = "Last buffer" })
 
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
+
+-- Terminal mode navigation (for lazygit, etc)
+vim.keymap.set("t", "<C-h>", "<C-\\><C-N><C-h>", { noremap = true, desc = "Navigate left from terminal" })
+vim.keymap.set("t", "<C-j>", "<C-\\><C-N><C-j>", { noremap = true, desc = "Navigate down from terminal" })
+vim.keymap.set("t", "<C-k>", "<C-\\><C-N><C-k>", { noremap = true, desc = "Navigate up from terminal" })
+vim.keymap.set("t", "<C-l>", "<C-\\><C-N><C-l>", { noremap = true, desc = "Navigate right from terminal" })

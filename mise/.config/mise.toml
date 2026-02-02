@@ -1,3 +1,4 @@
 [tools]
 bun = "latest"
+java = "latest"
 usage = "latest"

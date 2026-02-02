@@ -200,3 +200,7 @@ else
     printf '\033[38;2;255;162;71m󰔛 %.0fms\033[0m\n' $_zsh_startup_ms   # Orange - slow
 fi
 unset _zsh_startup_ms _zsh_start_time
+. "/home/bikash/.acme.sh/acme.sh.env"
+
+# Added by git-ai installer on Tue Jan 27 12:08:23 PM IST 2026
+export PATH="/home/bikash/.git-ai/bin:$PATH"
