@@ -1,0 +1,23 @@
+opencode/.config/opencode/agent/socratic-tutor.md
+  241ca87df8c50210 1-102
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.0.37",
+  "base_commit_sha": "32896cd005c967bc22cb6fa79a3f24cd2643dbef",
+  "prompts": {
+    "241ca87df8c50210": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_3eb89a893ffeVL68dwbM3NIYa9",
+        "model": "anthropic/claude-opus-4-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>",
+      "messages": [],
+      "total_additions": 102,
+      "total_deletions": 0,
+      "accepted_lines": 102,
+      "overriden_lines": 0
+    }
+  }
+}
