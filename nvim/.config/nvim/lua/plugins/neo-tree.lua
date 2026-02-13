@@ -10,6 +10,37 @@ return {
   opts = {
     window = {
       position = "right",
+      mappings = {
+        ["Y"] = function(state)
+          local node = state.tree:get_node()
+          local filepath = node:get_id()
+          local filename = node.name
+          local relative = vim.fn.fnamemodify(filepath, ":.")
+          local stem = vim.fn.fnamemodify(filename, ":r")
+
+          local options = {
+            "1. File name: " .. filename,
+            "2. Relative path: " .. relative,
+            "3. Full path: " .. filepath,
+            "4. File name (no ext): " .. stem,
+          }
+
+          vim.ui.select(options, { prompt = "Copy to clipboard:" }, function(choice)
+            if not choice then return end
+            local values = { filename, relative, filepath, stem }
+            local idx = tonumber(choice:sub(1, 1))
+            local value = values[idx]
+            vim.fn.setreg("+", value)
+            vim.notify("Copied: " .. value)
+          end)
+        end,
+      },
+    },
+    filesystem = {
+      follow_current_file = {
+        enabled = true,
+        leave_dirs_open = true,
+      },
     },
   },
   config = function(_, opts)

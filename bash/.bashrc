@@ -95,3 +95,6 @@ function yy() {
     [[ -n "$cwd" && "$cwd" != "$PWD" ]] && builtin cd -- "$cwd"
     rm -f -- "$tmp"
 }
+
+# Added by git-ai installer on Tue Feb  3 09:56:25 PM IST 2026
+export PATH="/home/bikash/.git-ai/bin:$PATH"
