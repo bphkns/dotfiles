@@ -4,3 +4,4 @@
 - When you need to search docs, use `context7` tools.
 - If you are unsure how to do something, use `gh_grep` to search code examples from GitHub.
 - Use exa tools when required for searching
+- For any CSS/Tailwind implementation or review, proactively apply `defensive-css` skill guardrails.
