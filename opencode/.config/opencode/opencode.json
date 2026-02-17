@@ -34,6 +34,29 @@
       "oauth": {}
     }
   },
+  "provider": {
+    "github-copilot": {
+      "models": {
+        "gpt-5.3-codex": {
+          "name": "GPT 5.3 Codex",
+          "capabilities": {
+            "reasoning": true
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            }
+          }
+        }
+      }
+    }
+  },
   "autoshare": false,
   "autoupdate": true,
   "plugin": [

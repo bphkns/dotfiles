@@ -129,6 +129,7 @@ return {
         html = {
           filetypes = { "html", "mjml" }, -- Added mjml as per original
         },
+        tailwindcss = {},
         cssls = {},
         emmet_ls = {
           filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
