@@ -1,0 +1,29 @@
+nvim/.config/nvim/lua/plugins/conform.lua
+  87689e40cfd699a0 1-4,6-11,14-29,32-37,39,49,58-62,64-77,80-83,86-90,92-96,99-112,114-119,121-126,128-132,134-143,145-155,157-163,166-170,173-176,178-180,183-185,187-196,200-201,204,207,272-273,287-288,293-294,299-300,305-306,311-316,319-321
+zsh/.zshrc
+  87689e40cfd699a0 184-186
+nvim/.config/nvim/lua/plugins/blink-cmp.lua
+  87689e40cfd699a0 20-21,23,28-29
+nvim/.config/nvim/lua/plugins/cursortab.lua
+  87689e40cfd699a0 1-51
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.12",
+  "base_commit_sha": "5aaaea7a1499948d293f845f27bc1c118d80a0b8",
+  "prompts": {
+    "87689e40cfd699a0": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_302e97a16ffef3b6WBCrJ99IVz",
+        "model": "opencode/kimi-k2.5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>",
+      "messages": [],
+      "total_additions": 1096,
+      "total_deletions": 295,
+      "accepted_lines": 961,
+      "overriden_lines": 0
+    }
+  }
+}
