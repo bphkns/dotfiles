@@ -55,7 +55,6 @@ return {
           Event = "",
           Operator = "󰆕",
           TypeParameter = "󰊄",
-          Copilot = "",
           Codeium = "",
           TabNine = "",
           Supermaven = "",
