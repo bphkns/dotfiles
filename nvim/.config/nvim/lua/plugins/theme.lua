@@ -1,11 +1,16 @@
 return {
   {
-    "ribru17/bamboo.nvim",
+    "sainnhe/everforest",
     lazy = false,
     priority = 1000,
     config = function()
-      require("bamboo").setup({})
-      require("bamboo").load()
+      -- Configure Everforest
+      vim.g.everforest_background = 'soft'
+      vim.g.everforest_enable_italic = 1
+      vim.g.everforest_dim_inactive_windows = 1
+      
+      -- Apply colorscheme
+      vim.cmd('colorscheme everforest')
     end,
   },
 }
