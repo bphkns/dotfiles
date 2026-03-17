@@ -52,6 +52,8 @@ return {
         "jsx",
         "dockerfile",
         "prisma",
+        "markdown",
+        "markdown_inline",
       })
     end,
     config = function()

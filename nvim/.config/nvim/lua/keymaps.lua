@@ -10,24 +10,14 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz", { silent = true, desc = "Half-page up (c
 vim.keymap.set("n", "n", "nzzzv", { silent = true, desc = "Next search result (centered)" })
 vim.keymap.set("n", "N", "Nzzzv", { silent = true, desc = "Previous search result (centered)" })
 
--- Yank to clipboard
-vim.keymap.set("v", "<leader>y", '"+y', { desc = "Yank to clipboard" })
-vim.keymap.set("n", "<leader>Y", '"+Y', { desc = "Yank to clipboard" })
-
 -- Delete into the void
 vim.keymap.set("n", "<leader>D", '"_d', { desc = "[D]elete into void" })
-
--- Don't press M (tags)
-vim.keymap.set("n", "<C-m>", "<nop>", { silent = true, desc = "Disabled (tags)" })
 
 -- Don't press Q
 vim.keymap.set("n", "Q", "<nop>", { silent = true, desc = "Disabled (Ex mode)" })
 
 -- Delete all buffers except the current one and return to previous mark
 vim.keymap.set("n", "<leader>bsd", "<cmd>%bd|e#|bd#<cr>|'<cr>", { desc = "Delete surrounding buffers" })
-
--- Delete the current buffer
-vim.keymap.set("n", "<leader>bd", ":bd<CR>", { noremap = true, silent = true, desc = "Delete current buffer" })
 
 -- Search and replace word under cursor
 vim.keymap.set(

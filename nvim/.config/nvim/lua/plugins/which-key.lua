@@ -14,6 +14,18 @@ return {
         border = "rounded",
         padding = { 1, 2 },
       },
+      spec = {
+        { "<leader>b", group = "Buffer" },
+        { "<leader>c", group = "Code" },
+        { "<leader>f", group = "Find" },
+        { "<leader>g", group = "Git" },
+        { "<leader>x", group = "Trouble" },
+        { "<leader>s", group = "Swap" },
+        { "<leader>i", group = "Info/Toggle" },
+        { "<leader>d", group = "Document" },
+        { "<leader>w", group = "Workspace" },
+        { "<leader>r", group = "Rename" },
+      },
     },
     keys = {
       {

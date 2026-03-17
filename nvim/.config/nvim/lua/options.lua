@@ -19,11 +19,8 @@ vim.opt.expandtab = true
 -- Automatically indents new lines based on code syntax
 vim.opt.smartindent = true
 
--- Enables text wrapping for long lines
+-- Disables text wrapping for long lines
 vim.opt.wrap = false
-
--- Shows a symbol at the beginning of wrapped lines
-vim.o.showbreak = "↪ "
 
 -- Disables creation of swap files
 vim.opt.swapfile = false

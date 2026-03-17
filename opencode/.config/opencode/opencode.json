@@ -42,6 +42,24 @@
       "url": "https://docs.mcp.cloudflare.com/mcp",
       "oauth": {}
     },
+    "chrome-devtools": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--executablePath=/home/bikash/.local/share/flatpak/exports/bin/com.google.Chrome"
+      ],
+      "timeout": 20000
+    },
+    "hubspot": {
+      "type": "remote",
+      "url": "https://mcp.hubspot.com/",
+      "oauth": {
+        "clientId": "{env:HUBSPOT_MCP_CLIENT_ID}",
+        "clientSecret": "{env:HUBSPOT_MCP_CLIENT_SECRET}"
+      }
+    },
     "slack": {
       "type": "local",
       "command": [
@@ -76,157 +94,22 @@
         "ghcr.io/yctimlin/mcp_excalidraw:latest"
       ],
       "enabled": true
-    }
-  },
-  "provider": {
-    "github-copilot": {
-      "models": {
-        "gpt-5.3-codex": {
-          "name": "GPT 5.3 Codex",
-          "capabilities": {
-            "reasoning": true
-          },
-          "variants": {
-            "low": {
-              "reasoningEffort": "low"
-            },
-            "medium": {
-              "reasoningEffort": "medium"
-            },
-            "high": {
-              "reasoningEffort": "high"
-            }
-          }
-        }
-      }
     },
-    "cursor-acp": {
-      "name": "Cursor",
-      "npm": "@ai-sdk/openai-compatible",
-      "options": {
-        "baseURL": "http://127.0.0.1:32124/v1"
-      },
-      "models": {
-        "auto": {
-          "name": "Auto"
-        },
-        "composer-1.5": {
-          "name": "Composer 1.5"
-        },
-        "composer-1": {
-          "name": "Composer 1"
-        },
-        "gpt-5.3-codex-low": {
-          "name": "GPT-5.3 Codex Low"
-        },
-        "gpt-5.3-codex-low-fast": {
-          "name": "GPT-5.3 Codex Low Fast"
-        },
-        "gpt-5.3-codex": {
-          "name": "GPT-5.3 Codex"
-        },
-        "gpt-5.3-codex-fast": {
-          "name": "GPT-5.3 Codex Fast"
-        },
-        "gpt-5.3-codex-high": {
-          "name": "GPT-5.3 Codex High"
-        },
-        "gpt-5.3-codex-high-fast": {
-          "name": "GPT-5.3 Codex High Fast"
-        },
-        "gpt-5.3-codex-xhigh": {
-          "name": "GPT-5.3 Codex Extra High"
-        },
-        "gpt-5.3-codex-xhigh-fast": {
-          "name": "GPT-5.3 Codex Extra High Fast"
-        },
-        "gpt-5.2": {
-          "name": "GPT-5.2"
-        },
-        "gpt-5.3-codex-spark-preview": {
-          "name": "GPT-5.3 Codex Spark"
-        },
-        "gpt-5.2-codex-low": {
-          "name": "GPT-5.2 Codex Low"
-        },
-        "gpt-5.2-codex-low-fast": {
-          "name": "GPT-5.2 Codex Low Fast"
-        },
-        "gpt-5.2-codex": {
-          "name": "GPT-5.2 Codex"
-        },
-        "gpt-5.2-codex-fast": {
-          "name": "GPT-5.2 Codex Fast"
-        },
-        "gpt-5.2-codex-high": {
-          "name": "GPT-5.2 Codex High"
-        },
-        "gpt-5.2-codex-high-fast": {
-          "name": "GPT-5.2 Codex High Fast"
-        },
-        "gpt-5.2-codex-xhigh": {
-          "name": "GPT-5.2 Codex Extra High"
-        },
-        "gpt-5.2-codex-xhigh-fast": {
-          "name": "GPT-5.2 Codex Extra High Fast"
-        },
-        "gpt-5.1-codex-max": {
-          "name": "GPT-5.1 Codex Max"
-        },
-        "gpt-5.1-codex-max-high": {
-          "name": "GPT-5.1 Codex Max High"
-        },
-        "opus-4.6-thinking": {
-          "name": "Claude 4.6 Opus (Thinking)"
-        },
-        "gpt-5.2-high": {
-          "name": "GPT-5.2 High"
-        },
-        "sonnet-4.6": {
-          "name": "Claude 4.6 Sonnet"
-        },
-        "sonnet-4.6-thinking": {
-          "name": "Claude 4.6 Sonnet (Thinking)"
-        },
-        "opus-4.6": {
-          "name": "Claude 4.6 Opus"
-        },
-        "opus-4.5": {
-          "name": "Claude 4.5 Opus"
-        },
-        "opus-4.5-thinking": {
-          "name": "Claude 4.5 Opus (Thinking)"
-        },
-        "gemini-3.1-pro": {
-          "name": "Gemini 3.1 Pro"
-        },
-        "grok": {
-          "name": "Grok"
-        },
-        "sonnet-4.5": {
-          "name": "Claude 4.5 Sonnet"
-        },
-        "sonnet-4.5-thinking": {
-          "name": "Claude 4.5 Sonnet (Thinking)"
-        },
-        "gpt-5.1-high": {
-          "name": "GPT-5.1 High"
-        },
-        "gemini-3-pro": {
-          "name": "Gemini 3 Pro"
-        },
-        "gemini-3-flash": {
-          "name": "Gemini 3 Flash"
-        },
-        "gpt-5.1-codex-mini": {
-          "name": "GPT-5.1 Codex Mini"
-        },
-        "kimi-k2.5": {
-          "name": "Kimi K2.5"
-        }
-      }
+    "linkedin": {
+      "type": "local",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-i",
+        "-v",
+        "/home/bikash/.linkedin-mcp:/home/pwuser/.linkedin-mcp",
+        "stickerdaniel/linkedin-mcp-server:4.1.2"
+      ],
+      "enabled": true
     }
   },
+  "provider": {},
   "autoshare": false,
   "autoupdate": true,
   "plugin": [
@@ -234,7 +117,6 @@
     "@nick-vi/opencode-type-inject@1.5.1",
     "opencode-pty@0.2.0",
     "opencode-anthropic-auth@0.0.13",
-    "cursor-acp"
   ],
   "instructions": [
     "/home/bikash/.config/opencode/instructions/global.md",

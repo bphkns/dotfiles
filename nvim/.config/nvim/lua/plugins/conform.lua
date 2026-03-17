@@ -232,9 +232,7 @@ return {
           cwd = function(_, ctx)
             return prettier_cwd(ctx)
           end,
-          args = function(_, ctx)
-            return { "--stdin-filepath", "$FILENAME" }
-          end,
+          args = { "--stdin-filepath", "$FILENAME" },
           range_args = function(_, ctx)
             local util = require("conform.util")
             local start_offset, end_offset = util.get_offsets_from_range(ctx.buf, ctx.range)

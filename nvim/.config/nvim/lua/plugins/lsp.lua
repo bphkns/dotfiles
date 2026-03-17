@@ -159,6 +159,7 @@ return {
       -- Install formatters and linters via mason-tool-installer
       require("mason-tool-installer").setup({
         ensure_installed = {
+          "eslint_d",
           "prettierd",
           "stylua",
         },
@@ -236,14 +237,14 @@ return {
 
       -- Configure servers using Neovim 0.11 native vim.lsp.config
       -- vim.lsp.config auto-discovers defaults from lsp/*.lua in nvim-lspconfig
-      for server, server_opts in pairs(opts.servers) do
-        -- Setup capabilities from blink.cmp
-        local capabilities = require("blink.cmp").get_lsp_capabilities()
-        capabilities.textDocument.foldingRange = {
-          dynamicRegistration = false,
-          lineFoldingOnly = true,
-        }
+      -- Build capabilities once and reuse for all servers
+      local capabilities = require("blink.cmp").get_lsp_capabilities()
+      capabilities.textDocument.foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true,
+      }
 
+      for server, server_opts in pairs(opts.servers) do
         -- Merge capabilities with user options (vim.lsp.config handles lspconfig defaults)
         local lsp_config = vim.tbl_deep_extend("force", {
           capabilities = capabilities,
@@ -274,6 +275,7 @@ return {
             lsp_config.settings = vim.tbl_deep_extend("force", lsp_config.settings or {}, {
               json = {
                 schemas = schemastore.json.schemas(),
+                validate = { enable = true },
               },
             })
           end
