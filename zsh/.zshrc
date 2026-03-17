@@ -181,6 +181,9 @@ export LGAICM_SMALL_MODEL="sonnet"                          # < 4k chars
 export LGAICM_MEDIUM_MODEL="google/gemini-2.5-flash-lite"   # < 50k chars
 export LGAICM_LARGE_MODEL="google/gemini-2.5-flash"         # >= 50k chars (truncate at 200k)
 
+# cursortab.nvim - Inception Labs Mercury API
+export MERCURY_AI_TOKEN="sk_2348eb1fffe58e4e8f264d5b30a1f099"
+
 # yazi integration - cd to directory on exit (q to cd, Q to stay)
 function yy() {
     local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd

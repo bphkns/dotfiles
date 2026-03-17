@@ -17,12 +17,16 @@ return {
     },
     version = "*",
     opts = {
+      -- NOTE: Tab is reserved for cursortab.nvim (Mercury AI inline completions)
+      -- Use Ctrl+Space to open blink menu, Ctrl+p/n to navigate, Ctrl+y to accept
       keymap = {
-        preset = "default",
+        preset = "none",
         ["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
         ["<C-p>"] = { "select_prev", "fallback" },
         ["<C-n>"] = { "select_next", "fallback" },
         ["<C-y>"] = { "select_and_accept" },
+        ["<C-e>"] = { "hide" },
+        ["<CR>"] = { "accept", "fallback" },
       },
       appearance = {
         kind_icons = {

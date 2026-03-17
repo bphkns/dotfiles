@@ -1,25 +1,42 @@
-local effect_project_cache = {}
-local prettier_project_cache = {}
-local dprint_project_cache = {}
-local tailwind_plugin_cache = {}
+-- Unified project tool cache with TTL
+local cache = {}
+local CACHE_TTL = 300  -- 5 minutes in seconds
+local MAX_CACHE = 20
 
-local function read_json(path)
-  local file = io.open(path, "r")
-  if not file then
-    return nil
-  end
+-- Config file lists (extracted constants)
+local EFFECT_CONFIGS = {
+  "effect.config.ts",
+  "effect.config.js",
+  "effect.config.mjs",
+  "effect.config.cjs",
+}
 
-  local content = file:read("*a")
-  file:close()
+local PRETTIER_CONFIGS = {
+  ".prettierrc",
+  ".prettierrc.json",
+  ".prettierrc.js",
+  ".prettierrc.cjs",
+  ".prettierrc.mjs",
+  ".prettierrc.yaml",
+  ".prettierrc.yml",
+  ".prettierrc.json5",
+  ".prettierrc.toml",
+  "prettier.config.js",
+  "prettier.config.cjs",
+  "prettier.config.mjs",
+  "prettier.config.ts",
+  "prettier.config.cts",
+  "prettier.config.mts",
+}
 
-  local ok, parsed = pcall(vim.json.decode, content)
-  if not ok then
-    return nil
-  end
+local DPRINT_CONFIGS = {
+  "dprint.json",
+  ".dprint.json",
+  "dprint.jsonc",
+  ".dprint.jsonc",
+}
 
-  return parsed
-end
-
+-- Utility: Find file upward
 local function find_upward(filename, names)
   return vim.fs.find(names, {
     path = filename,
@@ -29,143 +46,165 @@ local function find_upward(filename, names)
   })[1]
 end
 
-local function is_effect_project(ctx)
+-- Utility: Read and parse JSON
+local function read_json(path)
+  local file = io.open(path, "r")
+  if not file then
+    return nil
+  end
+  local content = file:read("*a")
+  file:close()
+  local ok, parsed = pcall(vim.json.decode, content)
+  return ok and parsed or nil
+end
+
+-- Batch detect all project tools (single function, single pass)
+local function detect_project_tools(ctx)
   local dir = vim.fn.fnamemodify(ctx.filename, ":h")
-  if effect_project_cache[dir] ~= nil then
-    return effect_project_cache[dir]
+  local result = {
+    has_effect = false,
+    has_biome = false,
+    has_dprint = false,
+    has_prettier = false,
+    prettier_cwd = nil,
+    tailwind_plugin = nil,
+    ignore_path_for_prettier = nil,
+  }
+
+  -- Fast path: Check for Effect config files (effect.config.ts/js)
+  local effect_config = find_upward(ctx.filename, EFFECT_CONFIGS)
+  if effect_config then
+    result.has_effect = true
   end
 
-  local package_json = find_upward(ctx.filename, { "package.json" })
-  if package_json then
-    local pkg = read_json(package_json)
-    if pkg then
-      local deps = pkg.dependencies or {}
-      local dev_deps = pkg.devDependencies or {}
-      if deps["@effect/eslint-plugin"] or dev_deps["@effect/eslint-plugin"] then
-        effect_project_cache[dir] = true
-        return true
+  -- Check for dprint config (can be at any level)
+  local dprint_config = find_upward(ctx.filename, DPRINT_CONFIGS)
+  if dprint_config then
+    result.has_dprint = true
+  end
+
+  -- Check for biome.json (can be at any level)
+  local biome_json = find_upward(ctx.filename, { "biome.json", "biome.jsonc" })
+  if biome_json then
+    result.has_biome = true
+  end
+
+  -- Check for prettier config (can be at any level)
+  local prettier_config = find_upward(ctx.filename, PRETTIER_CONFIGS)
+  if prettier_config then
+    result.has_prettier = true
+    result.prettier_cwd = vim.fs.dirname(prettier_config)
+  end
+
+  -- Monorepo handling: Search upward through multiple package.json files
+  -- Stop when we find tooling deps or hit the monorepo root (nx.json, pnpm-workspace.yaml)
+  local current_dir = dir
+  local home_dir = vim.uv.os_homedir()
+  
+  while current_dir and current_dir ~= home_dir do
+    local package_json_path = current_dir .. "/package.json"
+    local stat = vim.uv.fs_stat(package_json_path)
+    
+    if stat and stat.type == "file" then
+      local pkg = read_json(package_json_path)
+      if pkg then
+        local deps = pkg.dependencies or {}
+        local dev_deps = pkg.devDependencies or {}
+
+        -- Effect detection (if not already found via config file)
+        if not result.has_effect then
+          if dev_deps["@effect/eslint-plugin"] or dev_deps["@tooling/api-eslint-config"] then
+            result.has_effect = true
+          end
+        end
+
+        -- Biome detection from package.json (if not already found via biome.json)
+        if not result.has_biome then
+          if dev_deps["@biomejs/biome"] or deps["@biomejs/biome"] then
+            result.has_biome = true
+          end
+        end
+
+        -- Prettier detection from package.json (if not already found via config)
+        if not result.has_prettier and pkg.prettier ~= nil then
+          result.has_prettier = true
+          result.prettier_cwd = current_dir
+        end
+
+        -- Tailwind plugin detection (only check at root level)
+        if not result.tailwind_plugin then
+          if dev_deps["prettier-plugin-tailwindcss"] or deps["prettier-plugin-tailwindcss"] then
+            local tailwind_path = current_dir .. "/node_modules/prettier-plugin-tailwindcss/dist/index.mjs"
+            local tailwind_stat = vim.uv.fs_stat(tailwind_path)
+            if tailwind_stat and tailwind_stat.type == "file" then
+              result.tailwind_plugin = tailwind_path
+            end
+          end
+        end
+
+        -- Check if this is the monorepo root (stop searching)
+        local nx_json = current_dir .. "/nx.json"
+        local pnpm_workspace = current_dir .. "/pnpm-workspace.yaml"
+        local nx_stat = vim.uv.fs_stat(nx_json)
+        local pnpm_stat = vim.uv.fs_stat(pnpm_workspace)
+        
+        -- Stop if we found all tools we're looking for OR we hit monorepo root
+        if (nx_stat or pnpm_stat) then
+          break
+        end
       end
-      if deps["@tooling/api-eslint-config"] or dev_deps["@tooling/api-eslint-config"] then
-        effect_project_cache[dir] = true
-        return true
-      end
+    end
+    
+    -- Move up to parent directory
+    local parent = vim.fs.dirname(current_dir)
+    if parent == current_dir then
+      break
+    end
+    current_dir = parent
+  end
+
+  -- Set ignore path for prettier in effect projects
+  result.ignore_path_for_prettier = result.has_effect and "/dev/null" or nil
+
+  result.expires_at = vim.uv.now()
+  return result
+end
+
+-- Cache management with LRU eviction
+local function get_cached_tools(ctx)
+  local dir = vim.fn.fnamemodify(ctx.filename, ":h")
+  local cached = cache[dir]
+
+  -- Cache hit and not expired
+  if cached and (vim.uv.now() - cached.expires_at) < CACHE_TTL then
+    return cached
+  end
+
+  -- Cache miss or expired - detect and cache
+  local detected = detect_project_tools(ctx)
+  cache[dir] = detected
+
+  -- LRU eviction if over limit
+  local cache_count = 0
+  local oldest_dir = nil
+  local oldest_time = math.huge
+
+  for k, v in pairs(cache) do
+    cache_count = cache_count + 1
+    if v.expires_at < oldest_time then
+      oldest_time = v.expires_at
+      oldest_dir = k
     end
   end
 
-  effect_project_cache[dir] = false
-  return false
+  if cache_count > MAX_CACHE and oldest_dir then
+    cache[oldest_dir] = nil
+  end
+
+  return detected
 end
 
-local function has_dprint_config(ctx)
-  local dir = vim.fn.fnamemodify(ctx.filename, ":h")
-  if dprint_project_cache[dir] ~= nil then
-    return dprint_project_cache[dir]
-  end
-
-  local config = find_upward(ctx.filename, {
-    "dprint.json",
-    ".dprint.json",
-    "dprint.jsonc",
-    ".dprint.jsonc",
-  })
-
-  dprint_project_cache[dir] = config ~= nil
-  return dprint_project_cache[dir]
-end
-
-local function has_prettier_config(ctx)
-  local dir = vim.fn.fnamemodify(ctx.filename, ":h")
-  if prettier_project_cache[dir] ~= nil then
-    return prettier_project_cache[dir]
-  end
-
-  local config = find_upward(ctx.filename, {
-    ".prettierrc",
-    ".prettierrc.json",
-    ".prettierrc.js",
-    ".prettierrc.cjs",
-    ".prettierrc.mjs",
-    ".prettierrc.yaml",
-    ".prettierrc.yml",
-    ".prettierrc.json5",
-    ".prettierrc.toml",
-    "prettier.config.js",
-    "prettier.config.cjs",
-    "prettier.config.mjs",
-    "prettier.config.ts",
-    "prettier.config.cts",
-    "prettier.config.mts",
-  })
-
-  if config then
-    prettier_project_cache[dir] = true
-    return true
-  end
-
-  local package_json = find_upward(ctx.filename, { "package.json" })
-  if package_json then
-    local pkg = read_json(package_json)
-    if pkg and pkg.prettier ~= nil then
-      prettier_project_cache[dir] = true
-      return true
-    end
-  end
-
-  prettier_project_cache[dir] = false
-  return false
-end
-
-local function prettier_cwd(ctx)
-  local config = find_upward(ctx.filename, {
-    ".prettierrc",
-    ".prettierrc.json",
-    ".prettierrc.js",
-    ".prettierrc.cjs",
-    ".prettierrc.mjs",
-    ".prettierrc.yaml",
-    ".prettierrc.yml",
-    ".prettierrc.json5",
-    ".prettierrc.toml",
-    "prettier.config.js",
-    "prettier.config.cjs",
-    "prettier.config.mjs",
-    "prettier.config.ts",
-    "prettier.config.cts",
-    "prettier.config.mts",
-  })
-  if config then
-    return vim.fs.dirname(config)
-  end
-
-  local package_json = find_upward(ctx.filename, { "package.json" })
-  if package_json then
-    local pkg = read_json(package_json)
-    if pkg and pkg.prettier ~= nil then
-      return vim.fs.dirname(package_json)
-    end
-  end
-
-  return nil
-end
-
-local function find_tailwind_plugin(ctx)
-  local dir = vim.fn.fnamemodify(ctx.filename, ":h")
-  if tailwind_plugin_cache[dir] ~= nil then
-    return tailwind_plugin_cache[dir] or nil
-  end
-
-  local local_plugin = find_upward(ctx.filename, {
-    "node_modules/prettier-plugin-tailwindcss/dist/index.mjs",
-  })
-  if local_plugin then
-    tailwind_plugin_cache[dir] = local_plugin
-    return local_plugin
-  end
-
-  tailwind_plugin_cache[dir] = false
-  return nil
-end
-
+-- User commands for autoformat toggle
 vim.api.nvim_create_user_command("ConformDisable", function(args)
   if args.bang then
     vim.b.disable_autoformat = true
@@ -230,7 +269,8 @@ return {
             return local_prettier or "prettier"
           end,
           cwd = function(_, ctx)
-            return prettier_cwd(ctx)
+            local tools = get_cached_tools(ctx)
+            return tools.prettier_cwd
           end,
           args = { "--stdin-filepath", "$FILENAME" },
           range_args = function(_, ctx)
@@ -244,36 +284,41 @@ return {
             }
           end,
           condition = function(_, ctx)
-            local plugin = find_tailwind_plugin(ctx)
-            return has_prettier_config(ctx) and plugin ~= nil
+            local tools = get_cached_tools(ctx)
+            return tools.tailwind_plugin ~= nil
           end,
         },
         dprint = {
           condition = function(_, ctx)
-            return has_dprint_config(ctx)
+            local tools = get_cached_tools(ctx)
+            return tools.has_dprint
           end,
         },
         eslint_d = {
           condition = function(_, ctx)
-            return is_effect_project(ctx)
+            local tools = get_cached_tools(ctx)
+            return tools.has_effect
           end,
         },
         biome = {
           condition = function(_, ctx)
-            return vim.fs.find({ "biome.json", "biome.jsonc" }, {
-              path = ctx.filename,
-              upward = true,
-              stop = vim.uv.os_homedir(),
-            })[1] ~= nil
+            local tools = get_cached_tools(ctx)
+            return tools.has_biome
           end,
         },
         prettierd = {
           condition = function(_, ctx)
-            return has_prettier_config(ctx)
+            -- Always run prettierd - no config required (has built-in defaults)
+            return true
+          end,
+          cwd = function(_, ctx)
+            local tools = get_cached_tools(ctx)
+            return tools.prettier_cwd
           end,
           prepend_args = function(_, ctx)
-            if is_effect_project(ctx) then
-              return { "--ignore-path", "/dev/null" }
+            local tools = get_cached_tools(ctx)
+            if tools.ignore_path_for_prettier then
+              return { "--ignore-path", tools.ignore_path_for_prettier }
             end
             return {}
           end,
