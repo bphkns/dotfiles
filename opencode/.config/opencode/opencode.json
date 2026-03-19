@@ -26,12 +26,7 @@
     },
     "tanstack": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@tanstack/cli@0.59.0",
-        "mcp"
-      ]
+      "command": ["npx", "-y", "@tanstack/cli@0.59.0", "mcp"]
     },
     "figma": {
       "type": "remote",
@@ -42,16 +37,6 @@
       "type": "remote",
       "url": "https://docs.mcp.cloudflare.com/mcp",
       "oauth": {}
-    },
-    "chrome-devtools": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "chrome-devtools-mcp@latest",
-        "--executablePath=/home/bikash/.local/share/flatpak/exports/bin/com.google.Chrome"
-      ],
-      "timeout": 20000
     },
     "hubspot": {
       "type": "remote",
@@ -95,6 +80,14 @@
         "ghcr.io/yctimlin/mcp_excalidraw:latest"
       ],
       "enabled": true
+    },
+    "posthog": {
+      "type": "remote",
+      "url": "https://mcp.posthog.com/mcp",
+      "enabled": true,
+      "headers": {
+        "Authorization": "Bearer {env:POSTHOG_API_KEY}"
+      }
     },
     "linkedin": {
       "type": "local",
