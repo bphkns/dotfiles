@@ -55,9 +55,6 @@ return {
           Event = "",
           Operator = "󰆕",
           TypeParameter = "󰊄",
-          Codeium = "",
-          TabNine = "",
-          Supermaven = "",
         },
       },
       sources = {

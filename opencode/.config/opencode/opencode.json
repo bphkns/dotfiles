@@ -89,6 +89,12 @@
         "Authorization": "Bearer {env:POSTHOG_API_KEY}"
       }
     },
+    "trigify": {
+      "type": "remote",
+      "url": "https://api.trigify.io/mcp",
+      "enabled": true,
+      "oauth": {}
+    },
     "linkedin": {
       "type": "local",
       "command": [

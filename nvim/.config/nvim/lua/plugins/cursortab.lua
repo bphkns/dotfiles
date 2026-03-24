@@ -4,6 +4,11 @@ return {
     lazy = false,
     build = "cd server && go build",
     config = function()
+      if not vim.env.MERCURY_AI_TOKEN or vim.env.MERCURY_AI_TOKEN == "" then
+        vim.notify("cursortab: MERCURY_AI_TOKEN is not set — AI completions disabled", vim.log.levels.WARN)
+        return
+      end
+
       require("cursortab").setup({
         provider = {
           type = "mercuryapi",
@@ -35,7 +40,7 @@ return {
           idle_completion_delay = 50,
           text_change_debounce = 50,
           max_visible_lines = 12,
-          enabled_modes = { "insert", "normal" },
+          enabled_modes = { "insert" },
           cursor_prediction = {
             enabled = true,
             auto_advance = true,

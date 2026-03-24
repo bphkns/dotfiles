@@ -181,8 +181,6 @@ export LGAICM_SMALL_MODEL="sonnet"                          # < 4k chars
 export LGAICM_MEDIUM_MODEL="google/gemini-2.5-flash-lite"   # < 50k chars
 export LGAICM_LARGE_MODEL="google/gemini-2.5-flash"         # >= 50k chars (truncate at 200k)
 
-# cursortab.nvim - Inception Labs Mercury API
-export MERCURY_AI_TOKEN="sk_2348eb1fffe58e4e8f264d5b30a1f099"
 
 # yazi integration - cd to directory on exit (q to cd, Q to stay)
 function yy() {
@@ -207,3 +205,6 @@ unset _zsh_startup_ms _zsh_start_time
 
 # Added by git-ai installer on Tue Jan 27 12:08:23 PM IST 2026
 export PATH="/home/bikash/.git-ai/bin:$PATH"
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"
