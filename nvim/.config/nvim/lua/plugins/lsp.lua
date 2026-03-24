@@ -134,7 +134,11 @@ return {
         emmet_ls = {
           filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
         },
-        jsonls = {},
+        jsonls = {
+          filetypes = { "json", "jsonc" },
+          root_markers = { ".git", "package.json" },
+          single_file_support = true,
+        },
         lua_ls = {
           settings = {
             Lua = {

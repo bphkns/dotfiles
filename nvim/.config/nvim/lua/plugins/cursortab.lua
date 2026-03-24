@@ -40,7 +40,7 @@ return {
           idle_completion_delay = 50,
           text_change_debounce = 50,
           max_visible_lines = 12,
-          enabled_modes = { "insert" },
+          enabled_modes = { "insert", "normal" },
           cursor_prediction = {
             enabled = true,
             auto_advance = true,
