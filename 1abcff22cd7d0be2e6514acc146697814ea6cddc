@@ -1,0 +1,25 @@
+nvim/.config/nvim/lua/plugins/lsp.lua
+  c790008d432cac21 137-141
+nvim/.config/nvim/lua/plugins/cursortab.lua
+  c790008d432cac21 43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.17",
+  "base_commit_sha": "1abcff22cd7d0be2e6514acc146697814ea6cddc",
+  "prompts": {
+    "c790008d432cac21": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "32eb7999-5f29-425c-9c5a-26a05c279ed0",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>",
+      "messages": [],
+      "total_additions": 10,
+      "total_deletions": 6,
+      "accepted_lines": 6,
+      "overriden_lines": 0
+    }
+  }
+}
