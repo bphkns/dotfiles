@@ -1,0 +1,38 @@
+nvim/.config/nvim/lua/plugins/cursortab.lua
+  ef43a60771534d0a 7-11,43
+opencode/.config/opencode/opencode.json
+  df4aad98e841d840 92-97
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.17",
+  "base_commit_sha": "5fcdf15017b48d6555cd78bd3c75fa5b7240ba53",
+  "prompts": {
+    "df4aad98e841d840": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_2fa36b5a2ffeSWT8GgAcIvZygY",
+        "model": "anthropic/claude-opus-4-6"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>",
+      "messages": [],
+      "total_additions": 11,
+      "total_deletions": 5,
+      "accepted_lines": 6,
+      "overriden_lines": 0
+    },
+    "ef43a60771534d0a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "15ebddbd-7c4c-4ae3-a9be-b2e41ebe9b7e",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>",
+      "messages": [],
+      "total_additions": 6,
+      "total_deletions": 3,
+      "accepted_lines": 6,
+      "overriden_lines": 0
+    }
+  }
+}
