@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "skills": {
+    "effect-ts-ai": {
+      "source": "/home/bikash/.local/share/my-skills",
+      "sourceType": "local",
+      "computedHash": "4de35bc3d3e930db99779cef68219412002938c2e16676d35d17b9b74419afcb"
+    },
+    "frontend-design": {
+      "source": "/home/bikash/.local/share/my-skills",
+      "sourceType": "local",
+      "computedHash": "d6dd3231158bd6d67bf938a8ab6ac783f9b150f246a56f04d046ecf9c38c89cc"
+    },
+    "react-modernization": {
+      "source": "/home/bikash/.local/share/my-skills",
+      "sourceType": "local",
+      "computedHash": "1e760bdcf3bd7f6551e1dda0c7bbfd13ea08dc6c780766beccec4f2175db95ea"
+    }
+  }
+}

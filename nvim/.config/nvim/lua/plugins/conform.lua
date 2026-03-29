@@ -36,6 +36,11 @@ local DPRINT_CONFIGS = {
   ".dprint.jsonc",
 }
 
+local OXFMT_CONFIGS = {
+  ".oxfmtrc.json",
+  ".oxfmtrc.jsonc",
+}
+
 -- Utility: Find file upward
 local function find_upward(filename, names)
   return vim.fs.find(names, {
@@ -65,6 +70,7 @@ local function detect_project_tools(ctx)
     has_effect = false,
     has_biome = false,
     has_dprint = false,
+    has_oxfmt = false,
     has_prettier = false,
     prettier_cwd = nil,
     tailwind_plugin = nil,
@@ -87,6 +93,12 @@ local function detect_project_tools(ctx)
   local biome_json = find_upward(ctx.filename, { "biome.json", "biome.jsonc" })
   if biome_json then
     result.has_biome = true
+  end
+
+  -- Check for oxfmt config
+  local oxfmt_config = find_upward(ctx.filename, OXFMT_CONFIGS)
+  if oxfmt_config then
+    result.has_oxfmt = true
   end
 
   -- Check for prettier config (can be at any level)
@@ -240,21 +252,21 @@ return {
         return { timeout_ms = 1000, lsp_format = "fallback" }
       end,
       formatters_by_ft = {
-        javascript = { "dprint", "eslint_d", "biome", "prettierd", stop_after_first = true },
-        javascriptreact = { "prettier_tailwind", "dprint", "eslint_d", "biome", "prettierd", stop_after_first = true },
-        typescript = { "dprint", "eslint_d", "biome", "prettierd", stop_after_first = true },
-        typescriptreact = { "prettier_tailwind", "dprint", "eslint_d", "biome", "prettierd", stop_after_first = true },
-        vue = { "prettier_tailwind", "biome", "prettierd", stop_after_first = true },
-        astro = { "prettier_tailwind", "biome", "prettierd", stop_after_first = true },
-        angular = { "prettier_tailwind", "biome", "prettierd", stop_after_first = true },
+        javascript = { "dprint", "oxfmt", "eslint_d", "biome", "prettierd", stop_after_first = true },
+        javascriptreact = { "prettier_tailwind", "dprint", "oxfmt", "eslint_d", "biome", "prettierd", stop_after_first = true },
+        typescript = { "dprint", "oxfmt", "eslint_d", "biome", "prettierd", stop_after_first = true },
+        typescriptreact = { "prettier_tailwind", "dprint", "oxfmt", "eslint_d", "biome", "prettierd", stop_after_first = true },
+        vue = { "prettier_tailwind", "biome", "oxfmt", "prettierd", stop_after_first = true },
+        astro = { "prettier_tailwind", "biome", "oxfmt", "prettierd", stop_after_first = true },
+        angular = { "prettier_tailwind", "biome", "oxfmt", "prettierd", stop_after_first = true },
         htmlangular = { "prettierd" },
         css = { "biome", "prettierd", stop_after_first = true },
         scss = { "prettierd" },
         less = { "prettierd" },
         html = { "prettier_tailwind", "prettierd", stop_after_first = true },
         mjml = { "prettierd" },
-        json = { "biome", "prettierd", stop_after_first = true },
-        jsonc = { "biome", "prettierd", stop_after_first = true },
+        json = { "biome", "oxfmt", "prettierd", stop_after_first = true },
+        jsonc = { "biome", "oxfmt", "prettierd", stop_after_first = true },
         graphql = { "biome", "prettierd", stop_after_first = true },
         yaml = { "prettierd" },
         markdown = { "prettierd" },
@@ -304,6 +316,20 @@ return {
           condition = function(_, ctx)
             local tools = get_cached_tools(ctx)
             return tools.has_biome
+          end,
+        },
+        oxfmt = {
+          command = function(self, ctx)
+            return require("conform.util").from_node_modules("oxfmt")(self, ctx)
+          end,
+          args = { "--stdin-filepath", "$FILENAME" },
+          stdin = true,
+          cwd = function(self, ctx)
+            return require("conform.util").root_file(OXFMT_CONFIGS)(self, ctx)
+          end,
+          condition = function(_, ctx)
+            local tools = get_cached_tools(ctx)
+            return tools.has_oxfmt
           end,
         },
         prettierd = {

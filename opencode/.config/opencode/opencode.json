@@ -1,10 +1,10 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "everforest",
   "mcp": {
     "atlassian": {
       "type": "remote",
-      "url": "https://mcp.atlassian.com/v1/mcp"
+      "url": "https://mcp.atlassian.com/v1/mcp",
+      "enabled": false
     },
     "context7": {
       "type": "remote",
@@ -26,17 +26,20 @@
     },
     "tanstack": {
       "type": "local",
-      "command": ["npx", "-y", "@tanstack/cli@0.59.0", "mcp"]
+      "command": ["npx", "-y", "@tanstack/cli@0.59.0", "mcp"],
+      "enabled": false
     },
     "figma": {
       "type": "remote",
       "url": "https://mcp.figma.com/mcp",
-      "oauth": {}
+      "oauth": {},
+      "enabled": false
     },
     "cloudflare-docs": {
       "type": "remote",
       "url": "https://docs.mcp.cloudflare.com/mcp",
-      "oauth": {}
+      "oauth": {},
+      "enabled": false
     },
     "hubspot": {
       "type": "remote",
@@ -44,7 +47,8 @@
       "oauth": {
         "clientId": "{env:HUBSPOT_MCP_CLIENT_ID}",
         "clientSecret": "{env:HUBSPOT_MCP_CLIENT_SECRET}"
-      }
+      },
+      "enabled": false
     },
     "slack": {
       "type": "local",
@@ -55,7 +59,7 @@
         "--transport",
         "stdio"
       ],
-      "enabled": true,
+      "enabled": false,
       "environment": {
         "SLACK_MCP_XOXB_TOKEN": "{env:SLACK_MCP_XOXB_TOKEN}",
         "SLACK_MCP_XOXP_TOKEN": "{env:SLACK_MCP_XOXP_TOKEN}",
@@ -79,12 +83,12 @@
         "ENABLE_CANVAS_SYNC=true",
         "ghcr.io/yctimlin/mcp_excalidraw:latest"
       ],
-      "enabled": true
+      "enabled": false
     },
     "posthog": {
       "type": "remote",
       "url": "https://mcp.posthog.com/mcp",
-      "enabled": true,
+      "enabled": false,
       "headers": {
         "Authorization": "Bearer {env:POSTHOG_API_KEY}"
       }
@@ -92,7 +96,7 @@
     "trigify": {
       "type": "remote",
       "url": "https://api.trigify.io/mcp",
-      "enabled": true,
+      "enabled": false,
       "oauth": {}
     },
     "linkedin": {
@@ -106,17 +110,24 @@
         "/home/bikash/.linkedin-mcp:/home/pwuser/.linkedin-mcp",
         "stickerdaniel/linkedin-mcp-server:4.1.2"
       ],
-      "enabled": true
+      "enabled": false
     }
   },
-  "provider": {},
+  "model": "fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo",
+  "provider": {
+    "fireworks-ai": {
+      "options": {
+        "apiKey": "{env:FIREWORKS_API_KEY}"
+      }
+    }
+  },
   "autoshare": false,
   "autoupdate": true,
   "plugin": [
     "@franlol/opencode-md-table-formatter@0.0.3",
     "@nick-vi/opencode-type-inject@1.5.1",
     "opencode-pty@0.2.0",
-    "opencode-anthropic-auth@0.0.13"
+    "@ex-machina/opencode-anthropic-auth"
   ],
   "instructions": [
     "/home/bikash/.config/opencode/instructions/global.md",

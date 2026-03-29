@@ -126,6 +126,7 @@ return {
             run = "onSave",
           },
         },
+        oxlint = {},
         html = {
           filetypes = { "html", "mjml" }, -- Added mjml as per original
         },
@@ -166,6 +167,7 @@ return {
           "eslint_d",
           "prettierd",
           "stylua",
+          "oxlint",
         },
       })
 
