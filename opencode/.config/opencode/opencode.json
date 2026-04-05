@@ -1,11 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "skills": {
+    "paths": ["~/.agents/skills"]
+  },
   "mcp": {
-    "atlassian": {
-      "type": "remote",
-      "url": "https://mcp.atlassian.com/v1/mcp",
-      "enabled": false
-    },
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
@@ -23,97 +21,8 @@
       "type": "remote",
       "url": "https://mcp.exa.ai/mcp?exaApiKey={env:EXA_API_KEY}",
       "enabled": true
-    },
-    "tanstack": {
-      "type": "local",
-      "command": ["npx", "-y", "@tanstack/cli@0.59.0", "mcp"],
-      "enabled": false
-    },
-    "figma": {
-      "type": "remote",
-      "url": "https://mcp.figma.com/mcp",
-      "oauth": {},
-      "enabled": false
-    },
-    "cloudflare-docs": {
-      "type": "remote",
-      "url": "https://docs.mcp.cloudflare.com/mcp",
-      "oauth": {},
-      "enabled": false
-    },
-    "hubspot": {
-      "type": "remote",
-      "url": "https://mcp.hubspot.com/",
-      "oauth": {
-        "clientId": "{env:HUBSPOT_MCP_CLIENT_ID}",
-        "clientSecret": "{env:HUBSPOT_MCP_CLIENT_SECRET}"
-      },
-      "enabled": false
-    },
-    "slack": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "slack-mcp-server@latest",
-        "--transport",
-        "stdio"
-      ],
-      "enabled": false,
-      "environment": {
-        "SLACK_MCP_XOXB_TOKEN": "{env:SLACK_MCP_XOXB_TOKEN}",
-        "SLACK_MCP_XOXP_TOKEN": "{env:SLACK_MCP_XOXP_TOKEN}",
-        "SLACK_MCP_XOXC_TOKEN": "{env:SLACK_MCP_XOXC_TOKEN}",
-        "SLACK_MCP_XOXD_TOKEN": "{env:SLACK_MCP_XOXD_TOKEN}",
-        "SLACK_MCP_ADD_MESSAGE_TOOL": "true",
-        "SLACK_MCP_MARK_TOOL": "true"
-      }
-    },
-    "excalidraw": {
-      "type": "local",
-      "command": [
-        "docker",
-        "run",
-        "-i",
-        "--rm",
-        "--add-host=host.docker.internal:host-gateway",
-        "-e",
-        "EXPRESS_SERVER_URL=http://host.docker.internal:6100",
-        "-e",
-        "ENABLE_CANVAS_SYNC=true",
-        "ghcr.io/yctimlin/mcp_excalidraw:latest"
-      ],
-      "enabled": false
-    },
-    "posthog": {
-      "type": "remote",
-      "url": "https://mcp.posthog.com/mcp",
-      "enabled": false,
-      "headers": {
-        "Authorization": "Bearer {env:POSTHOG_API_KEY}"
-      }
-    },
-    "trigify": {
-      "type": "remote",
-      "url": "https://api.trigify.io/mcp",
-      "enabled": false,
-      "oauth": {}
-    },
-    "linkedin": {
-      "type": "local",
-      "command": [
-        "docker",
-        "run",
-        "--rm",
-        "-i",
-        "-v",
-        "/home/bikash/.linkedin-mcp:/home/pwuser/.linkedin-mcp",
-        "stickerdaniel/linkedin-mcp-server:4.1.2"
-      ],
-      "enabled": false
     }
   },
-  "model": "fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo",
   "provider": {
     "fireworks-ai": {
       "options": {
