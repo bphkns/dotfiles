@@ -3,11 +3,49 @@ return {
   branch = "v3.x",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "nvim-tree/nvim-web-devicons",
+    "echasnovski/mini.icons",
     "MunifTanjim/nui.nvim",
   },
-  lazy = false,
+  cmd = "Neotree",
+  keys = {
+    {
+      "<C-e>",
+      function()
+        require("neo-tree.command").execute({
+          toggle = true,
+          source = "filesystem",
+          dir = vim.fn.getcwd(),
+          position = "right",
+          reveal_file = vim.fn.expand("%:p"),
+          reveal_force_cwd = true,
+        })
+      end,
+      desc = "Toggle Explorer",
+    },
+  },
   opts = {
+    default_component_configs = {
+      icon = {
+        provider = function(icon, node)
+          local text, hl
+          local mini_icons = require("mini.icons")
+          if node.type == "file" then
+            text, hl = mini_icons.get("file", node.name)
+          elseif node.type == "directory" then
+            text, hl = mini_icons.get("directory", node.name)
+            if node:is_expanded() then
+              text = nil
+            end
+          end
+          if text then
+            icon.text = text
+          end
+          if hl then
+            icon.highlight = hl
+          end
+        end,
+      },
+    },
     window = {
       position = "right",
       mappings = {
@@ -43,17 +81,4 @@ return {
       },
     },
   },
-  config = function(_, opts)
-    require("neo-tree").setup(opts)
-    vim.keymap.set("n", "<C-e>", function()
-      require("neo-tree.command").execute({
-        toggle = true,
-        source = "filesystem",
-        dir = vim.fn.getcwd(),
-        position = "right",
-        reveal_file = vim.fn.expand("%:p"),
-        reveal_force_cwd = true,
-      })
-    end, { desc = "Toggle Explorer" })
-  end,
 }

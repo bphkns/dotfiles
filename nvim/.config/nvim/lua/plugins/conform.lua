@@ -1,6 +1,6 @@
 -- Unified project tool cache with TTL
 local cache = {}
-local CACHE_TTL = 300  -- 5 minutes in seconds
+local CACHE_TTL = 300 * 1000 -- 5 minutes in ms (vim.uv.now() returns ms)
 local MAX_CACHE = 20
 
 -- Config file lists (extracted constants)
@@ -178,7 +178,7 @@ local function detect_project_tools(ctx)
   -- Set ignore path for prettier in effect projects
   result.ignore_path_for_prettier = result.has_effect and "/dev/null" or nil
 
-  result.expires_at = vim.uv.now()
+  result.created_at = vim.uv.now()
   return result
 end
 
@@ -188,7 +188,7 @@ local function get_cached_tools(ctx)
   local cached = cache[dir]
 
   -- Cache hit and not expired
-  if cached and (vim.uv.now() - cached.expires_at) < CACHE_TTL then
+  if cached and (vim.uv.now() - cached.created_at) < CACHE_TTL then
     return cached
   end
 
@@ -203,8 +203,8 @@ local function get_cached_tools(ctx)
 
   for k, v in pairs(cache) do
     cache_count = cache_count + 1
-    if v.expires_at < oldest_time then
-      oldest_time = v.expires_at
+    if v.created_at < oldest_time then
+      oldest_time = v.created_at
       oldest_dir = k
     end
   end
@@ -333,10 +333,6 @@ return {
           end,
         },
         prettierd = {
-          condition = function(_, ctx)
-            -- Always run prettierd - no config required (has built-in defaults)
-            return true
-          end,
           cwd = function(_, ctx)
             local tools = get_cached_tools(ctx)
             return tools.prettier_cwd

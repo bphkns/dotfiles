@@ -30,7 +30,7 @@ return {
       grep       = {
         cwd_prompt = true,
         rg_opts =
-        "--hidden --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -g '!.git/' -g '!node_modules/' -g '!.nx/' -g '!.angular/' --fixed-strings",
+        "--hidden --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -g '!.git/' -g '!node_modules/' -g '!.nx/' -g '!.angular/'",
       },
       keymap     = {
         fzf = {
@@ -139,8 +139,5 @@ return {
       },
 
     },
-    config = function(_, opts)
-      require("fzf-lua").setup(opts)
-    end,
   },
 }

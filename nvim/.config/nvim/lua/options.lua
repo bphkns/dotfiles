@@ -29,16 +29,13 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 
 -- Sets directory for persistent undo history
-vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.opt.undodir = vim.fn.expand("~") .. "/.vim/undodir"
 
 -- Enables persistent undo (saves undo history between sessions)
 vim.opt.undofile = true
 
 -- Enables incremental search (highlights matches as you type)
 vim.opt.incsearch = true
-
--- Enables 24-bit RGB color in the terminal
-vim.opt.termguicolors = true
 
 -- Keeps 8 lines visible above/below cursor when scrolling
 vim.opt.scrolloff = 8
@@ -52,17 +49,17 @@ vim.opt.isfname:append("@-@")
 -- Sets time in ms before various operations trigger (lower = more responsive)
 vim.opt.updatetime = 50
 
--- Shows a vertical line at column 100 for code alignment
+-- Shows a vertical line at column 80 for code alignment
 vim.opt.colorcolumn = "80"
 
 -- Enable clipboard sync with system clipboard
 vim.opt.clipboard = "unnamedplus"
 
--- Don't copy text deleted with 'c' command to clipboard
-vim.keymap.set({ "n", "v" }, "c", '"_c', { noremap = true, desc = "Change without yanking" })
-
 vim.opt.equalalways = false
 
 vim.opt.list = true
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+
+vim.o.autoread = true
 
 vim.o.winborder = "rounded"

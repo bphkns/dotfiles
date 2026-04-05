@@ -1,6 +1,6 @@
 -- Moves selection up and down
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
 
 -- Keep cursor centered on half-page jumping
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { silent = true, desc = "Half-page down (centered)" })
@@ -17,7 +17,7 @@ vim.keymap.set("n", "<leader>D", '"_d', { desc = "[D]elete into void" })
 vim.keymap.set("n", "Q", "<nop>", { silent = true, desc = "Disabled (Ex mode)" })
 
 -- Delete all buffers except the current one and return to previous mark
-vim.keymap.set("n", "<leader>bsd", "<cmd>%bd|e#|bd#<cr>|'<cr>", { desc = "Delete surrounding buffers" })
+vim.keymap.set("n", "<leader>bsd", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete surrounding buffers" })
 
 -- Search and replace word under cursor
 vim.keymap.set(
@@ -51,7 +51,8 @@ vim.keymap.set("n", "<leader>bf", ":bfirst<CR>", { silent = true, desc = "First 
 -- Go to last buffer
 vim.keymap.set("n", "<leader>bl", ":blast<CR>", { silent = true, desc = "Last buffer" })
 
-vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
+-- Don't copy text deleted with 'c' command to clipboard
+vim.keymap.set({ "n", "v" }, "c", '"_c', { noremap = true, desc = "Change without yanking" })
 
 -- Terminal mode navigation (for lazygit, etc)
 vim.keymap.set("t", "<C-h>", "<C-\\><C-N><C-h>", { noremap = true, desc = "Navigate left from terminal" })

@@ -1,6 +1,6 @@
 return {
   {
-    "nvim-mini/mini.icons",
+    "echasnovski/mini.icons",
     version = "*",
     event = { "VeryLazy" },
     config = function()

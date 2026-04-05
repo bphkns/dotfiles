@@ -22,7 +22,7 @@ end
 vim.api.nvim_create_autocmd("LspAttach", {
   buffer = 0,
   callback = function(args)
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    local client = vim.lsp.get_clients({ id = args.data.client_id })[1]
     if client then
       client.server_capabilities.documentFormattingProvider = false
       client.server_capabilities.documentRangeFormattingProvider = false
@@ -44,7 +44,7 @@ end
 if not html_lsp_attached then
   vim.lsp.start({
     name = "html-lsp-mjml",
-    cmd = { vim.fn.expand("~/.local/share/nvim/mason/bin/vscode-html-language-server"), "--stdio" },
+    cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-html-language-server", "--stdio" },
     root_dir = vim.fs.dirname(vim.fs.find({ ".git", "package.json" }, { upward = true })[1]),
     on_attach = function(client, bufnr)
       -- Disable formatting capabilities for MJML
@@ -57,7 +57,7 @@ if not html_lsp_attached then
         css = true,
         javascript = true,
       },
-      provideFormatter = true,
+      provideFormatter = false,
     },
     settings = {
       html = {
@@ -172,16 +172,13 @@ vim.keymap.set(
   vim.lsp.buf.type_definition,
   vim.tbl_extend("force", opts, { desc = "Go to Type Definition" })
 )
-vim.keymap.set(
-  "n",
-  "K",
+vim.keymap.set("n", "K", function()
   vim.lsp.buf.hover({
     border = "single",
     max_height = 25,
     max_width = 120,
-  }),
-  vim.tbl_extend("force", opts, { desc = "Hover Documentation" })
-)
+  })
+end, vim.tbl_extend("force", opts, { desc = "Hover Documentation" }))
 
 -- MJML-specific keymaps
 

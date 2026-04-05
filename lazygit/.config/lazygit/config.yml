@@ -26,8 +26,8 @@ git:
     - colorArg: always
       pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
 os:
-  edit: '[ -z "$NVIM" ] && (nvim -- {{filename}}) || (nvim --server $NVIM --remote-send ''<cmd>close<cr><cmd>lua EditFromLazygit({{filename}})<CR>'')'
-  editAtLine: '[ -z "$NVIM" ] && (nvim +{{line}} -- {{filename}}) || nvim --server $NVIM --remote-send ''<cmd>close<CR><cmd>lua EditLineFromLazygit({{filename}},{{line}})<CR>'''
+  edit: '[ -z "$NVIM" ] && (nvim -- {{filename}}) || (nvim --server $NVIM --remote-send ''<cmd>close<cr><cmd>EditFromLazygit {{filename}}<CR>'')'
+  editAtLine: '[ -z "$NVIM" ] && (nvim +{{line}} -- {{filename}}) || nvim --server $NVIM --remote-send ''<cmd>close<CR><cmd>EditLineFromLazygit {{filename}} {{line}}<CR>'''
 customCommands:
   - key: "X"
     context: "global"

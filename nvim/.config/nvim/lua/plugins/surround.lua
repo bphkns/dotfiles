@@ -1,6 +1,6 @@
 return {
   {
-    'nvim-mini/mini.surround',
+    'echasnovski/mini.surround',
     version = '*',
     event = { "BufReadPre", "BufNewFile" },
     config = function()

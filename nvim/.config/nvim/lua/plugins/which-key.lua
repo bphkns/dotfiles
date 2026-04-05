@@ -25,6 +25,10 @@ return {
         { "<leader>d", group = "Document" },
         { "<leader>w", group = "Workspace" },
         { "<leader>r", group = "Rename" },
+        { "<leader>t", group = "Test" },
+        { "<leader>a", group = "AI" },
+        { "<leader>z", group = "Folds" },
+        { "<leader>m", group = "MJML" },
       },
     },
     keys = {

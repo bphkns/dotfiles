@@ -21,8 +21,7 @@ require("lazy").setup({
     { import = "plugins" }, -- Load plugin specs from the 'plugins' directory
   },
   defaults = {
-    lazy = true, -- Lazy-load all plugins
-    version = "*", -- Use latest version for all plugins
+    lazy = true,
   },
   change_detection = {
     enabled = true,
@@ -30,13 +29,14 @@ require("lazy").setup({
   },
 })
 
-_G.EditLineFromLazygit = function(file_path, line)
-  local path = vim.fn.fnameescape(file_path)
-  vim.cmd("e " .. path)
-  vim.cmd(tostring(line))
-end
+vim.api.nvim_create_user_command("EditLineFromLazygit", function(opts)
+  local filepath, line = opts.args:match("^(.+)%s+(%d+)$")
+  if filepath and line then
+    vim.cmd("e " .. vim.fn.fnameescape(filepath))
+    vim.cmd(line)
+  end
+end, { nargs = "+" })
 
-_G.EditFromLazygit = function(file_path)
-  local path = vim.fn.fnameescape(file_path)
-  vim.cmd("e " .. path)
-end
+vim.api.nvim_create_user_command("EditFromLazygit", function(opts)
+  vim.cmd("e " .. vim.fn.fnameescape(opts.args))
+end, { nargs = 1 })

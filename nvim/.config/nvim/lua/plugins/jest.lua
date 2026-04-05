@@ -4,7 +4,6 @@ return {
     dependencies = {
       "nvim-neotest/nvim-nio",
       "nvim-lua/plenary.nvim",
-      "antoinemadec/FixCursorHold.nvim",
       "nvim-treesitter/nvim-treesitter",
       "haydenmeade/neotest-jest",
       { "marilari88/neotest-vitest", branch = "main" },
@@ -81,15 +80,8 @@ return {
         adapters = {
           require("neotest-jest")({
             jestConfigFile = function(path)
-              local util = require("neotest-vitest.util")
-              local vite_config_path = util.search_ancestors(path, function(ancestor_path)
-                return util.path.exists(ancestor_path .. "/jest.config.ts")
-              end)
-              local vite_config_file = vite_config_path .. "/jest.config.ts"
-              if util.path.exists(vite_config_file) then
-                return vite_config_file
-              end
-              return vim.fn.getcwd() .. "/jest.config.ts"
+              local config = vim.fs.find("jest.config.ts", { path = path, upward = true, type = "file" })[1]
+              return config or (vim.fn.getcwd() .. "/jest.config.ts")
             end,
             env = { CI = true },
             cwd = function()
@@ -98,15 +90,8 @@ return {
           }),
           require("neotest-vitest")({
             vitestConfigFile = function(path)
-              local util = require("neotest-vitest.util")
-              local vite_config_path = util.search_ancestors(path, function(ancestor_path)
-                return util.path.exists(ancestor_path .. "/vite.config.ts")
-              end)
-              local vite_config_file = vite_config_path .. "/vite.config.ts"
-              if util.path.exists(vite_config_file) then
-                return vite_config_file
-              end
-              return vim.fn.getcwd() .. "/vite.config.ts"
+              local config = vim.fs.find("vite.config.ts", { path = path, upward = true, type = "file" })[1]
+              return config or (vim.fn.getcwd() .. "/vite.config.ts")
             end,
           }),
         },
