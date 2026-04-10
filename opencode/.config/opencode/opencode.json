@@ -36,7 +36,7 @@
     "@franlol/opencode-md-table-formatter@0.0.3",
     "@nick-vi/opencode-type-inject@1.5.1",
     "opencode-pty@0.2.0",
-    "@ex-machina/opencode-anthropic-auth"
+    "@ex-machina/opencode-anthropic-auth@1.4.0"
   ],
   "instructions": [
     "/home/bikash/.config/opencode/instructions/global.md",
