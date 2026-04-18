@@ -6,3 +6,4 @@ node_modules/
 lazygit/.config/lazygit/state.yml
 .avante_chat_history
 opencode/.config/opencode/opencode.json.uidotsh.*
+opencode/.config/opencode/package-lock.json
