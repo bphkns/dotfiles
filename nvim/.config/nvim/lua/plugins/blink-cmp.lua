@@ -26,7 +26,7 @@ return {
         ["<C-n>"] = { "select_next", "fallback" },
         ["<C-y>"] = { "select_and_accept" },
         ["<C-e>"] = { "hide" },
-        ["<CR>"] = { "accept", "fallback" },
+        ["<CR>"] = { "fallback" },
       },
       appearance = {
         kind_icons = {
@@ -74,6 +74,12 @@ return {
         },
       },
       completion = {
+        list = {
+          selection = {
+            preselect = false,
+            auto_insert = false,
+          },
+        },
         documentation = {
           auto_show = true,
           auto_show_delay_ms = 200,

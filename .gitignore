@@ -2,6 +2,7 @@
 .DS_Store
 ./**/.DS_Store
 */**/.DS_Store
+node_modules/
 lazygit/.config/lazygit/state.yml
 .avante_chat_history
-opencode/.config/opencode/plugin/shell-strategy/
+opencode/.config/opencode/opencode.json.uidotsh.*

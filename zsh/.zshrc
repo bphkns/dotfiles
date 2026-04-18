@@ -208,3 +208,5 @@ export PATH="/home/bikash/.git-ai/bin:$PATH"
 
 # Vite+ bin (https://viteplus.dev)
 . "$HOME/.vite-plus/env"
+# CF CLI completions
+[[ -f "/home/bikash/.config/cf/completions/_cf.zsh" ]] && source "/home/bikash/.config/cf/completions/_cf.zsh"
