@@ -130,8 +130,52 @@ return {
         html = {
           filetypes = { "html", "mjml" }, -- Added mjml as per original
         },
-        tailwindcss = {},
-        cssls = {},
+        tailwindcss = {
+          filetypes = {
+            "css",
+            "scss",
+            "sass",
+            "less",
+            "postcss",
+            "html",
+            "javascript",
+            "javascriptreact",
+            "typescript",
+            "typescriptreact",
+          },
+        },
+        cssls = {
+          single_file_support = false,
+          root_dir = function(bufnr, on_dir)
+            local fname = vim.api.nvim_buf_get_name(bufnr)
+            if not fname or fname == "" or fname:match("^%w+://") then
+              return
+            end
+
+            local line_count = vim.api.nvim_buf_line_count(bufnr)
+            local lines = vim.api.nvim_buf_get_lines(bufnr, 0, math.min(line_count, 120), false)
+            local content = table.concat(lines, "\n")
+            local tailwind_markers = {
+              "@import 'tailwindcss'",
+              '@import "tailwindcss"',
+              "@source",
+              "@custom-variant",
+              "@theme",
+              "@apply",
+            }
+
+            for _, marker in ipairs(tailwind_markers) do
+              if content:find(marker, 1, true) then
+                return
+              end
+            end
+
+            local root = vim.fs.root(fname, { "package.json", ".git" })
+            if root then
+              on_dir(root)
+            end
+          end,
+        },
         emmet_ls = {
           filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
         },
@@ -159,6 +203,7 @@ return {
       require("mason-lspconfig").setup({
         ensure_installed = mason_servers,
         automatic_installation = true,
+        automatic_enable = false,
       })
 
       -- Install formatters and linters via mason-tool-installer
