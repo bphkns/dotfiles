@@ -29,8 +29,8 @@ os:
   edit: '[ -z "$NVIM" ] && (nvim -- {{filename}}) || (nvim --server $NVIM --remote-send ''<cmd>close<cr><cmd>EditFromLazygit {{filename}}<CR>'')'
   editAtLine: '[ -z "$NVIM" ] && (nvim +{{line}} -- {{filename}}) || nvim --server $NVIM --remote-send ''<cmd>close<CR><cmd>EditLineFromLazygit {{filename}} {{line}}<CR>'''
 customCommands:
-  - key: "X"
-    context: "global"
-    description: "AI commit message"
-    command: "lgaicm-commit"
-    output: terminal
+  - key: "x"
+    context: "files"
+    description: "Pick AI commit (preview)"
+    output: "terminal"
+    command: "$HOME/.config/lazygit/scripts/aicommit_fzf.sh"
