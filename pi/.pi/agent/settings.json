@@ -9,6 +9,7 @@
   "autocompleteMaxVisible": 8,
   "editorPaddingX": 1,
   "doubleEscapeAction": "tree",
+  "shellCommandPrefix": "source ~/.pi/agent/shell.bash",
   "npmCommand": ["mise", "exec", "node@25", "--", "npm"],
   "packages": [
     "npm:@plannotator/pi-extension"
