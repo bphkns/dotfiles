@@ -3,6 +3,13 @@
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.5",
   "defaultThinkingLevel": "xhigh",
+  "quietStartup": true,
+  "collapseChangelog": true,
+  "enableInstallTelemetry": false,
+  "autocompleteMaxVisible": 8,
+  "editorPaddingX": 1,
+  "doubleEscapeAction": "tree",
+  "npmCommand": ["mise", "exec", "node@25", "--", "npm"],
   "packages": [
     "npm:@plannotator/pi-extension"
   ]
