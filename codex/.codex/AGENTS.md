@@ -7,6 +7,7 @@ Follow these defaults in every Codex session.
 - Use `context7` MCP tools for current library docs when available.
 - Use `gh_grep` MCP tools for real-world code examples when unsure about an API.
 - Use `exa` MCP tools for web research when required.
+- Always use the question tool when asking the user a question; do not ask free-text questions unless the tool is unavailable.
 - Keep secrets out of committed files; use environment variable names/placeholders only.
 - Prefer stowed dotfile changes over live-only config edits.
 - Treat `~/.config/opencode/instructions/global.md` as the canonical extended style guide when present.

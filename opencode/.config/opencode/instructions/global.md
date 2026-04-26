@@ -1,6 +1,7 @@
 - Be extremely concise, less reading overhead. Sacrifice grammar for the sake of concision.
 - Make the plan extremely concise. Sacrifice grammar for the sake of concision.
 - At the end of each plan, give me a list of unresolved questions to answer, if any.
+- Always use the `question` tool when asking the user a question; do not ask free-text questions unless the tool is unavailable.
 - When you need to search docs, use `context7` tools.
 - If you are unsure how to do something, use `gh_grep` to search code examples from GitHub.
 - Use exa tools when required for searching
