@@ -133,6 +133,14 @@ export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
 export FZF_ALT_C_OPTS="--preview 'eza --icons --group-directories-first {}'"
 export FZF_COMPLETION_OPTS="--bind 'tab:down,shift-tab:up'"
 
+. "/home/bikash/.acme.sh/acme.sh.env"
+
+# Added by git-ai installer on Tue Jan 27 12:08:23 PM IST 2026
+export PATH="/home/bikash/.git-ai/bin:$PATH"
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"
+
 # Mise (cached activation + completions)
 _mise_cache_dir="$_zsh_cache_dir"
 _mise_activate="$_mise_cache_dir/mise-activate.zsh"
@@ -195,12 +203,5 @@ else
     printf '\033[38;2;255;162;71m󰔛 %.0fms\033[0m\n' $_zsh_startup_ms   # Orange - slow
 fi
 unset _zsh_startup_ms _zsh_start_time
-. "/home/bikash/.acme.sh/acme.sh.env"
-
-# Added by git-ai installer on Tue Jan 27 12:08:23 PM IST 2026
-export PATH="/home/bikash/.git-ai/bin:$PATH"
-
-# Vite+ bin (https://viteplus.dev)
-. "$HOME/.vite-plus/env"
 # CF CLI completions
 [[ -f "/home/bikash/.config/cf/completions/_cf.zsh" ]] && source "/home/bikash/.config/cf/completions/_cf.zsh"

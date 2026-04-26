@@ -1,0 +1,12 @@
+interface:
+  display_name: "UI"
+  short_description: "Explore, build, and refine UI"
+  default_prompt: "Use the UI skill to fetch uidotsh://ui and follow its current interface guidance."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "uidotsh"
+      description: "uidotsh UI skill resources"
+      transport: "streamable_http"
+      url: "https://ui.sh/mcp?agent=codex"

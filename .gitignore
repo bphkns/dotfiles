@@ -7,3 +7,35 @@ lazygit/.config/lazygit/state.yml
 .avante_chat_history
 opencode/.config/opencode/opencode.json.uidotsh.*
 opencode/.config/opencode/package-lock.json
+
+# Local secrets and machine state
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+*.key
+*.pem
+id_rsa
+id_ed25519
+**/auth.json
+**/credentials*.json
+**/*credentials*.json
+**/*secret*.json
+**/*token*.json
+**/settings.local.json
+
+# Agent runtime state
+**/.claude/backups/
+**/.claude/file-history/
+**/.claude/agent-memory-local/
+**/.codex/cache/
+**/.codex/skills/.system/
+**/.codex/memories/
+**/.codex/log/
+**/.codex/.tmp/
+**/.codex/tmp/
+**/.codex/installation_id
+**/.codex/history.jsonl
+**/.codex/*.sqlite*
