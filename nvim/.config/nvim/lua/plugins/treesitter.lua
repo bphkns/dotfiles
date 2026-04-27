@@ -1,3 +1,12 @@
+local function register_fga_parser()
+  require("nvim-treesitter.parsers").fga = {
+    install_info = {
+      url = "https://github.com/matoous/tree-sitter-fga",
+      queries = "queries",
+    },
+  }
+end
+
 return {
   {
     "nvim-treesitter/nvim-treesitter-context",
@@ -35,7 +44,14 @@ return {
     "nvim-treesitter/nvim-treesitter",
     lazy = false,
     branch = "main",
+    init = function()
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "TSUpdate",
+        callback = register_fga_parser,
+      })
+    end,
     build = function()
+      register_fga_parser()
       require("nvim-treesitter").install({
         "lua",
         "vim",
@@ -51,12 +67,14 @@ return {
         "sql",
         "jsx",
         "dockerfile",
+        "fga",
         "prisma",
         "markdown",
         "markdown_inline",
       })
     end,
     config = function()
+      register_fga_parser()
       require("nvim-treesitter").setup({})
     end,
   },
