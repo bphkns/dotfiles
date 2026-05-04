@@ -3,8 +3,8 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
+      "mason-org/mason.nvim",
+      "mason-org/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
       "saghen/blink.cmp",
       "b0o/schemastore.nvim",
@@ -29,10 +29,8 @@ return {
           filetypes = {
             "javascript",
             "javascriptreact",
-            "javascript.jsx",
             "typescript",
             "typescriptreact",
-            "typescript.tsx",
           },
           settings = {
             complete_function_calls = false,
@@ -72,19 +70,20 @@ return {
         },
         angularls = {
           -- Custom root detection for Nx/Angular
-          root_dir = function(bufnr)
+          root_dir = function(bufnr, on_dir)
             -- Get the actual filename from buffer number
             local fname = vim.api.nvim_buf_get_name(bufnr)
 
             -- Skip non-file buffers (like oil://)
             if not fname or fname == "" or fname:match("^%w+://") then
-              return nil
+              return
             end
 
             -- Check for angular.json first (standard Angular project)
             local angular_root = vim.fs.root(fname, { "angular.json" })
             if angular_root then
-              return angular_root
+              on_dir(angular_root)
+              return
             end
 
             -- For Nx projects, check for nx.json AND @angular/core in package.json
@@ -100,24 +99,27 @@ return {
                   local deps = pkg.dependencies or {}
                   local dev_deps = pkg.devDependencies or {}
                   if deps["@angular/core"] or dev_deps["@angular/core"] then
-                    return nx_root
+                    on_dir(nx_root)
+                    return
                   end
                 end
               end
             end
-
-            return nil
           end,
         },
         biome = {
           -- Biome LSP for formatting and linting
-          root_dir = function(bufnr)
+          workspace_required = true,
+          root_dir = function(bufnr, on_dir)
             local fname = vim.api.nvim_buf_get_name(bufnr)
             if not fname or fname == "" or fname:match("^%w+://") then
-              return nil
+              return
             end
             -- Look for biome.json or biome.jsonc
-            return vim.fs.root(fname, { "biome.json", "biome.jsonc" })
+            local root = vim.fs.root(fname, { "biome.json", "biome.jsonc" })
+            if root then
+              on_dir(root)
+            end
           end,
         },
         eslint = {
@@ -136,7 +138,6 @@ return {
             "scss",
             "sass",
             "less",
-            "postcss",
             "html",
             "javascript",
             "javascriptreact",
@@ -145,7 +146,7 @@ return {
           },
         },
         cssls = {
-          single_file_support = false,
+          workspace_required = true,
           root_dir = function(bufnr, on_dir)
             local fname = vim.api.nvim_buf_get_name(bufnr)
             if not fname or fname == "" or fname:match("^%w+://") then
@@ -182,7 +183,6 @@ return {
         jsonls = {
           filetypes = { "json", "jsonc" },
           root_markers = { ".git", "package.json" },
-          single_file_support = true,
         },
         lua_ls = {
           settings = {
@@ -202,7 +202,6 @@ return {
 
       require("mason-lspconfig").setup({
         ensure_installed = mason_servers,
-        automatic_installation = true,
         automatic_enable = false,
       })
 
@@ -286,20 +285,17 @@ return {
         end
       end
 
-      -- Configure servers using Neovim 0.11 native vim.lsp.config
-      -- vim.lsp.config auto-discovers defaults from lsp/*.lua in nvim-lspconfig
-      -- Build capabilities once and reuse for all servers
+      -- Configure servers using Neovim's native vim.lsp.config/enable API.
+      -- nvim-lspconfig remains a defaults-only provider via its lsp/*.lua files.
       local capabilities = require("blink.cmp").get_lsp_capabilities()
       capabilities.textDocument.foldingRange = {
         dynamicRegistration = false,
         lineFoldingOnly = true,
       }
+      vim.lsp.config("*", { capabilities = capabilities })
 
       for server, server_opts in pairs(opts.servers) do
-        -- Merge capabilities with user options (vim.lsp.config handles lspconfig defaults)
-        local lsp_config = vim.tbl_deep_extend("force", {
-          capabilities = capabilities,
-        }, server_opts)
+        local lsp_config = vim.deepcopy(server_opts)
 
         -- Special handling for specific servers
         if server == "vtsls" then
@@ -332,20 +328,17 @@ return {
           end
         end
 
-        -- Correct 0.11 API usage: Assign to the registry
-        vim.lsp.config[server] = lsp_config
+        vim.lsp.config(server, lsp_config)
       end
 
       -- Enable all configured servers
-      for server, _ in pairs(opts.servers) do
-        vim.lsp.enable(server)
-      end
+      vim.lsp.enable(mason_servers)
 
       -- LspAttach autocmd for per-buffer configuration
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
         callback = function(args)
-          local client = vim.lsp.get_clients({ id = args.data.client_id })[1]
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
           if not client then
             return
           end
