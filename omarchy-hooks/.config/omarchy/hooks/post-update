@@ -1,0 +1,208 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+dotfiles_dir="${DOTFILES_DIR:-$HOME/dotfiles}"
+nvim_package="$dotfiles_dir/nvim"
+nvim_config="$HOME/.config/nvim"
+theme_source="$HOME/.config/omarchy/current/theme/neovim.lua"
+theme_link="$nvim_config/lua/plugins/theme.lua"
+backup_root="$HOME/.config/dotfiles.omarchy-post-update.$(date +%Y%m%d-%H%M%S)"
+backed_up=0
+
+warn() {
+  printf 'omarchy post-update dotfiles: %s\n' "$*" >&2
+}
+
+backup_path() {
+  local target="$1"
+  local rel="${target#$HOME/}"
+  local backup_target="$backup_root/$rel"
+
+  mkdir -p "$(dirname "$backup_target")"
+  mv -T "$target" "$backup_target"
+  backed_up=1
+  warn "backed up $target to $backup_target"
+}
+
+backup_copy() {
+  local target="$1"
+  local rel="${target#$HOME/}"
+  local backup_target="$backup_root/$rel"
+
+  [[ -e $backup_target || -L $backup_target ]] && return 0
+
+  mkdir -p "$(dirname "$backup_target")"
+  cp -a "$target" "$backup_target"
+  backed_up=1
+  warn "backed up $target to $backup_target"
+}
+
+install_real_file() {
+  local source_file="$1"
+  local target_file="$2"
+
+  [[ -f $source_file ]] || return 0
+
+  if [[ -L $target_file ]]; then
+    backup_path "$target_file"
+  elif [[ -e $target_file ]]; then
+    if cmp -s "$source_file" "$target_file"; then
+      return 0
+    fi
+
+    backup_path "$target_file"
+  fi
+
+  mkdir -p "$(dirname "$target_file")"
+  cp -f "$source_file" "$target_file"
+}
+
+stow_package() {
+  local package="$1"
+
+  [[ -d $dotfiles_dir/$package ]] || return 1
+
+  if ! stow --no-folding -R -t "$HOME" -d "$dotfiles_dir" "$package"; then
+    warn "failed to stow $package; skipping"
+    return 1
+  fi
+}
+
+ensure_line() {
+  local file="$1"
+  local line="$2"
+
+  [[ -f $file ]] || return 0
+  grep -Fxq "$line" "$file" && return 0
+
+  backup_copy "$file"
+  printf '\n%s\n' "$line" >> "$file"
+}
+
+ensure_alacritty_f11() {
+  local file="$HOME/.config/alacritty/alacritty.toml"
+
+  [[ -f $file ]] || return 0
+  grep -q 'action = "ToggleFullscreen"' "$file" && return 0
+  grep -q '^bindings = \[' "$file" || return 0
+
+  backup_copy "$file"
+  sed -i '/^bindings = \[/a { key = "F11", action = "ToggleFullscreen" },' "$file"
+}
+
+resolve_symlink() {
+  local path="$1"
+  local link_target
+  link_target="$(readlink "$path")"
+
+  if [[ $link_target == /* ]]; then
+    realpath -m "$link_target"
+  else
+    realpath -m "$(dirname "$path")/$link_target"
+  fi
+}
+
+is_dotfiles_nvim_link() {
+  local path="$1"
+  local resolved
+
+  [[ -L $path ]] || return 1
+  resolved="$(resolve_symlink "$path")"
+  [[ $resolved == "$nvim_package"/* ]]
+}
+
+protect_target_file() {
+  local rel="$1"
+  local target="$HOME/$rel"
+
+  [[ -e $target || -L $target ]] || return 0
+  is_dotfiles_nvim_link "$target" && return 0
+
+  if [[ ! -d $target ]]; then
+    backup_path "$target"
+  fi
+}
+
+protect_target_dir() {
+  local rel="$1"
+  local target="$HOME/$rel"
+
+  [[ -e $target || -L $target ]] || return 0
+  [[ -d $target && ! -L $target ]] && return 0
+  is_dotfiles_nvim_link "$target" && return 0
+
+  backup_path "$target"
+}
+
+if [[ ! -d $nvim_package ]]; then
+  warn "missing $nvim_package; skipping"
+  exit 0
+fi
+
+if ! command -v stow >/dev/null 2>&1; then
+  warn "stow is not installed; skipping"
+  exit 0
+fi
+
+nvim_package="$(realpath -m "$nvim_package")"
+dotfiles_dir="$(realpath -m "$dotfiles_dir")"
+
+while IFS= read -r -d '' dir; do
+  rel="${dir#$nvim_package/}"
+  [[ $rel == "$dir" ]] && continue
+  protect_target_dir "$rel"
+done < <(find "$nvim_package" -mindepth 1 -type d -print0)
+
+while IFS= read -r -d '' file; do
+  rel="${file#$nvim_package/}"
+  [[ $rel == ".stow-local-ignore" ]] && continue
+  [[ $rel == ".config/nvim/lua/plugins/theme.lua" ]] && continue
+  protect_target_file "$rel"
+done < <(find "$nvim_package" \( -type f -o -type l \) -print0)
+
+mkdir -p "$(dirname "$theme_link")"
+if [[ -e $theme_link || -L $theme_link ]]; then
+  if [[ ! -L $theme_link || $(resolve_symlink "$theme_link") != "$theme_source" ]]; then
+    backup_path "$theme_link"
+  fi
+fi
+
+stow --no-folding -R -t "$HOME" -d "$dotfiles_dir" nvim
+ln -sfn "$theme_source" "$theme_link"
+
+opencode_package="$dotfiles_dir/opencode"
+if [[ -d $opencode_package ]]; then
+  mkdir -p "$HOME/.config/opencode"
+
+  stow --no-folding -R -t "$HOME" -d "$dotfiles_dir" opencode
+
+  for rel in ".config/opencode/opencode.json" ".config/opencode/tui.json"; do
+    source_file="$opencode_package/$rel"
+    target_file="$HOME/$rel"
+    install_real_file "$source_file" "$target_file"
+  done
+fi
+
+if stow_package tmux; then
+  ensure_line "$HOME/.config/tmux/tmux.conf" "source-file ~/.config/tmux/dotfiles.conf"
+fi
+
+if stow_package ghostty; then
+  ensure_line "$HOME/.config/ghostty/config" 'config-file = ?"~/.config/ghostty/dotfiles.conf"'
+fi
+
+ensure_alacritty_f11
+
+lazygit_package="$dotfiles_dir/lazygit"
+if stow_package lazygit; then
+  install_real_file "$lazygit_package/.config/lazygit/config.yml" "$HOME/.config/lazygit/config.yml"
+fi
+
+starship_package="$dotfiles_dir/starship"
+if [[ -d $starship_package ]]; then
+  install_real_file "$starship_package/.config/starship.toml" "$HOME/.config/starship.toml"
+fi
+
+if (( backed_up )); then
+  warn "conflicting files were saved under $backup_root"
+fi

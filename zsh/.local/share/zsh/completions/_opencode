@@ -1,0 +1,12 @@
+#compdef opencode
+
+(( $+commands[opencode] )) || return 1
+
+local output
+local -a completions
+
+output="$(opencode --get-yargs-completions "${words[@]}" 2>/dev/null)" || return 1
+[[ -n "$output" ]] || return 1
+
+completions=("${(@f)output}")
+compadd -- "${completions[@]}"

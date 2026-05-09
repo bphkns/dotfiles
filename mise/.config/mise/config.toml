@@ -1,0 +1,9 @@
+[tools]
+bun = "latest"
+go = "latest"
+java = "latest"
+node = "latest"
+usage = "latest"
+uv = "latest"
+zig = "latest"
+zls = "latest"

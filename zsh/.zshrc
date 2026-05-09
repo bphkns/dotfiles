@@ -29,73 +29,86 @@ esac
 # Cargo
 [[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 
-# Pre-generated completions (rustup, cargo, fd, rg, gh, starship, docker, bob, delta, bat, yazi, ghostty)
-fpath=(~/.local/share/zsh/completions $fpath)
+# Completion paths
+_zsh_cache_dir="$HOME/.cache/zsh"
+[[ -d "$_zsh_cache_dir" ]] || mkdir -p "$_zsh_cache_dir"
+fpath=(~/.local/share/zsh/completions "$_zsh_cache_dir" $fpath)
 
 # Bun completions
 [[ -s "$HOME/.bun/_bun" ]] && fpath=("$HOME/.bun" $fpath)
 
-# Mise completions (cached)
-fpath=(~/.cache/zsh $fpath)
+# Generated Zsh completions must exist before compinit scans fpath.
+_mise_comp="$_zsh_cache_dir/_mise"
+_mise_bin="$(command -v mise)"
+if [[ -n "$_mise_bin" && (! -f "$_mise_comp" || "$_mise_bin" -nt "$_mise_comp") ]]; then
+    mise completion zsh > "$_mise_comp"
+fi
+
+_cloud_sql_proxy_comp="$_zsh_cache_dir/_cloud-sql-proxy"
+_cloud_sql_proxy_bin="$(command -v cloud-sql-proxy)"
+if [[ -n "$_cloud_sql_proxy_bin" && (! -f "$_cloud_sql_proxy_comp" || "$_cloud_sql_proxy_bin" -nt "$_cloud_sql_proxy_comp") ]]; then
+    cloud-sql-proxy completion zsh > "$_cloud_sql_proxy_comp"
+fi
+
+# Completion system (must run before fzf-tab)
+autoload -Uz compinit
+compinit
 
 # Zinit
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-[[ ! -d $ZINIT_HOME ]] && mkdir -p "$(dirname $ZINIT_HOME)"
-[[ ! -d $ZINIT_HOME/.git ]] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-source "${ZINIT_HOME}/zinit.zsh"
-
-# Completion system (must run before fzf-tab)
-# Cache compinit - only rebuild once per day
-autoload -Uz compinit
-if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-    compinit
-else
-    compinit -C
+if [[ ! -f "$ZINIT_HOME/zinit.zsh" && -n "${commands[git]}" ]]; then
+    mkdir -p "$(dirname "$ZINIT_HOME")"
+    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME" >/dev/null 2>&1 || true
 fi
-zinit cdreplay -q
 
-# fzf-tab (must load after compinit, before other widgets)
-zinit light Aloxaf/fzf-tab
+if [[ -f "$ZINIT_HOME/zinit.zsh" ]]; then
+    source "${ZINIT_HOME}/zinit.zsh"
+    zinit cdreplay -q
 
-# fzf-git.sh - git helpers with fzf (Ctrl-G Ctrl-F/B/T/R/H/S/E)
-source "${XDG_DATA_HOME:-$HOME/.local/share}/zinit/plugins/junegunn---fzf-git.sh/fzf-git.sh"
+    # fzf-tab (must load after compinit, before other widgets)
+    zinit light Aloxaf/fzf-tab
 
-# pnpm completion (needs build step)
-zinit ice wait"0" lucid atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone"
-zinit light g-plane/pnpm-shell-completion
+    # fzf-git.sh - git helpers with fzf (Ctrl-G Ctrl-F/B/T/R/H/S/E)
+    _fzf_git_sh="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/plugins/junegunn---fzf-git.sh/fzf-git.sh"
+    [[ -f "$_fzf_git_sh" ]] && source "$_fzf_git_sh"
+    unset _fzf_git_sh
 
-# Syntax highlighting and autosuggestions (must load AFTER fzf-tab)
-zinit wait lucid for \
-    atload"_zsh_autosuggest_start" \
-        zsh-users/zsh-autosuggestions \
-    zdharma-continuum/fast-syntax-highlighting
+    # pnpm completion (needs build step)
+    zinit ice wait"0" lucid atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone"
+    zinit light g-plane/pnpm-shell-completion
 
-# FZF shell integration (only keybindings - fzf-tab handles completion)
-zinit ice wait lucid has"fzf" src"shell/key-bindings.zsh"
-zinit light junegunn/fzf
+    # Syntax highlighting and autosuggestions (must load AFTER fzf-tab)
+    zinit wait lucid for \
+        atload"_zsh_autosuggest_start" \
+            zsh-users/zsh-autosuggestions \
+        zdharma-continuum/fast-syntax-highlighting
+
+    # FZF shell integration (only keybindings - fzf-tab handles completion)
+    zinit ice wait lucid has"fzf" src"shell/key-bindings.zsh"
+    zinit light junegunn/fzf
+
+    # Node version helper
+    zinit ice wait"1" lucid
+    zinit light lukechilds/zsh-nvm 2>/dev/null || true
+fi
 
 # Google Cloud SDK (direct source - faster than OMZP::gcloud)
-if [[ -d "$HOME/google-cloud-sdk" ]]; then
-    source "$HOME/google-cloud-sdk/path.zsh.inc"
-    source "$HOME/google-cloud-sdk/completion.zsh.inc"
-fi
-
-# npm completion (deferred)
-zinit ice wait"1" lucid
-zinit light lukechilds/zsh-nvm 2>/dev/null || {
-    (( $+commands[npm] )) && zinit ice wait"1" lucid atload'eval "$(npm completion)"'; zinit light zdharma-continuum/null
-}
+for _gcloud_sdk_dir in "$HOME/google-cloud-sdk" /opt/google-cloud-cli; do
+    if [[ -d "$_gcloud_sdk_dir" ]]; then
+        [[ -f "$_gcloud_sdk_dir/path.zsh.inc" ]] && source "$_gcloud_sdk_dir/path.zsh.inc"
+        [[ -f "$_gcloud_sdk_dir/completion.zsh.inc" ]] && source "$_gcloud_sdk_dir/completion.zsh.inc"
+        break
+    fi
+done
+unset _gcloud_sdk_dir
 
 # Zoxide (cached)
-_zsh_cache_dir="$HOME/.cache/zsh"
-[[ -d "$_zsh_cache_dir" ]] || mkdir -p "$_zsh_cache_dir"
 _zoxide_cache="$_zsh_cache_dir/zoxide.zsh"
 _zoxide_bin="$(command -v zoxide)"
-if [[ ! -f "$_zoxide_cache" || "$_zoxide_bin" -nt "$_zoxide_cache" ]]; then
+if [[ -n "$_zoxide_bin" && (! -f "$_zoxide_cache" || "$_zoxide_bin" -nt "$_zoxide_cache") ]]; then
     zoxide init zsh > "$_zoxide_cache"
 fi
-source "$_zoxide_cache"
-alias zz='__zoxide_zi'
+[[ -f "$_zoxide_cache" ]] && source "$_zoxide_cache" && alias zz='__zoxide_zi'
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -121,53 +134,41 @@ alias c='clear'
 # alert alias
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# FZF config - Bamboo
-export FZF_DEFAULT_OPTS="--highlight-line --info=inline-right --ansi --layout=reverse --border=none \
-  --color=bg:#252623,fg:#f1e9d2,hl:#8fb573 \
-  --color=bg+:#3a3d37,fg+:#f1e9d2,hl+:#8fb573 \
-  --color=info:#57a5e5,prompt:#dbb651,pointer:#aaaaff \
-  --color=marker:#8fb573,spinner:#8fb573,header:#57a5e5"
+# FZF config
+export FZF_DEFAULT_OPTS="--highlight-line --info=inline-right --ansi --layout=reverse --border=none"
 export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
 export FZF_ALT_C_OPTS="--preview 'eza --icons --group-directories-first {}'"
 export FZF_COMPLETION_OPTS="--bind 'tab:down,shift-tab:up'"
 
-. "/home/bikash/.acme.sh/acme.sh.env"
+[[ -f "$HOME/.acme.sh/acme.sh.env" ]] && . "$HOME/.acme.sh/acme.sh.env"
 
 # Added by git-ai installer on Tue Jan 27 12:08:23 PM IST 2026
-export PATH="/home/bikash/.git-ai/bin:$PATH"
+[[ -d "$HOME/.git-ai/bin" ]] && export PATH="$HOME/.git-ai/bin:$PATH"
 
 # Vite+ bin (https://viteplus.dev)
-. "$HOME/.vite-plus/env"
+[[ -f "$HOME/.vite-plus/env" ]] && . "$HOME/.vite-plus/env"
 
 # Mise (cached activation + completions)
 _mise_cache_dir="$_zsh_cache_dir"
 _mise_activate="$_mise_cache_dir/mise-activate.zsh"
-_mise_comp="$_mise_cache_dir/_mise"
 _mise_bin="$(command -v mise)"
-if [[ ! -f "$_mise_activate" || "$_mise_bin" -nt "$_mise_activate" ]]; then
+if [[ -n "$_mise_bin" && (! -f "$_mise_activate" || "$_mise_bin" -nt "$_mise_activate") ]]; then
     mkdir -p "$_mise_cache_dir"
     mise activate zsh > "$_mise_activate"
-    mise completion zsh > "$_mise_comp"
 fi
-source "$_mise_activate"
+[[ -f "$_mise_activate" ]] && source "$_mise_activate"
 
 # Starship prompt (cached)
 _starship_cache="$_mise_cache_dir/starship.zsh"
 _starship_bin="$(command -v starship)"
-if [[ ! -f "$_starship_cache" || "$_starship_bin" -nt "$_starship_cache" ]]; then
+if [[ -n "$_starship_bin" && (! -f "$_starship_cache" || "$_starship_bin" -nt "$_starship_cache") ]]; then
     starship init zsh > "$_starship_cache"
 fi
-source "$_starship_cache"
+[[ -f "$_starship_cache" ]] && source "$_starship_cache"
 
-# Opencode completion (cached)
-_opencode_comp="$_mise_cache_dir/_opencode"
-_opencode_bin="$(command -v opencode)"
-if [[ -n "$_opencode_bin" && (! -f "$_opencode_comp" || "$_opencode_bin" -nt "$_opencode_comp") ]]; then
-    opencode completion > "$_opencode_comp"
-fi
-[[ -f "$_opencode_comp" ]] && source "$_opencode_comp"
+# OpenCode currently emits Bash completions, so don't source them in Zsh.
 
 # Editor
 export EDITOR="nvim"
@@ -186,6 +187,7 @@ export LG_CONFIG_FILE="$HOME/.config/lazygit/config.yml"
 
 # yazi integration - cd to directory on exit (q to cd, Q to stay)
 function yy() {
+    (( $+commands[yazi] )) || { print -u2 "yazi is not installed"; return 127; }
     local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
     yazi "$@" --cwd-file="$tmp"
     IFS= read -r -d '' cwd < "$tmp"
@@ -204,7 +206,7 @@ else
 fi
 unset _zsh_startup_ms _zsh_start_time
 # CF CLI completions
-[[ -f "/home/bikash/.config/cf/completions/_cf.zsh" ]] && source "/home/bikash/.config/cf/completions/_cf.zsh"
+[[ -f "$HOME/.config/cf/completions/_cf.zsh" ]] && source "$HOME/.config/cf/completions/_cf.zsh"
 
 # add Pulumi to the PATH
-export PATH=$PATH:/home/bikash/.pulumi/bin
+[[ -d "$HOME/.pulumi/bin" ]] && export PATH="$PATH:$HOME/.pulumi/bin"
