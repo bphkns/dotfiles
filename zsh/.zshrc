@@ -205,3 +205,6 @@ fi
 unset _zsh_startup_ms _zsh_start_time
 # CF CLI completions
 [[ -f "/home/bikash/.config/cf/completions/_cf.zsh" ]] && source "/home/bikash/.config/cf/completions/_cf.zsh"
+
+# add Pulumi to the PATH
+export PATH=$PATH:/home/bikash/.pulumi/bin
