@@ -1,7 +1,7 @@
 return {
   {
-    'saghen/blink.pairs',
-    version = '*',
-    event = 'VeryLazy',
-  }
+    "saghen/blink.pairs",
+    version = "*",
+    event = "VeryLazy",
+  },
 }

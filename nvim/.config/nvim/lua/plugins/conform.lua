@@ -112,11 +112,11 @@ local function detect_project_tools(ctx)
   -- Stop when we find tooling deps or hit the monorepo root (nx.json, pnpm-workspace.yaml)
   local current_dir = dir
   local home_dir = vim.uv.os_homedir()
-  
+
   while current_dir and current_dir ~= home_dir do
     local package_json_path = current_dir .. "/package.json"
     local stat = vim.uv.fs_stat(package_json_path)
-    
+
     if stat and stat.type == "file" then
       local pkg = read_json(package_json_path)
       if pkg then
@@ -159,14 +159,14 @@ local function detect_project_tools(ctx)
         local pnpm_workspace = current_dir .. "/pnpm-workspace.yaml"
         local nx_stat = vim.uv.fs_stat(nx_json)
         local pnpm_stat = vim.uv.fs_stat(pnpm_workspace)
-        
+
         -- Stop if we found all tools we're looking for OR we hit monorepo root
-        if (nx_stat or pnpm_stat) then
+        if nx_stat or pnpm_stat then
           break
         end
       end
     end
-    
+
     -- Move up to parent directory
     local parent = vim.fs.dirname(current_dir)
     if parent == current_dir then
@@ -253,9 +253,25 @@ return {
       end,
       formatters_by_ft = {
         javascript = { "dprint", "oxfmt", "eslint_d", "biome", "prettierd", stop_after_first = true },
-        javascriptreact = { "prettier_tailwind", "dprint", "oxfmt", "eslint_d", "biome", "prettierd", stop_after_first = true },
+        javascriptreact = {
+          "prettier_tailwind",
+          "dprint",
+          "oxfmt",
+          "eslint_d",
+          "biome",
+          "prettierd",
+          stop_after_first = true,
+        },
         typescript = { "dprint", "oxfmt", "eslint_d", "biome", "prettierd", stop_after_first = true },
-        typescriptreact = { "prettier_tailwind", "dprint", "oxfmt", "eslint_d", "biome", "prettierd", stop_after_first = true },
+        typescriptreact = {
+          "prettier_tailwind",
+          "dprint",
+          "oxfmt",
+          "eslint_d",
+          "biome",
+          "prettierd",
+          stop_after_first = true,
+        },
         vue = { "prettier_tailwind", "biome", "oxfmt", "prettierd", stop_after_first = true },
         astro = { "prettier_tailwind", "biome", "oxfmt", "prettierd", stop_after_first = true },
         angular = { "prettier_tailwind", "biome", "oxfmt", "prettierd", stop_after_first = true },

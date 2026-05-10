@@ -1,48 +1,45 @@
-
 return {
   {
     "ibhagwan/fzf-lua",
     branch = "main",
     dependencies = { "echasnovski/mini.icons" },
     opts = {
-      winopts    = {
-        height     = 0.85,
-        width      = 0.80,
-        row        = 0.35,
-        col        = 0.50,
-        border     = "rounded",
-        backdrop   = 60,
-        title_pos  = "center",
-        preview    = {
-          vertical   = "down:45%",
+      winopts = {
+        height = 0.85,
+        width = 0.80,
+        row = 0.35,
+        col = 0.50,
+        border = "rounded",
+        backdrop = 60,
+        title_pos = "center",
+        preview = {
+          vertical = "down:45%",
           horizontal = "right:50%",
-          layout     = "vertical",
-          scrollbar  = "border",
-          scrolloff  = "-2",
-          title_pos  = "center",
+          layout = "vertical",
+          scrollbar = "border",
+          scrolloff = "-2",
+          title_pos = "center",
         },
       },
       fzf_colors = true,
-      files      = {
-        cmd =
-        "fd --type f --hidden --follow --no-ignore-vcs --exclude .git --exclude node_modules --exclude .nx --exclude .angular --exclude .cache --exclude dist",
+      files = {
+        cmd = "fd --type f --hidden --follow --no-ignore-vcs --exclude .git --exclude node_modules --exclude .nx --exclude .angular --exclude .cache --exclude dist",
       },
-      grep       = {
+      grep = {
         cwd_prompt = true,
-        rg_opts =
-        "--hidden --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -g '!.git/' -g '!node_modules/' -g '!.nx/' -g '!.angular/'",
+        rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -g '!.git/' -g '!node_modules/' -g '!.nx/' -g '!.angular/'",
       },
-      keymap     = {
+      keymap = {
         fzf = {
           ["ctrl-q"] = "select-all+accept",
-        }
+        },
       },
-      fzf_opts   = {
-        ['--layout']  = 'reverse',
-        ['--prompt']  = ' ',
-        ['--pointer'] = ' ',
-        ['--marker']  = '✓ ',
-      }
+      fzf_opts = {
+        ["--layout"] = "reverse",
+        ["--prompt"] = " ",
+        ["--pointer"] = " ",
+        ["--marker"] = "✓ ",
+      },
     },
     event = "VeryLazy",
     keys = {
@@ -137,7 +134,6 @@ return {
         end,
         desc = "[/] Live grep the current buffer",
       },
-
     },
   },
 }

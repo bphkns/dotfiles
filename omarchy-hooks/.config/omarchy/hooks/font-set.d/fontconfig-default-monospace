@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+font_name="${1:-}"
+fonts_conf="$HOME/.config/fontconfig/fonts.conf"
+
+[[ -n $font_name ]] || exit 0
+[[ -f $fonts_conf ]] || exit 0
+
+xmlstarlet ed -L \
+  -u '//alias[family="monospace"]/prefer/family' \
+  -v "$font_name" \
+  "$fonts_conf"
+
+fc-cache -r

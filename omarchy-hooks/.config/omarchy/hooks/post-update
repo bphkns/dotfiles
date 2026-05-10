@@ -37,26 +37,6 @@ backup_copy() {
   warn "backed up $target to $backup_target"
 }
 
-install_real_file() {
-  local source_file="$1"
-  local target_file="$2"
-
-  [[ -f $source_file ]] || return 0
-
-  if [[ -L $target_file ]]; then
-    backup_path "$target_file"
-  elif [[ -e $target_file ]]; then
-    if cmp -s "$source_file" "$target_file"; then
-      return 0
-    fi
-
-    backup_path "$target_file"
-  fi
-
-  mkdir -p "$(dirname "$target_file")"
-  cp -f "$source_file" "$target_file"
-}
-
 stow_package() {
   local package="$1"
 
@@ -79,17 +59,6 @@ ensure_line() {
   printf '\n%s\n' "$line" >> "$file"
 }
 
-ensure_alacritty_f11() {
-  local file="$HOME/.config/alacritty/alacritty.toml"
-
-  [[ -f $file ]] || return 0
-  grep -q 'action = "ToggleFullscreen"' "$file" && return 0
-  grep -q '^bindings = \[' "$file" || return 0
-
-  backup_copy "$file"
-  sed -i '/^bindings = \[/a { key = "F11", action = "ToggleFullscreen" },' "$file"
-}
-
 resolve_symlink() {
   local path="$1"
   local link_target
@@ -102,13 +71,13 @@ resolve_symlink() {
   fi
 }
 
-is_dotfiles_nvim_link() {
+is_dotfiles_link() {
   local path="$1"
   local resolved
 
   [[ -L $path ]] || return 1
   resolved="$(resolve_symlink "$path")"
-  [[ $resolved == "$nvim_package"/* ]]
+  [[ $resolved == "$dotfiles_dir"/* ]]
 }
 
 protect_target_file() {
@@ -116,7 +85,7 @@ protect_target_file() {
   local target="$HOME/$rel"
 
   [[ -e $target || -L $target ]] || return 0
-  is_dotfiles_nvim_link "$target" && return 0
+  is_dotfiles_link "$target" && return 0
 
   if [[ ! -d $target ]]; then
     backup_path "$target"
@@ -129,7 +98,7 @@ protect_target_dir() {
 
   [[ -e $target || -L $target ]] || return 0
   [[ -d $target && ! -L $target ]] && return 0
-  is_dotfiles_nvim_link "$target" && return 0
+  is_dotfiles_link "$target" && return 0
 
   backup_path "$target"
 }
@@ -172,15 +141,9 @@ ln -sfn "$theme_source" "$theme_link"
 
 opencode_package="$dotfiles_dir/opencode"
 if [[ -d $opencode_package ]]; then
-  mkdir -p "$HOME/.config/opencode"
-
-  stow --no-folding -R -t "$HOME" -d "$dotfiles_dir" opencode
-
-  for rel in ".config/opencode/opencode.json" ".config/opencode/tui.json"; do
-    source_file="$opencode_package/$rel"
-    target_file="$HOME/$rel"
-    install_real_file "$source_file" "$target_file"
-  done
+  protect_target_file ".config/opencode/opencode.json"
+  protect_target_file ".config/opencode/tui.json"
+  stow_package opencode
 fi
 
 if stow_package tmux; then
@@ -192,16 +155,19 @@ if stow_package ghostty; then
   ensure_line "$HOME/.config/ghostty/config" 'config-file = ?"~/.config/ghostty/dotfiles.conf"'
 fi
 
-ensure_alacritty_f11
+protect_target_file ".config/alacritty/alacritty.toml"
+stow_package alacritty
 
-lazygit_package="$dotfiles_dir/lazygit"
-if stow_package lazygit; then
-  install_real_file "$lazygit_package/.config/lazygit/config.yml" "$HOME/.config/lazygit/config.yml"
-fi
+protect_target_file ".config/fontconfig/fonts.conf"
+stow_package fontconfig
+
+protect_target_file ".config/lazygit/config.yml"
+stow_package lazygit
 
 starship_package="$dotfiles_dir/starship"
 if [[ -d $starship_package ]]; then
-  install_real_file "$starship_package/.config/starship.toml" "$HOME/.config/starship.toml"
+  protect_target_file ".config/starship.toml"
+  stow_package starship
 fi
 
 if (( backed_up )); then

@@ -3,8 +3,7 @@ return {
     "atiladefreitas/dooing",
     event = "VeryLazy",
     config = function()
-      require("dooing").setup({
-      })
+      require("dooing").setup({})
     end,
-  }
+  },
 }

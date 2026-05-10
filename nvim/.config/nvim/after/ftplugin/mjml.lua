@@ -382,4 +382,3 @@ end
 vim.keymap.set("n", "gd", goto_include_file, vim.tbl_extend("force", opts, { desc = "Go to definition/include" }))
 vim.keymap.set("n", "gf", goto_include_file, vim.tbl_extend("force", opts, { desc = "Go to file/include" }))
 vim.keymap.set("n", "<C-]>", goto_include_file, vim.tbl_extend("force", opts, { desc = "Go to definition/include" }))
-

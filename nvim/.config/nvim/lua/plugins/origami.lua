@@ -1,7 +1,7 @@
 return {
   {
-    'chrisgrieser/nvim-origami',
-    event = 'VeryLazy',
+    "chrisgrieser/nvim-origami",
+    event = "VeryLazy",
     opts = {
       pauseFoldsOnSearch = true,
       foldtext = { enabled = false },
@@ -16,20 +16,19 @@ return {
     end,
     keys = {
       {
-        '<leader>zR',
+        "<leader>zR",
         function()
-          vim.cmd('normal! zR')
+          vim.cmd("normal! zR")
         end,
-        desc = 'Open all folds',
+        desc = "Open all folds",
       },
       {
-        '<leader>zM',
+        "<leader>zM",
         function()
-          vim.cmd('normal! zM')
+          vim.cmd("normal! zM")
         end,
-        desc = 'Close all folds',
+        desc = "Close all folds",
       },
-
     },
   },
 }

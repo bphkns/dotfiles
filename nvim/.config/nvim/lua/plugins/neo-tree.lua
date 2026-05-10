@@ -64,7 +64,9 @@ return {
           }
 
           vim.ui.select(options, { prompt = "Copy to clipboard:" }, function(choice)
-            if not choice then return end
+            if not choice then
+              return
+            end
             local values = { filename, relative, filepath, stem }
             local idx = tonumber(choice:sub(1, 1))
             local value = values[idx]

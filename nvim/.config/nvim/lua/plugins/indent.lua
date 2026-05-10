@@ -1,14 +1,14 @@
 return {
   {
-    'saghen/blink.indent',
+    "saghen/blink.indent",
     opts = {
       static = { enabled = false },
       scope = {
         enabled = true,
         only_current = true,
-        char = '│',
+        char = "│",
       },
     },
-    event = 'VeryLazy',
+    event = "VeryLazy",
   },
 }
