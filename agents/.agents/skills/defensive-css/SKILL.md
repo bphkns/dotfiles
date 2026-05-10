@@ -1,6 +1,12 @@
 ---
 name: defensive-css
-description: Defensive CSS best practices from defensivecss.dev for resilient UI styles. Use proactively whenever writing or reviewing CSS/Tailwind for layout, overflow, flexbox, grid, images, responsive behavior, or cross-device interaction. Triggers on: css, tailwind, flex, grid, overflow, wrapping, truncation, min-width, min-height, object-fit, sticky, scrollbar, hover, media query.
+description: >-
+  Defensive CSS best practices from defensivecss.dev for resilient UI styles.
+  Use proactively whenever writing or reviewing CSS/Tailwind for layout,
+  overflow, flexbox, grid, images, responsive behavior, or cross-device
+  interaction. Triggers on: css, tailwind, flex, grid, overflow, wrapping,
+  truncation, min-width, min-height, object-fit, sticky, scrollbar, hover,
+  media query.
 metadata:
   author: ahmad-shadeed
   source: https://defensivecss.dev/

@@ -1,0 +1,78 @@
+#!/bin/bash
+set -euo pipefail
+
+while (( $# )); do
+  case "$1" in
+    --graph-lines|--interval)
+      shift
+      (( $# )) && shift
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
+
+cpu_percent=0
+if [[ -r /proc/stat ]]; then
+  read -r _ user nice system idle iowait irq softirq steal _ < /proc/stat
+  iowait=${iowait:-0}
+  irq=${irq:-0}
+  softirq=${softirq:-0}
+  steal=${steal:-0}
+  idle_total=$((idle + iowait))
+  active_total=$((user + nice + system + irq + softirq + steal))
+  total=$((idle_total + active_total))
+
+  state_root="${XDG_RUNTIME_DIR:-/tmp}"
+  if [[ ! -d $state_root || ! -w $state_root ]]; then
+    state_root="/tmp"
+  fi
+  state_file="$state_root/tmux-mem-cpu-load-$UID"
+
+  prev_total=$total
+  prev_idle=$idle_total
+  if [[ -r $state_file ]]; then
+    read -r prev_total prev_idle < "$state_file" || true
+    if [[ ! $prev_total =~ ^[0-9]+$ || ! $prev_idle =~ ^[0-9]+$ ]]; then
+      prev_total=$total
+      prev_idle=$idle_total
+    fi
+  fi
+  printf '%s %s\n' "$total" "$idle_total" > "$state_file" 2>/dev/null || true
+
+  total_delta=$((total - prev_total))
+  idle_delta=$((idle_total - prev_idle))
+  if (( total_delta > 0 && idle_delta >= 0 )); then
+    cpu_percent=$(((100 * (total_delta - idle_delta) + total_delta / 2) / total_delta))
+  fi
+fi
+
+mem_percent=0
+if [[ -r /proc/meminfo ]]; then
+  mem_total=0
+  mem_available=0
+
+  while read -r key value _; do
+    case "$key" in
+      MemTotal:)
+        mem_total=$value
+        ;;
+      MemAvailable:)
+        mem_available=$value
+        ;;
+    esac
+  done < /proc/meminfo
+
+  if (( mem_total > 0 && mem_available >= 0 )); then
+    mem_used=$((mem_total - mem_available))
+    mem_percent=$(((100 * mem_used + mem_total / 2) / mem_total))
+  fi
+fi
+
+load_avg="0.00"
+if [[ -r /proc/loadavg ]]; then
+  read -r load_avg _ < /proc/loadavg
+fi
+
+printf 'MEM %s%% CPU %s%% LOAD %s\n' "$mem_percent" "$cpu_percent" "$load_avg"

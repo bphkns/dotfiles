@@ -27,6 +27,7 @@ id_ed25519
 **/settings.local.json
 
 # Agent runtime state
+pi/.pi/agent/auth.json
 **/.claude/backups/
 **/.claude/file-history/
 **/.claude/agent-memory-local/
@@ -39,3 +40,5 @@ id_ed25519
 **/.codex/installation_id
 **/.codex/history.jsonl
 **/.codex/*.sqlite*
+
+pi/.pi/agent/sessions/

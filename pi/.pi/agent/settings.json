@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.70.0",
+  "lastChangelogVersion": "0.74.0",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.5",
   "defaultThinkingLevel": "xhigh",
@@ -9,6 +9,20 @@
   "editorPaddingX": 1,
   "doubleEscapeAction": "tree",
   "shellCommandPrefix": "source ~/.pi/agent/shell.bash",
-  "npmCommand": ["mise", "exec", "node@25", "--", "npm"],
-  "packages": ["npm:@plannotator/pi-extension"]
+  "npmCommand": [
+    "mise",
+    "exec",
+    "node@25",
+    "--",
+    "npm"
+  ],
+  "packages": [
+    "npm:@plannotator/pi-extension",
+    "npm:pi-web-access",
+    "npm:pi-lens",
+    "npm:pi-markdown-preview",
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:pi-powerline-footer"
+  ],
+  "theme": "dark"
 }
