@@ -42,3 +42,7 @@ pi/.pi/agent/auth.json
 **/.codex/*.sqlite*
 
 pi/.pi/agent/sessions/
+
+# tmux plugins (managed by TPM; vendor only tmux-mem-cpu-load)
+tmux/.config/tmux/plugins/*
+!tmux/.config/tmux/plugins/tmux-mem-cpu-load/
