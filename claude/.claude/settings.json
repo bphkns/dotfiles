@@ -41,7 +41,8 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "bash /home/bikash/.claude/statusline-command.sh"
+    "command": "npx -y ccstatusline@latest",
+    "padding": 0
   },
   "extraKnownMarketplaces": {
     "plannotator": {
@@ -56,5 +57,6 @@
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "editorMode": "vim",
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true
 }

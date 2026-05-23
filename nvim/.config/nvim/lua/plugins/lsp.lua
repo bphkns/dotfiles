@@ -68,6 +68,7 @@ return {
             },
           },
         },
+        rust_analyzer = {},
         angularls = {
           -- Custom root detection for Nx/Angular
           root_dir = function(bufnr, on_dir)
@@ -198,7 +199,10 @@ return {
     config = function(_, opts)
       -- Setup Mason for LSP installation
       require("mason").setup()
-      local mason_servers = vim.tbl_keys(opts.servers)
+      local server_names = vim.tbl_keys(opts.servers)
+      local mason_servers = vim.tbl_filter(function(server)
+        return server ~= "rust_analyzer"
+      end, server_names)
 
       require("mason-lspconfig").setup({
         ensure_installed = mason_servers,
@@ -332,7 +336,7 @@ return {
       end
 
       -- Enable all configured servers
-      vim.lsp.enable(mason_servers)
+      vim.lsp.enable(server_names)
 
       -- LspAttach autocmd for per-buffer configuration
       vim.api.nvim_create_autocmd("LspAttach", {

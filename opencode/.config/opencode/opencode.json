@@ -2,7 +2,10 @@
   "$schema": "https://opencode.ai/config.json",
   "theme": "system",
   "skills": {
-    "paths": ["~/.agents/skills", "~/.claude/skills"]
+    "paths": [
+      "~/.agents/skills",
+      "~/.claude/skills"
+    ]
   },
   "mcp": {
     "context7": {
@@ -41,6 +44,10 @@
   },
   "autoshare": false,
   "autoupdate": false,
-  "plugin": ["@ex-machina/opencode-anthropic-auth@1.7.5"],
-  "instructions": ["/home/bikash/.config/opencode/instructions/global.md"]
+  "plugin": [
+    "@ex-machina/opencode-anthropic-auth@1.7.5"
+  ],
+  "instructions": [
+    "/home/bikash/.config/opencode/instructions/global.md"
+  ]
 }

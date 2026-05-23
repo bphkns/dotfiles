@@ -77,6 +77,10 @@ return {
       },
     },
     filesystem = {
+      filtered_items = {
+        hide_dotfiles = false,
+        hide_hidden = false,
+      },
       follow_current_file = {
         enabled = true,
         leave_dirs_open = true,

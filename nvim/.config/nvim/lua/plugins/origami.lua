@@ -5,6 +5,7 @@ return {
     opts = {
       pauseFoldsOnSearch = true,
       foldtext = { enabled = false },
+      autoFold = { enabled = false },
       foldKeymaps = {
         setup = false,
         closeOnlyOnFirstColumn = false,

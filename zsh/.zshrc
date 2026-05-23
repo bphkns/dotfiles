@@ -205,9 +205,6 @@ else
     printf '\033[38;2;255;162;71m󰔛 %.0fms\033[0m\n' $_zsh_startup_ms   # Orange - slow
 fi
 unset _zsh_startup_ms _zsh_start_time
-# CF CLI completions
-[[ -f "$HOME/.config/cf/completions/_cf.zsh" ]] && source "$HOME/.config/cf/completions/_cf.zsh"
-
 # add Pulumi to the PATH
 [[ -d "$HOME/.pulumi/bin" ]] && export PATH="$PATH:$HOME/.pulumi/bin"
 
@@ -218,3 +215,8 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
+
+# Added by git-ai installer on Wed May 13 10:00:04 AM IST 2026
+export PATH="/home/bikash/.git-ai/bin:$PATH"
+# CF CLI completions
+[[ -f "/home/bikash/.config/cf/completions/_cf.zsh" ]] && source "/home/bikash/.config/cf/completions/_cf.zsh"
