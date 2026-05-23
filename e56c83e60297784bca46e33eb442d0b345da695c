@@ -1,0 +1,82 @@
+opencode/.config/opencode/skill/frontend-design.md
+  7ce90464ed29253d 1-4,6,8,10
+opencode/.config/opencode/skill/effect-ts-7layer-architecture.md
+  7ce90464ed29253d 1-4,6,8,10
+opencode/.config/opencode/skill/react-modernization.md
+  7ce90464ed29253d 1-4,6,8,10
+nvim/.config/nvim/lua/plugins/conform.lua
+  b0966f8884b48026 39-43,73,98-103,255-261,268-269,321-334
+opencode/.config/opencode/skill/advanced-effect-di-environment.md
+  7ce90464ed29253d 2-3,6,8,10
+opencode/.config/opencode/skill/code-review.md
+  7ce90464ed29253d 3,6,8,10
+nvim/.config/nvim/lua/plugins/lsp.lua
+  b0966f8884b48026 129,170
+opencode/.config/opencode/agent/effect-tutor.md
+  fd30d4dced52fd34 55,66-92
+opencode/.config/opencode/opencode.json
+  e6b5d2c0b119fbd9 116-121
+opencode/.config/opencode/skill/better-auth.md
+  7ce90464ed29253d 2-3,6,8,10
+opencode/.config/opencode/skill/effect-ts-ai.md
+  7ce90464ed29253d 3,6,8,10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.22",
+  "base_commit_sha": "e56c83e60297784bca46e33eb442d0b345da695c",
+  "prompts": {
+    "7ce90464ed29253d": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_2c804a6a3ffeGZgwjF7DfSXQIW",
+        "model": "fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>",
+      "messages": [],
+      "total_additions": 108,
+      "total_deletions": 3225,
+      "accepted_lines": 108,
+      "overriden_lines": 0
+    },
+    "b0966f8884b48026": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_2daf1a5e8ffeutvvKucidB8KJh",
+        "model": "anthropic/claude-opus-4-6"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>",
+      "messages": [],
+      "total_additions": 50,
+      "total_deletions": 22,
+      "accepted_lines": 37,
+      "overriden_lines": 0
+    },
+    "e6b5d2c0b119fbd9": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_2cbdc2bb0ffe18b12Fsr3DtdNP",
+        "model": "anthropic/claude-opus-4-6"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>",
+      "messages": [],
+      "total_additions": 8,
+      "total_deletions": 1,
+      "accepted_lines": 7,
+      "overriden_lines": 0
+    },
+    "fd30d4dced52fd34": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_2dd0b8eecffensHb8vir92TqeI",
+        "model": "anthropic/claude-opus-4-6"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>",
+      "messages": [],
+      "total_additions": 28,
+      "total_deletions": 13,
+      "accepted_lines": 28,
+      "overriden_lines": 0
+    }
+  }
+}

@@ -1,0 +1,23 @@
+opencode/.config/opencode/opencode.json
+  a16b4457cf98bd7a 84-91
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.15",
+  "base_commit_sha": "f5aef62fc2e2ad57e9e9b1efc0f31bd5c2c5ab1d",
+  "prompts": {
+    "a16b4457cf98bd7a": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_2fa4e8543ffenuCog6TE492AmO",
+        "model": "anthropic/claude-opus-4-6"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>",
+      "messages": [],
+      "total_additions": 10,
+      "total_deletions": 2,
+      "accepted_lines": 8,
+      "overriden_lines": 0
+    }
+  }
+}

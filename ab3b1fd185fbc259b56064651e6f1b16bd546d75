@@ -1,0 +1,38 @@
+nvim/.config/nvim/lua/plugins/lsp.lua
+  061aee5dd163b7f5 132
+opencode/.config/opencode/opencode.json
+  c2bdba2c164bad74 37-59
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.2",
+  "base_commit_sha": "ab3b1fd185fbc259b56064651e6f1b16bd546d75",
+  "prompts": {
+    "061aee5dd163b7f5": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_3956ad85cffeWdnc3O7OwyR8EG",
+        "model": "unknown"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "c2bdba2c164bad74": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_398fa3760ffeg7X2Z4AsMXpw1x",
+        "model": "unknown"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>",
+      "messages": [],
+      "total_additions": 24,
+      "total_deletions": 1,
+      "accepted_lines": 23,
+      "overriden_lines": 0
+    }
+  }
+}

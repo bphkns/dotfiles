@@ -1,0 +1,31 @@
+opencode/.config/opencode/opencode.json
+  9f46037609b1f0d9 3,120
+tmux/.tmux.conf
+  9f46037609b1f0d9 40-41,47,54-55,83-87,90-94,96-98,122-129,131-133,135-137
+opencode/.config/opencode/tui.json
+  9f46037609b1f0d9 3
+nvim/.config/nvim/lua/plugins/theme.lua
+  9f46037609b1f0d9 3,7-13
+ghostty/.config/ghostty/config
+  9f46037609b1f0d9 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.12",
+  "base_commit_sha": "5d4b29abb26af68de3d8768551775fd6074632c5",
+  "prompts": {
+    "9f46037609b1f0d9": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_302871579ffeqfbcqZAmgDyqbl",
+        "model": "opencode/kimi-k2.5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>",
+      "messages": [],
+      "total_additions": 106,
+      "total_deletions": 83,
+      "accepted_lines": 48,
+      "overriden_lines": 0
+    }
+  }
+}
