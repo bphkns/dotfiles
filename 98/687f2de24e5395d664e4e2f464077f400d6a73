@@ -1,0 +1,42 @@
+fontconfig/.config/fontconfig/fonts.conf
+  ai_agent 19
+omarchy-hooks/.config/omarchy/hooks/theme-set
+  s_08609724a51296::t_ab46ac293fa823 1-131
+pi/.pi/agent/skills/omarchy
+  ai_agent 1
+waybar/.config/waybar/style.css
+  ai_agent 10,48
+opencode/.config/opencode/plugins/git-ai.ts
+  ai_agent 212-221,223,235-239,241,253-254,259-262,264-265,267-269,271,282-283
+nvim/.config/nvim/lazy-lock.json
+  s_20a56e8eebd039::t_1e1a77b6cf8119 3
+  s_20a56e8eebd039::t_c19a9446d69a4e 28
+nvim/.config/nvim/lua/plugins/neocodeium.lua
+  s_20a56e8eebd039::t_da1d2a447e0273 3-4,6,8-29,32-63
+nvim/.config/nvim/lua/plugins/blink-cmp.lua
+  s_20a56e8eebd039::t_da1d2a447e0273 20-21,77-82
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "98687f2de24e5395d664e4e2f464077f400d6a73",
+  "prompts": {},
+  "sessions": {
+    "s_08609724a51296": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1a7317919ffe7ZUk1bb1kYRUO1",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_20a56e8eebd039": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e6f16-c55d-77fe-83fc-90bc680057b2",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
