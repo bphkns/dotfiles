@@ -17,8 +17,8 @@ return {
     },
     version = "*",
     opts = {
-      -- NOTE: Tab is reserved for cursortab.nvim (Mercury AI inline completions)
-      -- Use Ctrl+Space to open blink menu, Ctrl+p/n to navigate, Ctrl+y to accept
+      -- NOTE: Tab is reserved for NeoCodeium inline AI completions.
+      -- Use Ctrl+Space to open blink menu, Ctrl+p/n to navigate, Ctrl+y to accept.
       keymap = {
         preset = "none",
         ["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
@@ -74,6 +74,12 @@ return {
         },
       },
       completion = {
+        menu = {
+          -- Let NeoCodeium own automatic inline AI suggestions; open blink manually.
+          auto_show = function(ctx)
+            return ctx.mode ~= "default"
+          end,
+        },
         list = {
           selection = {
             preselect = false,

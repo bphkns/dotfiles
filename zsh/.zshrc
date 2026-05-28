@@ -220,3 +220,7 @@ esac
 export PATH="/home/bikash/.git-ai/bin:$PATH"
 # CF CLI completions
 [[ -f "/home/bikash/.config/cf/completions/_cf.zsh" ]] && source "/home/bikash/.config/cf/completions/_cf.zsh"
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+export PATH=$PATH:$HOME/.local/opt/go/bin

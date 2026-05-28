@@ -98,3 +98,6 @@ function yy() {
 
 # Added by git-ai installer on Tue Feb  3 09:56:25 PM IST 2026
 export PATH="/home/bikash/.git-ai/bin:$PATH"
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"

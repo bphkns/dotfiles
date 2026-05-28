@@ -1,0 +1,131 @@
+#!/bin/bash
+
+WALLPAPER="$HOME/.config/omarchy/backgrounds/_shared/a_rock_formation_with_a_hole_in_the_middle.jpg"
+LVSK_CONFIG="$HOME/.config/lvsk-calendar/config"
+
+if [[ -f $WALLPAPER ]]; then
+  omarchy theme bg set "$WALLPAPER"
+fi
+
+theme_slug="${1:-$(omarchy theme current 2>/dev/null || true)}"
+theme_slug="${theme_slug,,}"
+theme_slug="${theme_slug// /-}"
+theme_slug="${theme_slug//_/-}"
+
+colors_file=""
+for candidate in "$HOME/.config/omarchy/themes/$theme_slug/colors.toml" "$HOME/.local/share/omarchy/themes/$theme_slug/colors.toml"; do
+  if [[ -f $candidate ]]; then
+    colors_file="$candidate"
+    break
+  fi
+done
+
+get_theme_color() {
+  local key="$1"
+  local name=""
+  local value=""
+
+  [[ -n $colors_file ]] || return 1
+
+  while IFS='=' read -r name value; do
+    name="${name//[[:space:]]/}"
+    if [[ $name == "$key" ]]; then
+      value="${value//\"/}"
+      value="${value//[[:space:]]/}"
+      printf '%s\n' "$value"
+      return 0
+    fi
+  done < "$colors_file"
+
+  return 1
+}
+
+ensure_lvsk_config() {
+  mkdir -p "$(dirname "$LVSK_CONFIG")"
+
+  if [[ -f $LVSK_CONFIG ]]; then
+    return 0
+  fi
+
+  {
+    printf '# lvsk-calendar Configuration\n'
+    printf 'color_scheme=monochrome\n'
+    printf 'background_style=orbital\n'
+    printf 'header_frame_width=40\n'
+    printf 'footer_frame_width=52\n'
+    printf 'calendar_grid_width=38\n'
+    printf 'skip_splash=false\n'
+    printf 'holidays_enabled=true\n'
+  } > "$LVSK_CONFIG"
+}
+
+upsert_lvsk_config() {
+  local key="$1"
+  local value="$2"
+  local tmp=""
+  local replaced=0
+  local line=""
+
+  tmp="$(mktemp)"
+
+  while IFS= read -r line || [[ -n $line ]]; do
+    if [[ $line == "$key="* || $line == "# $key="* || $line == "#$key="* ]]; then
+      if (( ! replaced )); then
+        printf '%s=%s\n' "$key" "$value" >> "$tmp"
+        replaced=1
+      fi
+      continue
+    fi
+
+    printf '%s\n' "$line" >> "$tmp"
+  done < "$LVSK_CONFIG"
+
+  if (( ! replaced )); then
+    printf '%s=%s\n' "$key" "$value" >> "$tmp"
+  fi
+
+  mv "$tmp" "$LVSK_CONFIG"
+}
+
+upsert_lvsk_color() {
+  local key="$1"
+  local theme_key="$2"
+  local value=""
+
+  value="$(get_theme_color "$theme_key")" || return 0
+  [[ -n $value ]] || return 0
+
+  upsert_lvsk_config "$key" "$value"
+}
+
+case "$theme_slug" in
+  nord)
+    lvsk_scheme="nord"
+    ;;
+  gruvbox)
+    lvsk_scheme="gruvbox"
+    ;;
+  dracula)
+    lvsk_scheme="dracula"
+    ;;
+  catppuccin* | rose-pine* | flexoki-light | ochre-light | white)
+    lvsk_scheme="pastel"
+    ;;
+  *)
+    lvsk_scheme="monochrome"
+    ;;
+esac
+
+ensure_lvsk_config
+upsert_lvsk_config color_scheme "$lvsk_scheme"
+
+if [[ -n $colors_file ]]; then
+  upsert_lvsk_color color_base foreground
+  upsert_lvsk_color color_base_dim color15
+  upsert_lvsk_color color_base_dimmer color8
+  upsert_lvsk_color color_accent accent
+  upsert_lvsk_color color_accent_bright color15
+  upsert_lvsk_color color_subtle color8
+  upsert_lvsk_color color_highlight selection_foreground
+  upsert_lvsk_color color_highlight_bg selection_background
+fi
