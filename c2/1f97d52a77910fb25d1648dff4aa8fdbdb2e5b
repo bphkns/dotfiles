@@ -1,0 +1,39 @@
+tmux/.config/tmux/dotfiles.conf
+  s_92f06bd6e01434::t_f9daeeec0ad0b7 79-83,86,96-101
+  s_92f06bd6e01434::t_c8f876a6782271 89-91,93-94
+  s_68a47eae26d94c::t_6a5783380c7c86 60-65,67-69
+  s_92f06bd6e01434::t_557528fe101049 92
+  s_fcde336fe5a6ac::t_7f5d77030f17aa 95
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "c21f97d52a77910fb25d1648dff4aa8fdbdb2e5b",
+  "prompts": {},
+  "sessions": {
+    "s_68a47eae26d94c": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1904567feffeE6Ox4NswPtnXgL",
+        "model": "claude-opus-4-8-fast"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_92f06bd6e01434": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_18e36b4bdffeattaNCZT57Yc6L",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_fcde336fe5a6ac": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e6fc8-7d9f-7189-836a-0ab60995179d",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
