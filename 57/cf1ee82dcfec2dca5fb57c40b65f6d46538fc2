@@ -1,0 +1,20 @@
+hypr/.config/hypr/monitors.conf
+  s_7312dffb39b819::t_1acfbf6c49e0e8 5-6,9
+  s_7312dffb39b819::t_0ff638f28f14ed 1-4,7,10-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "57cf1ee82dcfec2dca5fb57c40b65f6d46538fc2",
+  "prompts": {},
+  "sessions": {
+    "s_7312dffb39b819": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_14ef77a5bffeS5ewio9iNA6VTl",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
