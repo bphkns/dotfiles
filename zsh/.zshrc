@@ -19,13 +19,6 @@ export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="$HOME/.opencode/bin:$PATH"
 export PATH="$HOME/.fzf/bin:$PATH"
 
-# pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-
 # Cargo
 [[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 
@@ -207,14 +200,6 @@ fi
 unset _zsh_startup_ms _zsh_start_time
 # add Pulumi to the PATH
 [[ -d "$HOME/.pulumi/bin" ]] && export PATH="$PATH:$HOME/.pulumi/bin"
-
-# pnpm
-export PNPM_HOME="/home/bikash/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME/bin:"*) ;;
-  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
-esac
-# pnpm end
 
 # Added by git-ai installer on Wed May 13 10:00:04 AM IST 2026
 export PATH="/home/bikash/.git-ai/bin:$PATH"
