@@ -1,0 +1,125 @@
+nvim/.config/nvim/lazy-lock.json
+  s_0ba195fa00a8b4::t_1df55690cc32a5 3
+.gitignore
+  s_50d45574e79ec5::t_4074b1a93e65a3 12-15
+  s_50d45574e79ec5::t_904a9ba4a54126 10-11
+zsh/.zshrc
+  s_346dba4ae2b614::t_51f64949784c60 127-129
+mise/.config/mise/config.toml
+  s_1ceeb04b36a65c::t_17f468c6f63f26 11-12,15
+  s_e16127e723d77e::t_ee88b0f2c87ae3 13
+waybar/.config/waybar/config.jsonc
+  s_eced23a224214c::t_3ec535b96e943d 271
+  s_d8ed92ad915287::t_7fa781f63f557d 63,67,70-71,73-74,76-88,122-123,126-129,133-134,141,143-165,169-172,180-183,185-186,188-190,195-196,200-202,206-207,212,215,220-225
+  s_d8ed92ad915287::t_12ad47311e1b0e 226-227
+nvim/.config/nvim/lua/plugins/bafa.lua
+  s_0ba195fa00a8b4::t_09d2a4a18fc326 1-23
+opencode/.config/opencode/opencode.json
+  s_346dba4ae2b614::t_6c91865ca798b7 34-37,39-40
+  s_346dba4ae2b614::t_3bb01b203f570d 3
+  s_346dba4ae2b614::t_5d833f87103d82 32-33,41-55,58-59
+  s_346dba4ae2b614::t_a250611109ae96 38
+  s_346dba4ae2b614::t_f003219e000ddd 60
+herdr/.config/herdr/config.toml
+  s_7c0b729e8da064::t_cb56a894ad9d58 80-87
+  s_7c0b729e8da064::t_5ddc35588ee0a5 115-141
+  s_7c0b729e8da064::t_2c86854f88d958 77-79
+  s_7c0b729e8da064::t_a1cb74733e601d 88-90,112-114
+  s_7c0b729e8da064::t_b7170112f23303 142-144
+nvim/.config/nvim/lua/plugins/navigator.lua
+  s_7c0b729e8da064::t_309800ba6c8d05 3-6,8,17-25
+claude/.claude/settings.json
+  s_bfb53e58965c1c::t_ea05b492784cf1 11,17,40-51,70,72
+codex/.codex/config.toml
+  s_c84753758fa867::t_bff66d6fe20b74 1,5-9,13,21-86,103-105,121,124-125,128
+pi/.pi/agent/settings.json
+  s_e16127e723d77e::t_4d85d50f1db686 2,5,20-23,28-30,32-33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "c157389844cac4ea146fb1f44d5c89c8ba669276",
+  "prompts": {},
+  "sessions": {
+    "s_0ba195fa00a8b4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_13628365cffeU1fX77DjW8p02D",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_1ceeb04b36a65c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9359c0ef-183a-41c5-9eb9-c55771484896",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_346dba4ae2b614": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0c09381d5ffeVimVjLWOogPf0t",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_50d45574e79ec5": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_136cd4afcffeQn6x1aTK43YtpJ",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_7c0b729e8da064": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10a93090dffe7Is2lQKkSo2rIj",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_bfb53e58965c1c": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0cd6a5156ffe6lXPNRmRXpxzaM",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_c84753758fa867": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0c53cdc01ffe3qMxA3L73khw7w",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_d8ed92ad915287": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0a6692faeffeS2o9nLsVAkKZVX",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_e16127e723d77e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cfaaf4fe-24a7-4024-a243-89c35cd625d9",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_eced23a224214c": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10d2b419affee4M2VJZfxX8B4J",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
