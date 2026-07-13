@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.74.0",
+  "lastChangelogVersion": "0.80.3",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.5",
-  "defaultThinkingLevel": "xhigh",
+  "defaultThinkingLevel": "high",
   "collapseChangelog": true,
   "enableInstallTelemetry": false,
   "autocompleteMaxVisible": 8,
@@ -17,12 +17,18 @@
     "npm"
   ],
   "packages": [
-    "npm:@plannotator/pi-extension",
+    {
+      "source": "npm:@plannotator/pi-extension",
+      "skills": []
+    },
     "npm:pi-web-access",
     "npm:pi-lens",
     "npm:pi-markdown-preview",
     "npm:@juicesharp/rpiv-ask-user-question",
-    "npm:pi-powerline-footer"
+    "npm:pi-powerline-footer",
+    "npm:@sherif-fanous/pi-rtk",
+    "npm:teach-me"
   ],
-  "theme": "dark"
+  "theme": "light",
+  "hideThinkingBlock": false
 }

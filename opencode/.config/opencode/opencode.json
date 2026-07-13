@@ -1,11 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "system",
+  "model": "google-vertex-anthropic/claude-fable-5",
   "skills": {
-    "paths": [
-      "~/.agents/skills",
-      "~/.claude/skills"
-    ]
+    "paths": ["~/.agents/skills", "~/.claude/skills"]
   },
   "mcp": {
     "context7": {
@@ -25,14 +22,6 @@
       "type": "remote",
       "url": "https://mcp.exa.ai/mcp?exaApiKey={env:EXA_API_KEY}",
       "enabled": true
-    },
-    "uidotsh": {
-      "type": "remote",
-      "url": "https://ui.sh/mcp?agent=opencode",
-      "enabled": true,
-      "headers": {
-        "Authorization": "Bearer {env:UIDOTSH_TOKEN}"
-      }
     }
   },
   "provider": {
@@ -40,14 +29,37 @@
       "options": {
         "apiKey": "{env:FIREWORKS_API_KEY}"
       }
+    },
+    "google-vertex-anthropic": {
+      "options": {
+        "project": "ai-exps",
+        "location": "global",
+        "googleAuthOptions": {
+          "keyFilename": "{env:OPENCODE_VERTEX_CREDENTIALS}"
+        }
+      },
+      "models": {
+        "claude-fable-5": {
+          "name": "Claude Fable 5",
+          "reasoning": true,
+          "tool_call": true,
+          "cost": {
+            "input": 10,
+            "output": 50
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          }
+        }
+      }
     }
+  },
+  "experimental": {
+    "openTelemetry": true
   },
   "autoshare": false,
   "autoupdate": false,
-  "plugin": [
-    "@ex-machina/opencode-anthropic-auth@1.7.5"
-  ],
-  "instructions": [
-    "/home/bikash/.config/opencode/instructions/global.md"
-  ]
+  "plugin": ["@ex-machina/opencode-anthropic-auth"],
+  "instructions": ["/home/bikash/.config/opencode/instructions/global.md"]
 }

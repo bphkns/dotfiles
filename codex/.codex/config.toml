@@ -1,12 +1,16 @@
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 personality = "pragmatic"
-service_tier = "fast"
 project_doc_max_bytes = 65536
+service_tier = "fast"
+
+[agents]
+max_depth = 1
+max_threads = 6
 
 [features]
 apps = true
-codex_hooks = true
+hooks = true
 multi_agent = true
 personality = true
 shell_snapshot = true
@@ -14,9 +18,72 @@ steer = true
 unified_exec = true
 use_linux_sandbox_bwrap = true
 
-[agents]
-max_threads = 6
-max_depth = 1
+[[hooks.PostToolUse]]
+
+[[hooks.PostToolUse.hooks]]
+command = "/home/bikash/.git-ai/bin/git-ai checkpoint codex --hook-input stdin"
+type = "command"
+
+[[hooks.PreToolUse]]
+
+[[hooks.PreToolUse.hooks]]
+command = "/home/bikash/.git-ai/bin/git-ai checkpoint codex --hook-input stdin"
+type = "command"
+
+[[hooks.Stop]]
+
+[[hooks.Stop.hooks]]
+command = "/home/bikash/.git-ai/bin/git-ai checkpoint codex --hook-input stdin"
+type = "command"
+
+[hooks.state]
+
+[hooks.state."/home/bikash/.codex/config.toml:post_tool_use:0:0"]
+enabled = true
+trusted_hash = "sha256:fc07cbeb10f72a316b84d0a8413da411bfbd335a6378885c0d1e03345d099c67"
+
+[hooks.state."/home/bikash/.codex/config.toml:pre_tool_use:0:0"]
+enabled = true
+trusted_hash = "sha256:4595864ec616f7beb1f1338c4a19390ac871b4d05a9023c6ba0203d4c6e6af56"
+
+[hooks.state."/home/bikash/.codex/config.toml:stop:0:0"]
+enabled = true
+trusted_hash = "sha256:ded8bd34dcbec919f6143d4f2a4eb23b58a0b423e44c72b3cc548fc52e534f60"
+
+[hooks.state."/home/bikash/.codex/hooks.json:stop:0:0"]
+trusted_hash = "sha256:7a41b706968b14813bead9bd15cc49959420420b911902e4d3c7e172578f98ba"
+
+[hooks.state."/home/bikash/.codex/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:aaef222c37fb95719c20b410a0d54d9ee17da8516d60d3be53ed50a3ec1a4cb2"
+
+[mcp_servers.context7]
+enabled = true
+url = "https://mcp.context7.com/mcp"
+
+[mcp_servers.context7.env_http_headers]
+CONTEXT7_API_KEY = "CONTEXT7_API_KEY"
+
+[mcp_servers.exa]
+enabled = true
+url = "https://mcp.exa.ai/mcp"
+
+[mcp_servers.exa.env_http_headers]
+x-api-key = "EXA_API_KEY"
+
+[mcp_servers.gh_grep]
+enabled = true
+url = "https://mcp.grep.app"
+
+[mcp_servers.uidotsh]
+bearer_token_env_var = "UIDOTSH_TOKEN"
+url = "https://ui.sh/mcp?agent=codex"
+
+[mcp_servers.uidotsh.tools.uidotsh_fetch]
+approval_mode = "approve"
+
+[notice.model_migrations]
+"gpt-5.3-codex" = "gpt-5.4"
+"gpt-5.4" = "gpt-5.5"
 
 [projects."/home/bikash"]
 trust_level = "trusted"
@@ -31,6 +98,9 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/home/bikash/dotfiles"]
+trust_level = "trusted"
+
+[projects."/home/bikash/learning/comms-app"]
 trust_level = "trusted"
 
 [projects."/home/bikash/work/leapspace-waitlist"]
@@ -48,36 +118,11 @@ trust_level = "trusted"
 [projects."/home/bikash/work/workspace-agent"]
 trust_level = "trusted"
 
-[projects."/home/bikash/learning/comms-app"]
+[projects."/home/bikash/v2"]
 trust_level = "trusted"
 
-[mcp_servers.uidotsh]
-url = "https://ui.sh/mcp?agent=codex"
-bearer_token_env_var = "UIDOTSH_TOKEN"
-
-[mcp_servers.uidotsh.tools.uidotsh_fetch]
-approval_mode = "approve"
-
-[mcp_servers.context7]
-url = "https://mcp.context7.com/mcp"
-enabled = true
-
-[mcp_servers.context7.env_http_headers]
-"CONTEXT7_API_KEY" = "CONTEXT7_API_KEY"
-
-[mcp_servers.gh_grep]
-url = "https://mcp.grep.app"
-enabled = true
-
-[mcp_servers.exa]
-url = "https://mcp.exa.ai/mcp"
-enabled = true
-
-[mcp_servers.exa.env_http_headers]
-"x-api-key" = "EXA_API_KEY"
-
-[notice.model_migrations]
-"gpt-5.3-codex" = "gpt-5.4"
+[projects."/home/bikash/work/leapcomm"]
+trust_level = "trusted"
 
 [tui.model_availability_nux]
-"gpt-5.5" = 1
+"gpt-5.5" = 4

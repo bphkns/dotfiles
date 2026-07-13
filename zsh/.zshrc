@@ -124,6 +124,9 @@ alias lt3='lt 3'
 alias lt4='lt 4'
 alias c='clear'
 
+# OpenCode spend, defaulting to the last 30 days.
+ocost() { opencode stats --days "${1:-30}" --models 10; }
+
 # alert alias
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
