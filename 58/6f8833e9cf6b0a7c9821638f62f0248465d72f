@@ -1,0 +1,19 @@
+install.sh
+  s_d74e8c3b51babb::t_7c1391f09582bc 420-434
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "586f8833e9cf6b0a7c9821638f62f0248465d72f",
+  "prompts": {},
+  "sessions": {
+    "s_d74e8c3b51babb": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019f83e7-1dd4-7f86-bc50-47a89fb8d508",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
