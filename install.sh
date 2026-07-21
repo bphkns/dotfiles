@@ -417,8 +417,18 @@ if ((backed_up)); then
 fi
 
 log "installation complete"
-package_selected ai-skills && log "install source-managed skills: $DOTFILES_DIR/setup-ai-skills.sh"
-package_selected waybar && log "apply Waybar changes: omarchy restart waybar"
-package_selected xdph && log "apply screen-share changes: systemctl --user restart xdg-desktop-portal-hyprland xdg-desktop-portal"
-(package_selected ghostty || package_selected alacritty) && log "apply terminal changes: omarchy restart terminal"
-package_selected tmux && log "apply tmux changes: omarchy restart tmux"
+if package_selected ai-skills; then
+	log "install source-managed skills: $DOTFILES_DIR/setup-ai-skills.sh"
+fi
+if package_selected waybar; then
+	log "apply Waybar changes: omarchy restart waybar"
+fi
+if package_selected xdph; then
+	log "apply screen-share changes: systemctl --user restart xdg-desktop-portal-hyprland xdg-desktop-portal"
+fi
+if package_selected ghostty || package_selected alacritty; then
+	log "apply terminal changes: omarchy restart terminal"
+fi
+if package_selected tmux; then
+	log "apply tmux changes: omarchy restart tmux"
+fi
