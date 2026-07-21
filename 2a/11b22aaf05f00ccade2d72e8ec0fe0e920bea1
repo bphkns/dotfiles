@@ -1,0 +1,111 @@
+ai-skills/.agents/skills/caveman/SKILL.md
+  s_d74e8c3b51babb::t_ebd223e37efb58 1-46
+ai-skills/.agents/skills/to-issues/SKILL.md
+  s_d74e8c3b51babb::t_ebd223e37efb58 1-91
+ai-skills/.agents/skills/socratic-tutor/SKILL.md
+  s_d74e8c3b51babb::t_ebd223e37efb58 1-17
+scripts/fetch-ui-skills.py
+  s_d74e8c3b51babb::t_a372c6400e72df 17,75,96
+  s_d74e8c3b51babb::t_f3d063b7783af9 1-10,12-16,19-21,34,36-45,47-51,58,60,62,82,86-95,97-178,180-194,196-197,229-246,249,253-308
+  s_d74e8c3b51babb::t_7a397c004990f4 22-33,35,198-222,250-251
+  s_d74e8c3b51babb::t_31c3c1934e5d81 179,195,223-228,247-248,252
+  s_d74e8c3b51babb::t_50b073fcaee9ca 11,46,52-57,59,61,63-74,76-81,83-85
+  s_d74e8c3b51babb::t_39fd8066548810 18
+ai-skills/.agents/skills/write-a-skill/SKILL.md
+  s_d74e8c3b51babb::t_ebd223e37efb58 1-118
+mise/.config/mise/config.toml
+  s_d74e8c3b51babb::t_74a6fe9ac35185 22
+ai-skills/.agents/skills/effect-ts-ai/SKILL.md
+  s_d74e8c3b51babb::t_b23c73796c38b7 1-84,86-208,210-213,215-218,220-230,232-236,238-322,324-327,329-406
+  s_d74e8c3b51babb::t_ce4814376fd5c4 85,209,214,219,231,237,323,328
+ai-skills/.agents/skills/react-modernization/SKILL.md
+  s_d74e8c3b51babb::t_b23c73796c38b7 1-473
+ai-skills/.agents/skills/thermo-nuclear-code-quality-review/SKILL.md
+  s_d74e8c3b51babb::t_ebd223e37efb58 1-193
+setup-ai-skills.sh
+  s_d74e8c3b51babb::t_a8796a2d0b8d53 1-126,137,139-208
+  s_d74e8c3b51babb::t_40af923d2ac746 127-136,138
+ai-skills/.agents/skills/frontend-design/SKILL.md
+  s_d74e8c3b51babb::t_b23c73796c38b7 1-54
+README.md
+  s_d74e8c3b51babb::t_d339196f871fa9 51
+  s_d74e8c3b51babb::t_77a0159323f559 42,45-47,63-73,116-117
+ai-skills/.agents/skills/defensive-css/SKILL.md
+  s_d74e8c3b51babb::t_ebd223e37efb58 1-154
+ai-skills/.agents/skills/effect-tutor/SKILL.md
+  s_d74e8c3b51babb::t_ebd223e37efb58 1-18
+ai-skills/.agents/skills/zoom-out/SKILL.md
+  s_d74e8c3b51babb::t_ebd223e37efb58 1-7
+opencode/.config/opencode/opencode.json
+  s_d74e8c3b51babb::t_70104e8ee5a30a 29-36
+docs/ai-skills.md
+  s_d74e8c3b51babb::t_12d47877116b99 35
+  s_d74e8c3b51babb::t_4a0d033c19828a 70-72
+  s_d74e8c3b51babb::t_ee01c8db545dfb 1-11,13-14,17-32,36-69,73-82
+  s_d74e8c3b51babb::t_66af5350055fca 12,15-16,33-34
+ai-skills/.agents/skills/to-prd/SKILL.md
+  s_d74e8c3b51babb::t_ebd223e37efb58 1-75
+docs/licenses/mattpocock-skills-MIT.txt
+  s_d74e8c3b51babb::t_0f6f2049255855 1-21
+install.sh
+  s_d74e8c3b51babb::t_fb3307fa5fc2ac 10,420
+  s_d74e8c3b51babb::t_e783e87a99a744 39
+.gitignore
+  s_d74e8c3b51babb::t_66c1c355eb608c 17
+ai-skills/.agents/skills/omarchy
+  s_d74e8c3b51babb::t_e62f68157a0f05 1
+ai-skills/.agents/skills/plannotator-annotate/SKILL.md
+  s_d74e8c3b51babb::t_f435b08513f141 1-24
+ai-skills/.agents/skills/plannotator-annotate/agents/openai.yaml
+  s_d74e8c3b51babb::t_90e38a8c20e39f 1-5
+ai-skills/.agents/skills/plannotator-compound/SKILL.md
+  s_d74e8c3b51babb::t_742b6dd37ed3e7 1-574
+ai-skills/.agents/skills/plannotator-compound/assets/report-template.html
+  s_d74e8c3b51babb::t_929739aafa7a09 1-795
+ai-skills/.agents/skills/plannotator-compound/references/claude-code-fallback.md
+  s_d74e8c3b51babb::t_45f320126e137a 1-282
+ai-skills/.agents/skills/plannotator-compound/scripts/extract_exit_plan_mode_outcomes.py
+  s_d74e8c3b51babb::t_cd865442fbab20 1-820
+ai-skills/.agents/skills/plannotator-last/SKILL.md
+  s_d74e8c3b51babb::t_33a0b20aad7eb4 1-28
+ai-skills/.agents/skills/plannotator-last/agents/openai.yaml
+  s_d74e8c3b51babb::t_102c6a71e2bf67 1-5
+ai-skills/.agents/skills/plannotator-review/SKILL.md
+  s_d74e8c3b51babb::t_de940e80874634 1-24
+ai-skills/.agents/skills/plannotator-review/agents/openai.yaml
+  s_d74e8c3b51babb::t_e414b6e39363ff 1-5
+ai-skills/.agents/skills/plannotator-setup-goal/SKILL.md
+  s_d74e8c3b51babb::t_bd51b761dcdbbd 1-89
+ai-skills/.agents/skills/plannotator-setup-goal/agents/openai.yaml
+  s_d74e8c3b51babb::t_503482c454266f 1-4
+ai-skills/.agents/skills/plannotator-setup-goal/scripts/scaffold_goal.py
+  s_d74e8c3b51babb::t_b48aac9fc9d150 1-219
+ai-skills/.agents/skills/plannotator-visual-explainer/SKILL.md
+  s_d74e8c3b51babb::t_79a006e676ffab 1-111
+ai-skills/.agents/skills/plannotator-visual-explainer/references/design-system.md
+  s_d74e8c3b51babb::t_f06d89ec50de5e 1-560
+ai-skills/.agents/skills/plannotator-visual-explainer/references/pr-components.md
+  s_d74e8c3b51babb::t_373ec96e74f4d8 1-717
+ai-skills/.agents/skills/plannotator-visual-explainer/references/svg-patterns.md
+  s_d74e8c3b51babb::t_b2ecb855753514 1-368
+ai-skills/.agents/skills/plannotator-visual-explainer/references/theme-override.md
+  s_d74e8c3b51babb::t_0ebfabba78e124 1-162
+docs/licenses/anthropic-frontend-design.txt
+  s_d74e8c3b51babb::t_4ee570e5d84381 1-177
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "2a11b22aaf05f00ccade2d72e8ec0fe0e920bea1",
+  "prompts": {},
+  "sessions": {
+    "s_d74e8c3b51babb": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019f83e7-1dd4-7f86-bc50-47a89fb8d508",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
