@@ -1,0 +1,8 @@
+{
+  "completions": {
+    "prompted": true,
+    "installed": true,
+    "shell": "zsh",
+    "path": "/home/bikash/.config/cf/completions/_cf.zsh"
+  }
+}

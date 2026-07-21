@@ -4,6 +4,7 @@
 ^/\.claude/skills
 ^/\.config/opencode/skills
 \.env(\..*)?
+^/\.config/dotfiles-private/env\.sh$
 .*\.key
 .*\.pem
 id_rsa

@@ -34,16 +34,20 @@ state can safely coexist beside the managed links.
 
 The default install includes every portable package in the repository:
 
-- Desktop: `waybar`, `xdph`, `omarchy-hooks`, `fontconfig`, `hypr-bindings`
+- Desktop: `waybar`, `xdph`, `omarchy-hooks`, `fontconfig`,
+  `desktop-defaults`, `hypr-bindings`, `hypr-preferences`, `wireplumber`
 - Terminals and shells: `alacritty`, `ghostty`, `tmux`, `zellij`, `bash`,
-  `zsh`, `starship`
-- Editors and developer tools: `nvim`, `mise`, `bat`, `lazygit`, `mcphub`,
-  `local-bin`
+  `zsh`, `shell-profile`, `starship`
+- Editors and developer tools: `nvim`, `mise`, `bat`, `btop`, `lazygit`,
+  `mcphub`, `git`, `gh`, `ghui`, `cf`, `zed`, `ccstatusline`, `local-bin`
 - AI tools: `claude`, `codex`, `opencode`, `pi`, `ai-usagebar`, `ai-skills`
-- Other apps: **`herdr`**
+- Other apps: **`herdr`**, `lvsk-calendar`
 
 The tracked Mise configuration is linked to `~/.config/mise/config.toml`, and
-Herdr's complete configuration is linked to `~/.config/herdr/config.toml`.
+Herdr's portable configuration is linked to `~/.config/herdr/config.toml`.
+Authentication, session history, logs, and machine-local integrations remain
+local. The Git package adds a portable include while leaving credential helpers
+and Git-AI runtime settings in `~/.config/git/config`.
 
 Install or refresh only selected packages by naming them:
 
@@ -51,9 +55,18 @@ Install or refresh only selected packages by naming them:
 ./install.sh --backup ai-skills herdr hypr-bindings mise nvim ghostty
 ```
 
-The script links configuration; it does not install every application. After
-the first install, install configured Mise tools and the Waybar usage helper as
-needed:
+The script links configuration; it does not install every application. Create
+the private shell environment from the secret-free template and fill it only
+with newly rotated credentials:
+
+```bash
+install -m 600 ~/.config/dotfiles-private/env.sh.example \
+  ~/.config/dotfiles-private/env.sh
+${EDITOR:-nano} ~/.config/dotfiles-private/env.sh
+source ~/.zprofile
+```
+
+Then install configured Mise tools and the Waybar usage helper as needed:
 
 ```bash
 mise install
@@ -76,6 +89,8 @@ Then apply running-app configuration:
 ```bash
 hyprctl reload
 hyprctl configerrors
+omarchy restart xcompose
+omarchy restart pipewire
 omarchy restart waybar
 omarchy restart terminal
 omarchy restart tmux
@@ -84,12 +99,12 @@ systemctl --user restart xdg-desktop-portal-hyprland xdg-desktop-portal
 
 ## ProArt P16 hardware safety
 
-The portable `hypr-bindings` package installs the shared application and web
-shortcuts from `~/.config/hypr/bindings.conf`. The default installer still
-skips `hypr/.config/hypr/monitors.conf`, which contains the old Lenovo Yoga
-panel mode and specific external-monitor identifiers. On the ProArt P16, keep
-Omarchy's stock auto-detected monitor configuration until a P16-specific
-profile is created.
+The portable `hypr-bindings` and `hypr-preferences` packages install the
+shared shortcuts, input preferences, and lock-screen configuration. The
+default installer still skips `hypr/.config/hypr/monitors.conf`, which contains
+the old Lenovo Yoga panel mode and specific external-monitor identifiers. On
+the ProArt P16, keep Omarchy's stock auto-detected monitor configuration until
+a P16-specific profile is created.
 
 The Intel BE200 suspend scripts under [`omarchy/`](omarchy/) are documented for
 the Lenovo Yoga only. Do **not** run them on the ProArt P16 without first
@@ -106,9 +121,12 @@ hyprctl configerrors
 ## Secrets and machine-local state
 
 Authentication files, credentials, tokens, caches, generated backups, and
-agent runtime state are ignored. Sign in again on the new machine instead of
-copying secrets into Git. The `ai-usagebar` config comments document where to
-place its per-account OAuth files.
+agent runtime state are ignored. `~/.zprofile` only loads the ignored,
+mode-600 `~/.config/dotfiles-private/env.sh`; the repository contains a
+secret-free example. Rotate exposed credentials before placing replacement
+values there. Sign in again on each machine instead of copying application
+sessions into Git. The `ai-usagebar` config comments document where to place
+its per-account OAuth files.
 
 ## Updating another machine
 

@@ -12,24 +12,36 @@ PORTABLE_PACKAGES=(
 	alacritty
 	bash
 	bat
+	btop
+	ccstatusline
+	cf
 	claude
 	codex
+	desktop-defaults
 	fontconfig
+	gh
 	ghostty
+	ghui
+	git
 	herdr
 	hypr-bindings
+	hypr-preferences
 	lazygit
 	local-bin
+	lvsk-calendar
 	mcphub
 	mise
 	nvim
 	omarchy-hooks
 	opencode
 	pi
+	shell-profile
 	starship
 	tmux
 	waybar
+	wireplumber
 	xdph
+	zed
 	zellij
 	zsh
 )
@@ -254,6 +266,24 @@ ensure_line() {
 	printf '\n%s\n' "$line" >>"$file"
 }
 
+ensure_git_include() {
+	local config="$HOME/.config/git/config"
+	local include_path="~/.config/git/dotfiles.conf"
+
+	command -v git >/dev/null 2>&1 || die "Git is required to install the git package"
+	if [[ -f $config ]]; then
+		if git config --file "$config" --get-all include.path 2>/dev/null | grep -Fxq "$include_path"; then
+			return
+		fi
+		copy_to_backup "$config"
+	elif [[ -e $config || -L $config ]]; then
+		die "expected a regular Git config: $config"
+	fi
+
+	mkdir -p -- "$(dirname -- "$config")"
+	git config --file "$config" --add include.path "$include_path"
+}
+
 link_omarchy_nvim_theme() {
 	local source="$HOME/.config/omarchy/current/theme/neovim.lua"
 	local target="$HOME/.config/nvim/lua/plugins/theme.lua"
@@ -413,6 +443,10 @@ if package_selected nvim; then
 	link_omarchy_nvim_theme
 fi
 
+if package_selected git; then
+	ensure_git_include
+fi
+
 if ((backed_up)); then
 	log "backups: $BACKUP_ROOT"
 fi
@@ -420,6 +454,18 @@ fi
 log "installation complete"
 if package_selected ai-skills; then
 	log "install source-managed skills: $DOTFILES_DIR/setup-ai-skills.sh"
+fi
+if package_selected shell-profile; then
+	log "populate the private environment: $HOME/.config/dotfiles-private/env.sh"
+fi
+if package_selected hypr-bindings || package_selected hypr-preferences; then
+	log "apply Hyprland changes: hyprctl reload && hyprctl configerrors"
+fi
+if package_selected desktop-defaults; then
+	log "apply XCompose changes: omarchy restart xcompose"
+fi
+if package_selected wireplumber; then
+	log "apply Bluetooth audio changes: omarchy restart pipewire"
 fi
 if package_selected waybar; then
 	log "apply Waybar changes: omarchy restart waybar"

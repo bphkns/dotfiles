@@ -36,6 +36,8 @@ id_ed25519
 **/*secret*.json
 **/*token*.json
 **/settings.local.json
+**/.config/dotfiles-private/env.sh
+**/dotfiles-private/env.sh
 
 # Agent runtime state
 pi/.pi/agent/auth.json
