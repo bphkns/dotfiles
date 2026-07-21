@@ -34,7 +34,7 @@ state can safely coexist beside the managed links.
 
 The default install includes every portable package in the repository:
 
-- Desktop: `waybar`, `xdph`, `omarchy-hooks`, `fontconfig`
+- Desktop: `waybar`, `xdph`, `omarchy-hooks`, `fontconfig`, `hypr-bindings`
 - Terminals and shells: `alacritty`, `ghostty`, `tmux`, `zellij`, `bash`,
   `zsh`, `starship`
 - Editors and developer tools: `nvim`, `mise`, `bat`, `lazygit`, `mcphub`,
@@ -48,7 +48,7 @@ Herdr's complete configuration is linked to `~/.config/herdr/config.toml`.
 Install or refresh only selected packages by naming them:
 
 ```bash
-./install.sh --backup ai-skills herdr mise nvim ghostty
+./install.sh --backup ai-skills herdr hypr-bindings mise nvim ghostty
 ```
 
 The script links configuration; it does not install every application. After
@@ -74,6 +74,8 @@ policy.
 Then apply running-app configuration:
 
 ```bash
+hyprctl reload
+hyprctl configerrors
 omarchy restart waybar
 omarchy restart terminal
 omarchy restart tmux
@@ -82,9 +84,10 @@ systemctl --user restart xdg-desktop-portal-hyprland xdg-desktop-portal
 
 ## ProArt P16 hardware safety
 
-The default installer intentionally skips
-`hypr/.config/hypr/monitors.conf`. That file contains the old Lenovo Yoga panel
-mode and specific external-monitor identifiers. On the ProArt P16, keep
+The portable `hypr-bindings` package installs the shared application and web
+shortcuts from `~/.config/hypr/bindings.conf`. The default installer still
+skips `hypr/.config/hypr/monitors.conf`, which contains the old Lenovo Yoga
+panel mode and specific external-monitor identifiers. On the ProArt P16, keep
 Omarchy's stock auto-detected monitor configuration until a P16-specific
 profile is created.
 

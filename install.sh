@@ -17,6 +17,7 @@ PORTABLE_PACKAGES=(
 	fontconfig
 	ghostty
 	herdr
+	hypr-bindings
 	lazygit
 	local-bin
 	mcphub
