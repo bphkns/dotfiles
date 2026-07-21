@@ -39,13 +39,16 @@ The default install includes every portable package in the repository:
   `zsh`, `starship`
 - Editors and developer tools: `nvim`, `mise`, `bat`, `lazygit`, `mcphub`,
   `local-bin`
-- AI tools: `claude`, `codex`, `opencode`, `pi`, `ai-usagebar`
+- AI tools: `claude`, `codex`, `opencode`, `pi`, `ai-usagebar`, `ai-skills`
 - Other apps: **`herdr`**
+
+The tracked Mise configuration is linked to `~/.config/mise/config.toml`, and
+Herdr's complete configuration is linked to `~/.config/herdr/config.toml`.
 
 Install or refresh only selected packages by naming them:
 
 ```bash
-./install.sh --backup herdr nvim ghostty
+./install.sh --backup ai-skills herdr mise nvim ghostty
 ```
 
 The script links configuration; it does not install every application. After
@@ -56,6 +59,17 @@ needed:
 mise install
 cargo install ai-usagebar
 ```
+
+Install public AI skills and fetch licensed ui.sh skills after setting your
+local `UIDOTSH_TOKEN`:
+
+```bash
+./setup-ai-skills.sh
+```
+
+The token and licensed ui.sh skill bodies are never committed. See
+[`docs/ai-skills.md`](docs/ai-skills.md) for the complete inventory and source
+policy.
 
 Then apply running-app configuration:
 
@@ -99,4 +113,6 @@ place its per-account OAuth files.
 cd ~/dotfiles
 git pull --ff-only
 ./install.sh --backup
+mise install
+./setup-ai-skills.sh
 ```

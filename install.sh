@@ -7,6 +7,7 @@ BACKUP_ROOT="${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles/backups/$(date +%Y%m
 # Every portable Stow package is installed by default. Keep this list explicit so
 # a new top-level directory cannot unexpectedly overwrite files in $HOME.
 PORTABLE_PACKAGES=(
+	ai-skills
 	ai-usagebar
 	alacritty
 	bash
@@ -35,7 +36,7 @@ PORTABLE_PACKAGES=(
 # The checked-in monitor profile belongs to the Lenovo Yoga and must be reviewed
 # before it is linked on another computer, especially the ProArt P16.
 MACHINE_SPECIFIC_PACKAGES=(hypr)
-NON_STOW_DIRECTORIES=(agents omarchy)
+NON_STOW_DIRECTORIES=(agents docs omarchy scripts)
 
 dry_run=0
 backup_conflicts=0
@@ -416,6 +417,7 @@ if ((backed_up)); then
 fi
 
 log "installation complete"
+package_selected ai-skills && log "install source-managed skills: $DOTFILES_DIR/setup-ai-skills.sh"
 package_selected waybar && log "apply Waybar changes: omarchy restart waybar"
 package_selected xdph && log "apply screen-share changes: systemctl --user restart xdg-desktop-portal-hyprland xdg-desktop-portal"
 (package_selected ghostty || package_selected alacritty) && log "apply terminal changes: omarchy restart terminal"

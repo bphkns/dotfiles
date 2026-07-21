@@ -14,7 +14,7 @@ opencode/.config/opencode/VERTEX_SETUP*.md
 __pycache__/
 *.py[cod]
 
-# Stowed skills are managed locally, not committed
+# Tool-managed/licensed skill caches. Portable local skills live in ai-skills/.
 agents/.agents/skills/
 claude/.claude/skills/
 opencode/.config/opencode/skills/
