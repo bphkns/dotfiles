@@ -1,0 +1,92 @@
+local-bin/.local/bin/ai-usagebar-tui-codex-work
+  s_7820d112eea3f9::t_345753c6e62e8a 1-11
+ai-usagebar/.config/ai-usagebar/config.toml
+  s_1c2e39818439eb::t_9a6d0142177032 3-5,13-16,18-19
+  s_7820d112eea3f9::t_235f77d0cd119a 26-29
+  s_7820d112eea3f9::t_3d0b09886b3c4d 1-2,6-12,17,20,23-25,30-42
+  s_7820d112eea3f9::t_0df0b7693b8ff5 21-22
+ai-usagebar/.config/ai-usagebar-codex-work/ai-usagebar/config.toml
+  s_d74e8c3b51babb::t_6c7d361f7e1e29 2,5
+  s_7820d112eea3f9::t_5641a4d4d76c6d 18-20
+  s_7820d112eea3f9::t_ff84ee82c949f1 1,3-4,6-17,21-35
+local-bin/.stow-local-ignore
+  s_d74e8c3b51babb::t_28d924a951db40 1-2
+install.sh
+  s_d74e8c3b51babb::t_2cfce2271ee464 103-110,344
+  s_d74e8c3b51babb::t_3a985f0b33606c 1-102,111-281,285-342,345-422
+  s_d74e8c3b51babb::t_8f676331424ed7 282-284
+  s_d74e8c3b51babb::t_5ece6022624739 343
+claude/.stow-local-ignore
+  s_d74e8c3b51babb::t_d05da7fe3e0716 1
+opencode/.stow-local-ignore
+  s_d74e8c3b51babb::t_eef30f7008ada5 2
+  s_d74e8c3b51babb::t_e0c3e23a9bf5fe 3
+README.md
+  s_d74e8c3b51babb::t_6f892067985dbc 3-5,30-31,38-41,51-53,71-75,77-79,91-94
+  s_d74e8c3b51babb::t_8c5b942661a4c9 9-10
+  s_d74e8c3b51babb::t_9d0d13912c8f5e 1-2,6-8,11-29,32-37,42-50,54-70,76,80-90,95-102
+local-bin/.local/bin/ai-usagebar-combined
+  s_7820d112eea3f9::t_1d2a89eee439dd 4-12,16,25-27,31-46,51,53,60,64-80,82-90,92,96-97
+  s_7820d112eea3f9::t_78b69aaf888c39 81
+  s_7820d112eea3f9::t_ace9d24b341f4f 1-3,13-15,17-24,28-30,47-50,52,54-59,61-63,91,93-95,98-101
+waybar/.config/waybar/config.jsonc
+  s_7820d112eea3f9::t_82ce9114e32793 59-66,73-74
+  s_7820d112eea3f9::t_26460719b91839 58,76
+  s_7820d112eea3f9::t_6c880f5e51aa09 67-68,70-71
+  s_7820d112eea3f9::t_4cea3e2eb119cd 10
+  s_7820d112eea3f9::t_c6461a6f88f1ab 11-12
+  s_7820d112eea3f9::t_98ae661b824e96 57
+  s_7820d112eea3f9::t_e453cdf2ac27c9 77
+.gitignore
+  s_d74e8c3b51babb::t_9e7bdbe2d9bbef 12-16
+.stow-local-ignore
+  s_d74e8c3b51babb::t_4265a2c7270a43 3-5
+  s_d74e8c3b51babb::t_6aabf74b49f0ae 6-10
+  s_d74e8c3b51babb::t_224a634f15c15a 27-31
+waybar/.stow-local-ignore
+  s_d74e8c3b51babb::t_8e69494690c555 1
+waybar/.config/waybar/style.css
+  s_960291d11ce1a2::t_13d5d659397583 4-5,9-11,14-15,18-19,23-26,30,36-37,39,42-43,46-47,50-51,55,58-59,62-63,66-67,70-72,75-76,85-92,96,99-101,104-106,109-110
+herdr/.config/herdr/config.toml
+  s_d74e8c3b51babb::t_9d6e884d601924 12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "7f0939b446bbb25b77cd416bfdf0d1d2afe9fb3d",
+  "prompts": {},
+  "sessions": {
+    "s_1c2e39818439eb": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019f8349-9036-7ae0-840f-efc75ca469fc",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_7820d112eea3f9": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_081ce04b1ffeSOitRK1pZG2MO5",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_960291d11ce1a2": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_096167f38ffeJF0w6EYBRXF73I",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_d74e8c3b51babb": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019f83e7-1dd4-7f86-bc50-47a89fb8d508",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
