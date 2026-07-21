@@ -1,5 +1,13 @@
 \.DS_Store
 \.git
+\.gitignore
+^/\.claude/skills
+^/\.config/opencode/skills
+\.env(\..*)?
+.*\.key
+.*\.pem
+id_rsa
+id_ed25519
 auth\.json
 settings\.local\.json
 history\.jsonl
@@ -16,3 +24,8 @@ log
 backups
 file-history
 agent-memory-local
+\.bak\.[0-9]+$
+__pycache__
+\.py[co]$
+\.uidotsh\.
+node_modules

@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.80.3",
+  "lastChangelogVersion": "0.80.10",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.5",
-  "defaultThinkingLevel": "high",
+  "defaultModel": "gpt-5.6-sol",
+  "defaultThinkingLevel": "max",
   "collapseChangelog": true,
   "enableInstallTelemetry": false,
   "autocompleteMaxVisible": 8,
@@ -27,8 +27,9 @@
     "npm:@juicesharp/rpiv-ask-user-question",
     "npm:pi-powerline-footer",
     "npm:@sherif-fanous/pi-rtk",
-    "npm:teach-me"
+    "npm:teach-me",
+    "npm:pi-claude-bridge"
   ],
-  "theme": "light",
+  "theme": "dark",
   "hideThinkingBlock": false
 }

@@ -9,6 +9,11 @@ opencode/.config/opencode/opencode.json.uidotsh.*
 opencode/.config/opencode/package-lock.json
 opencode/.config/opencode/VERTEX_SETUP*.md
 
+# Generated backups and caches
+*.bak.*
+__pycache__/
+*.py[cod]
+
 # Stowed skills are managed locally, not committed
 agents/.agents/skills/
 claude/.claude/skills/

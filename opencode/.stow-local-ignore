@@ -1,1 +1,3 @@
 ^/\.config/opencode/\.gitignore$
+^/\.config/opencode/opencode\.json\.uidotsh\..*$
+^/\.config/opencode/skills

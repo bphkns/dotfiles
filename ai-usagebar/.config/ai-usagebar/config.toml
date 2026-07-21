@@ -1,0 +1,42 @@
+# ai-usagebar — https://github.com/akitaonrails/ai-usagebar
+# Managed in dotfiles (stow package: ai-usagebar).
+# No secrets here: account-specific OAuth files live under
+# ~/.config/ai-usagebar/accounts/, a live-only directory intentionally not
+# tracked in this repo.
+
+[ui]
+# Vendor shown by the bare `ai-usagebar` and the tab the TUI opens on.
+primary = "anthropic"
+
+[anthropic]
+enabled = true
+# Both Claude subscriptions use dedicated credentials, so `claude auth
+# login/logout` and claude-bridge account changes cannot affect ai-usagebar.
+# "claude-dev" is the default account shown by bare `ai-usagebar`.
+credentials_path = "/home/bikash/.config/ai-usagebar/accounts/claude-dev.json"
+
+# "claude-hello" is selected with `--account hello`. ai-usagebar refreshes
+# each account's token in its own file independently.
+[[anthropic.accounts]]
+label = "hello"
+credentials_path = "/home/bikash/.config/ai-usagebar/accounts/claude-hello.json"
+
+[openai]
+enabled = true
+# "codex-dev" = the default Codex account = ~/.codex/auth.json.
+# "codex-work" = the SECOND Codex account. It can't be selected by a CLI flag,
+# so it lives in a separate config used only via XDG_CONFIG_HOME by the
+# codex-work waybar module (see ~/.config/ai-usagebar-codex-work/ai-usagebar/config.toml).
+
+# Vendors we don't use — disabled so the TUI and scroll-cycle stay uncluttered.
+[zai]
+enabled = false
+
+[openrouter]
+enabled = false
+
+[deepseek]
+enabled = false
+
+[kimi]
+enabled = false
