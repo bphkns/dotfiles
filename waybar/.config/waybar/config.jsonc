@@ -56,13 +56,13 @@
   },
 
   // --- AI plan usage (ai-usagebar) ---------------------------------------
-  // ONE module. Bar: tiny "<icon><tag> <pct>%" per account (tag d/h/d/w),
+  // ONE module. Bar: tiny "<icon><tag> <pct>%" per account (tag d/h/d/p),
   // colored by that account's overall severity. Hover: one compact line per
   // account. The wrapper (~/.local/bin/ai-usagebar-combined) fans out to every
-  // account; the second accounts (claude-hello, codex-work) appear only once
+  // account; the second accounts (claude-hello, codex-personal) appear only once
   // their creds file exists.
   // Left-click  → main TUI (Claude, Claude·hello, codex-dev tabs).
-  // Right-click → codex-work TUI (the TUI is single-OpenAI-tab upstream, so the
+  // Right-click → codex-personal TUI (the TUI has one OpenAI tab, so the
   //               2nd Codex account needs its own instance via XDG_CONFIG_HOME).
   "custom/ai": {
     "exec": "ai-usagebar-combined",
@@ -71,7 +71,7 @@
     "signal": 13,
     "tooltip": true,
     "on-click": "omarchy-launch-or-focus-tui ai-usagebar-tui",
-    "on-click-right": "omarchy-launch-or-focus-tui ai-usagebar-tui-codex-work"
+    "on-click-right": "omarchy-launch-or-focus-tui ai-usagebar-tui-codex-personal"
   },
 
   "cpu": {

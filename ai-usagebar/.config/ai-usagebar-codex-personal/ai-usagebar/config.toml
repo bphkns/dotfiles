@@ -1,6 +1,6 @@
 # Alt config for the SECOND Codex account ONLY.
-# Used by the combined Waybar module and the codex-work TUI wrapper. Both run
-# ai-usagebar with XDG_CONFIG_HOME=~/.config/ai-usagebar-codex-work so this
+# Used by the combined Waybar module and codex-personal TUI wrapper. Both run
+# ai-usagebar with XDG_CONFIG_HOME=~/.config/ai-usagebar-codex-personal so this
 # file becomes its config. This is the only supported way to point the OpenAI
 # vendor at a non-default auth.json — there is no per-account CLI flag for it.
 #
@@ -15,12 +15,13 @@ enabled = false
 
 [openai]
 enabled = true
-# Populate once with the work Codex login (won't clobber your primary ~/.codex).
+# Personal account: bphkns@gmail.com. It is isolated from codex-dev and normal
+# Codex CLI auth at ~/.codex/auth.json.
 # codex requires CODEX_HOME to exist first, so mkdir before login:
-#   mkdir -p ~/.config/ai-usagebar/accounts/codex-work
-#   CODEX_HOME=~/.config/ai-usagebar/accounts/codex-work codex login
-#   chmod 600 ~/.config/ai-usagebar/accounts/codex-work/auth.json
-codex_auth_path = "/home/bikash/.config/ai-usagebar/accounts/codex-work/auth.json"
+#   mkdir -p ~/.config/ai-usagebar/accounts/codex-personal
+#   CODEX_HOME=~/.config/ai-usagebar/accounts/codex-personal codex login
+#   chmod 600 ~/.config/ai-usagebar/accounts/codex-personal/auth.json
+codex_auth_path = "/home/bikash/.config/ai-usagebar/accounts/codex-personal/auth.json"
 
 [zai]
 enabled = false

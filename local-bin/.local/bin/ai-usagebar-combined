@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Combine every ai-usagebar account into ONE waybar module.
 
-Bar:   tiny "<icon><tag> <pct>%" per account (tag = d/h/d/w), colored by that
+Bar:   tiny "<icon><tag> <pct>%" per account (tag = d/h/d/p), colored by that
        account's OVERALL severity (so a hot account reads red even if its 5h
        window is low).
 Hover: one compact line per account — label · plan · 5h% · 7d% · scoped · reset.
@@ -9,8 +9,9 @@ Hover: one compact line per account — label · plan · 5h% · 7d% · scoped ·
 ai-usagebar is one-account per call, so this fans out and merges. The color of
 each account comes from ai-usagebar's own text span (theme-correct); the values
 come from a pipe-delimited --tooltip-format. Second accounts (claude-hello,
-codex-work) are included only once their credential file exists.
+codex-personal) are included only once their credential file exists.
 """
+import html
 import json
 import os
 import re
@@ -23,6 +24,7 @@ if not os.path.exists(BIN):
     BIN = "ai-usagebar"
 
 DIM = "#727169"
+ERROR = "#f7768e"
 BARSEP = " <span foreground='#585858'>·</span> "
 COLOR_RE = re.compile(r"foreground='(#[0-9A-Fa-f]{6})'")
 SEV = {"low": 0, "mid": 1, "high": 2, "critical": 3}
@@ -33,13 +35,15 @@ OAI_TIP = "{oai_session_pct}|{oai_weekly_pct}|{oai_session_reset}|||{oai_plan}"
 
 # label, tag, icon, --format, --tooltip-format, extra args, extra env, creds gate
 SPECS = [
-    ("claude-dev", "d", "󰚩", "{session_pct}", CLA_TIP, ["--vendor", "anthropic"], None, None),
+    ("claude-dev", "d", "󰚩", "{session_pct}", CLA_TIP,
+     ["--vendor", "anthropic"], None, f"{ACC}/claude-dev/.credentials.json"),
     ("claude-hello", "h", "󰚩", "{session_pct}", CLA_TIP,
-     ["--vendor", "anthropic", "--account", "hello"], None, f"{ACC}/claude-hello.json"),
-    ("codex-dev", "d", "󱢆", "{oai_session_pct}", OAI_TIP, ["--vendor", "openai"], None, None),
-    ("codex-work", "w", "󱢆", "{oai_session_pct}", OAI_TIP,
-     ["--vendor", "openai", "--cache-dir", f"{HOME}/.cache/ai-usagebar/openai-work"],
-     {"XDG_CONFIG_HOME": f"{HOME}/.config/ai-usagebar-codex-work"}, f"{ACC}/codex-work/auth.json"),
+     ["--vendor", "anthropic", "--account", "hello"], None, f"{ACC}/claude-hello/.credentials.json"),
+    ("codex-dev", "d", "󱢆", "{oai_session_pct}", OAI_TIP,
+     ["--vendor", "openai"], None, f"{ACC}/codex-dev/auth.json"),
+    ("codex-personal", "p", "󱢆", "{oai_session_pct}", OAI_TIP,
+     ["--vendor", "openai", "--cache-dir", f"{HOME}/.cache/ai-usagebar/openai-personal"],
+     {"XDG_CONFIG_HOME": f"{HOME}/.config/ai-usagebar-codex-personal"}, f"{ACC}/codex-personal/auth.json"),
 ]
 
 
@@ -68,6 +72,15 @@ for label, tag, icon, fmt, tipfmt, args, env, gate in SPECS:
         continue
     data = query(fmt, tipfmt, args, env)
     if not data:
+        continue
+    if data.get("text") == "⚠":
+        message = html.escape(str(data.get("tooltip") or "unavailable"))
+        bars.append(f"<span foreground='{ERROR}'>{icon} {tag} !</span>")
+        tips.append(
+            f"<span foreground='{ERROR}'>{label.ljust(14)}</span> "
+            f"<span foreground='{DIM}'>{message}</span>"
+        )
+        worst = max(worst, SEV["critical"])
         continue
     match = COLOR_RE.search(data.get("text", ""))
     color = match.group(1) if match else "#dcd7ba"

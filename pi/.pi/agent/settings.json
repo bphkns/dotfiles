@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.80.10",
-  "defaultProvider": "claude-bridge",
-  "defaultModel": "claude-fable-5",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "max",
   "collapseChangelog": true,
   "enableInstallTelemetry": false,

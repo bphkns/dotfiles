@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Second-Codex TUI. The main ai-usagebar TUI shows only codex-dev and has no
+# multi-account concept for OpenAI —
+# per-account tabs are Anthropic-only upstream. So this opens a separate TUI
+# whose config points OpenAI at the codex-personal auth.json.
+# XDG_CACHE_HOME is overridden too so it doesn't collide with codex-dev's cache.
+# A distinct basename gives Omarchy a distinct app-id for focus handling.
+exec env \
+  XDG_CONFIG_HOME="$HOME/.config/ai-usagebar-codex-personal" \
+  XDG_CACHE_HOME="$HOME/.cache/ai-usagebar-codex-personal" \
+  ai-usagebar-tui "$@"
