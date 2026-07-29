@@ -1,0 +1,69 @@
+install.sh
+  s_d74e8c3b51babb::t_a7e23af9d7aa7e 269-286,446-447
+  s_d74e8c3b51babb::t_8fdb1219ecb378 15-17,20,22,24-25,28,31,38,42,44
+  s_d74e8c3b51babb::t_cec076e5fed6aa 448,458-469
+  s_d74e8c3b51babb::t_d2acc19a321db5 449
+ccstatusline/.config/ccstatusline/settings.json
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-64
+shell-profile/.zprofile
+  s_d74e8c3b51babb::t_3ee5c3074c7ba0 1-6
+desktop-defaults/.config/omarchy/branding/about.txt
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-26
+hypr-preferences/.config/hypr/hyprlock.conf
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-43
+shell-profile/.config/dotfiles-private/env.sh.example
+  s_d74e8c3b51babb::t_8482e4bbc79a79 1-21
+git/.config/git/ignore
+  s_d74e8c3b51babb::t_8a26679d82ef87 1
+README.md
+  s_d74e8c3b51babb::t_3233dfd2b7df51 49-50
+  s_d74e8c3b51babb::t_3c67ed989bdc49 92-93
+  s_d74e8c3b51babb::t_5f2bd75cb8cbca 37-38,40-42,44,47-48,58-69,102-107,124-129
+hypr-preferences/.config/hypr/input.conf
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-54
+zed/.config/zed/settings.json
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-31,34
+  s_d74e8c3b51babb::t_49e19415fb3ad6 32-33
+desktop-defaults/.config/xdg-terminals.list
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-3
+lvsk-calendar/.config/lvsk-calendar/config
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-19
+btop/.config/btop/btop.conf
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-286
+.stow-local-ignore
+  s_d74e8c3b51babb::t_27e9b411e3f483 7
+desktop-defaults/.config/mimeapps.list
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-50
+desktop-defaults/.config/omarchy/branding/screensaver.txt
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-10
+wireplumber/.config/wireplumber/wireplumber.conf.d/bluetooth-a2dp-autoconnect.conf
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-18
+cf/.config/cf/config.json
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-8
+desktop-defaults/.XCompose
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-8
+gh/.config/gh/config.yml
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-27
+ghui/.config/ghui/config.json
+  s_d74e8c3b51babb::t_7c67d3945afc31 1-4
+git/.config/git/dotfiles.conf
+  s_d74e8c3b51babb::t_b9d6c3c0384279 1-32
+.gitignore
+  s_d74e8c3b51babb::t_8d3bdd2d00071a 39-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "ed9acc868562b8a6a627bf99df3e75ea8fc5d4c3",
+  "prompts": {},
+  "sessions": {
+    "s_d74e8c3b51babb": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019f83e7-1dd4-7f86-bc50-47a89fb8d508",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

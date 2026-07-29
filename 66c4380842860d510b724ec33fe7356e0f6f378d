@@ -1,0 +1,19 @@
+shell-profile/.config/dotfiles-private/env.sh.example
+  s_d74e8c3b51babb::t_b21b17435b20c3 14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "66c4380842860d510b724ec33fe7356e0f6f378d",
+  "prompts": {},
+  "sessions": {
+    "s_d74e8c3b51babb": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019f83e7-1dd4-7f86-bc50-47a89fb8d508",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

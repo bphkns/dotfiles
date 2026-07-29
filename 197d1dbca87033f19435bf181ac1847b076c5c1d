@@ -1,0 +1,60 @@
+nvim/.config/nvim/lua/plugins/vimade.lua
+  s_ef2862ae69d0a7::t_35d526d6fd06f3 10,15
+  s_ef2862ae69d0a7::t_d70142d835e956 9,11-14,16-17
+nvim/.config/nvim/lua/plugins/neo-tree.lua
+  s_757bbad0d7fc11::t_f68073abc21203 80-83
+tmux/.config/tmux/dotfiles.conf
+  s_ef2862ae69d0a7::t_fe10310c144803 75,81-83
+nvim/.config/nvim/lua/plugins/lsp.lua
+  s_8854460e75305e::t_8e719e528c0008 202-205,339
+  s_8854460e75305e::t_7a900103e7a19b 71
+nvim/.config/nvim/lua/plugins/treesitter.lua
+  s_8854460e75305e::t_7a900103e7a19b 65,70
+nvim/.config/nvim/lua/plugins/origami.lua
+  s_757bbad0d7fc11::t_f68073abc21203 8
+waybar/.config/waybar/style.css
+  s_48f3ddce832f71::t_470526f9d7e002 11
+  s_48f3ddce832f71::t_e6f5ff58e709be 42-50
+nvim/.config/nvim/lazy-lock.json
+  s_8854460e75305e::t_ea9407cd3fe281 33,42-43,45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "197d1dbca87033f19435bf181ac1847b076c5c1d",
+  "prompts": {},
+  "sessions": {
+    "s_48f3ddce832f71": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1e064c375ffeklDcbxTcOnO4UR",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_757bbad0d7fc11": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1bbc2c6c2ffexE2blusslVVDEY",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_8854460e75305e": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1af577458ffeJnVh4iQNLrpvV0",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_ef2862ae69d0a7": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1b71b14bcffeULabAsPFY3xncf",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

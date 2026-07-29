@@ -1,0 +1,19 @@
+setup-ai-skills.sh
+  s_d74e8c3b51babb::t_e0768e9bebdf64 11,27,31,35-57,61,63,65-66,70-75,79-85,89-104,108-122,126-141,145-153,160-169,173-195,200-204
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "c1b82680ef86d3067a7cf04126b8a9b5813c842e",
+  "prompts": {},
+  "sessions": {
+    "s_d74e8c3b51babb": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019f83e7-1dd4-7f86-bc50-47a89fb8d508",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

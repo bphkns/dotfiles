@@ -1,0 +1,19 @@
+mise/.config/mise/config.toml
+  s_39f61de15aa0a5::t_f6106a49f192c5 6,11-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "d7006206297742ad9cc1e8b49c7d04345fda35ec",
+  "prompts": {},
+  "sessions": {
+    "s_39f61de15aa0a5": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0da14079affeOnPqh0kWqBl9z4",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

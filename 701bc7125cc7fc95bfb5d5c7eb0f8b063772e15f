@@ -1,0 +1,31 @@
+nvim/.config/nvim/lua/plugins/which-key.lua
+  41d066ad1500cfea 17-28
+nvim/.config/nvim/init.lua
+  41d066ad1500cfea 33-36,39-41
+nvim/.config/nvim/lua/options.lua
+  41d066ad1500cfea 22
+nvim/.config/nvim/lua/plugins/conform.lua
+  41d066ad1500cfea 235
+nvim/.config/nvim/lua/plugins/treesitter.lua
+  41d066ad1500cfea 55-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.12",
+  "base_commit_sha": "701bc7125cc7fc95bfb5d5c7eb0f8b063772e15f",
+  "prompts": {
+    "41d066ad1500cfea": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_304750238ffeRNOp50DqOUghVC",
+        "model": "github-copilot/claude-opus-4.6"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>",
+      "messages": [],
+      "total_additions": 23,
+      "total_deletions": 34,
+      "accepted_lines": 23,
+      "overriden_lines": 0
+    }
+  }
+}

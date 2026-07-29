@@ -1,0 +1,24 @@
+install.sh
+  s_d74e8c3b51babb::t_4c1530b643f3bf 20
+hypr-bindings/.config/hypr/bindings.conf
+  s_d74e8c3b51babb::t_686b7e18009e03 1-46
+README.md
+  s_d74e8c3b51babb::t_6db71873906219 51
+  s_d74e8c3b51babb::t_08393b627b2554 37,77-78,87-90
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "a3aaaf3051613849001b5e90c07b89c108fdf94d",
+  "prompts": {},
+  "sessions": {
+    "s_d74e8c3b51babb": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019f83e7-1dd4-7f86-bc50-47a89fb8d508",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

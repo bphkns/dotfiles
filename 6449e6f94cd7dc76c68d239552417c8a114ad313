@@ -1,0 +1,23 @@
+tmux/.tmux.conf
+  574d464ad8fda2d5 22-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "6449e6f94cd7dc76c68d239552417c8a114ad313",
+  "prompts": {
+    "574d464ad8fda2d5": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_2abe88968ffeoCkUjB6BkRPORZ",
+        "model": "opencode/minimax-m2.5-free"
+      },
+      "human_author": "Bikash Phukan",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 5,
+      "overriden_lines": 0
+    }
+  }
+}

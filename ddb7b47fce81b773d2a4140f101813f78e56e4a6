@@ -1,0 +1,68 @@
+nvim/.config/nvim/lua/plugins/lsp.lua
+  41ba75156477d260 303
+nvim/.config/nvim/init.lua
+  41ba75156477d260 24,32-38,40-42
+nvim/.config/nvim/lua/plugins/colorizer.lua
+  41ba75156477d260 2-4
+nvim/.config/nvim/lua/plugins/neo-tree.lua
+  41ba75156477d260 6,9-25,27-48
+nvim/.config/nvim/after/ftplugin/mjml.lua
+  41ba75156477d260 25,47,175,180-181
+lazygit/.config/lazygit/config.yml
+  41ba75156477d260 29-30
+nvim/.config/nvim/lua/plugins/surround.lua
+  41ba75156477d260 3
+nvim/.config/nvim/lua/options.lua
+  41ba75156477d260 32,61-63
+nvim/.config/nvim/after/plugin/mjml-highlights.lua
+  41ba75156477d260 2-16
+nvim/.config/nvim/lua/plugins/icons.lua
+  41ba75156477d260 3
+nvim/.config/nvim/lua/plugins/navigator.lua
+  41ba75156477d260 14-18
+nvim/.config/nvim/lua/plugins/jest.lua
+  41ba75156477d260 83-84,93-94
+nvim/.config/nvim/lua/plugins/which-key.lua
+  41ba75156477d260 28-31
+nvim/.config/nvim/lua/keymaps.lua
+  41ba75156477d260 20,54-55
+nvim/.config/nvim/lua/plugins/conform.lua
+  41ba75156477d260 191,206-207
+nvim/.config/nvim/lua/plugins/statusline.lua
+  41ba75156477d260 8,24
+nvim/.config/nvim/lua/plugins/blink-cmp.lua
+  41ba75156477d260 8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "ddb7b47fce81b773d2a4140f101813f78e56e4a6",
+  "prompts": {
+    "41ba75156477d260": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_2a261ce0effeNS6me5egMrLg4n",
+        "model": "anthropic/claude-opus-4-6"
+      },
+      "human_author": "Bikash Phukan",
+      "messages": [],
+      "total_additions": 109,
+      "total_deletions": 158,
+      "accepted_lines": 105,
+      "overriden_lines": 0
+    },
+    "574d464ad8fda2d5": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_2abe88968ffeoCkUjB6BkRPORZ",
+        "model": "opencode/minimax-m2.5-free"
+      },
+      "human_author": "Bikash Phukan",
+      "messages": [],
+      "total_additions": 5,
+      "total_deletions": 2,
+      "accepted_lines": 5,
+      "overriden_lines": 0
+    }
+  }
+}
