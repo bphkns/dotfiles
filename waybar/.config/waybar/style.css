@@ -63,6 +63,23 @@ tooltip {
   font-size: 10px;
 }
 
+#custom-codexbar {
+  min-width: 12px;
+  margin: 0 7.5px;
+}
+
+#custom-codexbar.warning {
+  color: #e0af68;
+}
+
+#custom-codexbar.critical {
+  color: #f7768e;
+}
+
+#custom-codexbar.stale {
+  opacity: 0.55;
+}
+
 #clock {
   margin-left: 8.75px;
 }

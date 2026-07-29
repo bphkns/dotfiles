@@ -366,9 +366,11 @@ return {
             vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
           end
 
-          map("n", "gd", function()
-            require("fzf-lua").lsp_definitions()
-          end, "Goto Definition")
+          if vim.bo[bufnr].filetype ~= "mjml" then
+            map("n", "gd", function()
+              require("fzf-lua").lsp_definitions()
+            end, "Goto Definition")
+          end
 
           map("n", "gr", function()
             require("fzf-lua").lsp_references()

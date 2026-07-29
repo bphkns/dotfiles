@@ -9,7 +9,7 @@ onboarding = false
 # Built-in themes: catppuccin, terminal, tokyo-night, dracula, nord,
 #                  gruvbox, one-dark, solarized, kanagawa, rose-pine,
 #                  vesper
-name = "kanagawa"
+name = "catppuccin"
 
 # Override individual color tokens on top of the base theme.
 # Accepts: hex (#rrggbb), named colors, rgb(r,g,b), or panel_bg = "reset"
@@ -36,7 +36,7 @@ shell_mode = "auto"
 [update]
 # Update channel used by background checks and `herdr update`.
 # Use "stable" for normal releases or "preview" for opt-in preview builds.
-# channel = "stable"
+channel = "stable"
 
 [keys]
 # Prefix key to enter prefix mode (default: "ctrl+b")
@@ -55,7 +55,7 @@ prefix = "ctrl+a"
 # detach = "prefix+q"
 reload_config = "prefix+r"
 # open_notification_target = "prefix+o"
-# workspace_picker = "prefix+w"
+workspace_picker = "prefix+w"
 # goto = "prefix+g"
 # new_workspace = "prefix+shift+n"
 # new_worktree = "prefix+shift+g"
@@ -190,15 +190,11 @@ description = "navigate right (vim/herdr)"
 # Show detected/reported agent labels in split pane borders when no manual pane name is set.
 # show_agent_labels_on_pane_borders = false
 
-# Agent panel scope: "current" or "all". Toggling it in the sidebar saves this setting.
-# agent_panel_scope = "all"
-
 # Accent color for highlights, borders, and navigation UI.
 # Accepts: hex (#89b4fa), named colors (cyan, blue, magenta), or rgb(r,g,b)
 # accent = "cyan"
 
 # Background notification popup delivery
-agent_panel_scope = "all"
 show_agent_labels_on_pane_borders = true
 [ui.toast]
 # off = disable pop-up notifications

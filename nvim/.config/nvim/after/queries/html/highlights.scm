@@ -1,4 +1,4 @@
-;; extends
+; extends
 
 ;; MJML root and structure tags
 ((tag_name) @tag.mjml.structure
@@ -31,8 +31,3 @@
 ;; Angular-style template variables
 ((text) @variable.template.angular
  (#match? @variable.template.angular "\\*ng[A-Za-z]+"))
-
-;; MJML style tag content
-((element (start_tag (tag_name) @_tag) (text) @injection.content)
- (#eq? @_tag "mj-style")
- (#set! injection.language "css"))

@@ -78,6 +78,13 @@ return {
     config = function()
       register_fga_parser()
       require("nvim-treesitter").setup({})
+
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("UserTreesitterHighlight", { clear = true }),
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
+      })
     end,
   },
   {

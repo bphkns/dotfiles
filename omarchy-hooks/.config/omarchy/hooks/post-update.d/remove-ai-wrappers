@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+is_omarchy_npx_wrapper() {
+  local path="$1"
+
+  [[ -f $path && ! -L $path ]] || return 1
+  grep -Fq 'mise where node@latest' "$path" || return 1
+  grep -Fq 'omarchy-cmd-missing bun' "$path"
+}
+
+for command in pi opencode claude codex; do
+  wrapper="$HOME/.local/bin/$command"
+  if is_omarchy_npx_wrapper "$wrapper"; then
+    rm -f -- "$wrapper"
+    printf 'omarchy post-update: removed npx wrapper %s\n' "$wrapper"
+  fi
+done

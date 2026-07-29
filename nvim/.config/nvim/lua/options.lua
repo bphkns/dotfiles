@@ -4,6 +4,9 @@ vim.opt.nu = true
 -- Shows relative line numbers (distance from current line)
 vim.opt.relativenumber = true
 
+-- Required for colorschemes and plugins that use 24-bit colors.
+vim.opt.termguicolors = true
+
 -- Sets the width of a tab character to 2 spaces
 vim.opt.tabstop = 2
 

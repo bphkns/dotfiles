@@ -1,0 +1,4 @@
+# Keep local environment files searchable in FFF.
+!.env
+!.env.*
+!.dev.vars

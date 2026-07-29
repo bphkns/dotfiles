@@ -7,7 +7,7 @@
   "modules-left": ["custom/omarchy", "hyprland/workspaces"],
   "modules-center": ["clock", "custom/weather", "custom/update", "custom/voxtype", "custom/screenrecording-indicator", "custom/idle-indicator", "custom/notification-silencing-indicator"],
   "modules-right": [
-    "custom/ai",
+    "custom/codexbar",
     "group/tray-expander",
     "bluetooth",
     "network",
@@ -55,23 +55,16 @@
     "interval": 21600
   },
 
-  // --- AI plan usage (ai-usagebar) ---------------------------------------
-  // ONE module. Bar: tiny "<icon><tag> <pct>%" per account (tag d/h/d/p),
-  // colored by that account's overall severity. Hover: one compact line per
-  // account. The wrapper (~/.local/bin/ai-usagebar-combined) fans out to every
-  // account; the second accounts (claude-hello, codex-personal) appear only once
-  // their creds file exists.
-  // Left-click  → main TUI (Claude, Claude·hello, codex-dev tabs).
-  // Right-click → codex-personal TUI (the TUI has one OpenAI tab, so the
-  //               2nd Codex account needs its own instance via XDG_CONFIG_HOME).
-  "custom/ai": {
-    "exec": "ai-usagebar-combined",
+  "custom/codexbar": {
+    "exec": "$HOME/.config/waybar/scripts/codexbar.sh",
     "return-type": "json",
-    "interval": 300,
-    "signal": 13,
+    "format": "{}",
+    "interval": 30,
+    "signal": 8,
+    "on-click": "$HOME/.config/waybar/scripts/codexbar-popup.py",
+    "on-click-right": "bash -c 'notify-send -a CodexBar -t 8000 \"AI usage\" \"$($HOME/.config/waybar/scripts/codexbar.sh | jq -r .tooltip)\"'",
     "tooltip": true,
-    "on-click": "omarchy-launch-or-focus-tui ai-usagebar-tui",
-    "on-click-right": "omarchy-launch-or-focus-tui ai-usagebar-tui-codex-personal"
+    "max-length": 24
   },
 
   "cpu": {

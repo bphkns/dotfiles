@@ -8,7 +8,6 @@ BACKUP_ROOT="${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles/backups/$(date +%Y%m
 # a new top-level directory cannot unexpectedly overwrite files in $HOME.
 PORTABLE_PACKAGES=(
 	ai-skills
-	ai-usagebar
 	alacritty
 	bash
 	bat

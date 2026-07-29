@@ -40,7 +40,7 @@ The default install includes every portable package in the repository:
   `zsh`, `shell-profile`, `starship`
 - Editors and developer tools: `nvim`, `mise`, `bat`, `btop`, `lazygit`,
   `mcphub`, `git`, `gh`, `ghui`, `cf`, `zed`, `ccstatusline`, `local-bin`
-- AI tools: `claude`, `codex`, `opencode`, `pi`, `ai-usagebar`, `ai-skills`
+- AI tools: `claude`, `codex`, `opencode`, `pi`, `ai-skills`
 - Other apps: **`herdr`**, `lvsk-calendar`
 
 The tracked Mise configuration is linked to `~/.config/mise/config.toml`, and
@@ -66,12 +66,20 @@ ${EDITOR:-nano} ~/.config/dotfiles-private/env.sh
 source ~/.zprofile
 ```
 
-Then install configured Mise tools and the Waybar usage helper as needed:
+Then install configured Mise tools as needed:
 
 ```bash
 mise install
-cargo install ai-usagebar
 ```
+
+Install CodexBar's Linux CLI and maintained Waybar integration:
+
+```bash
+./setup-codexbar.sh
+```
+
+This enables Codex and Claude using their existing CLI logins. CodexBar's
+runtime config, cache, and provider credentials remain machine-local.
 
 Install public AI skills and fetch licensed ui.sh skills after setting your
 local `UIDOTSH_TOKEN`:
@@ -125,8 +133,7 @@ agent runtime state are ignored. `~/.zprofile` only loads the ignored,
 mode-600 `~/.config/dotfiles-private/env.sh`; the repository contains a
 secret-free example. Rotate exposed credentials before placing replacement
 values there. Sign in again on each machine instead of copying application
-sessions into Git. The `ai-usagebar` config comments document where to place
-its per-account OAuth files.
+sessions into Git.
 
 ## Updating another machine
 
@@ -135,5 +142,6 @@ cd ~/dotfiles
 git pull --ff-only
 ./install.sh --backup
 mise install
+./setup-codexbar.sh
 ./setup-ai-skills.sh
 ```

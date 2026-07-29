@@ -19,10 +19,14 @@ return {
       -- below is the single source of truth for those keys.
       vim.g.tmux_navigator_no_mappings = 1
     end,
-    config = function()
-      -- Maps <C-h/j/k/l> in normal mode; loaded after the plugin so it wins.
-      dofile(vim.fn.expand("~/Projects/vim-herdr-navigation/editor/nvim.lua"))
-    end,
+    dependencies = {
+      {
+        "paulbkim-dev/vim-herdr-navigation",
+        config = function(plugin)
+          dofile(plugin.dir .. "/editor/nvim.lua")
+        end,
+      },
+    },
     keys = {
       { "<c-\\>", "<cmd>TmuxNavigatePrevious<cr>", desc = "Navigate to previous (tmux/vim)" },
     },

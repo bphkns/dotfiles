@@ -80,9 +80,6 @@ if [[ -f "$ZINIT_HOME/zinit.zsh" ]]; then
     zinit ice wait lucid has"fzf" src"shell/key-bindings.zsh"
     zinit light junegunn/fzf
 
-    # Node version helper
-    zinit ice wait"1" lucid
-    zinit light lukechilds/zsh-nvm 2>/dev/null || true
 fi
 
 # Google Cloud SDK (direct source - faster than OMZP::gcloud)
