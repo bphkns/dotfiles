@@ -24,20 +24,18 @@ PORTABLE_PACKAGES=(
 	git
 	herdr
 	hypr-bindings
-	hypr-preferences
 	lazygit
 	local-bin
-	lvsk-calendar
 	mcphub
 	mise
 	nvim
 	omarchy-hooks
+	omarchy-shell
 	opencode
 	pi
 	shell-profile
 	starship
 	tmux
-	waybar
 	wireplumber
 	xdph
 	zed
@@ -45,14 +43,10 @@ PORTABLE_PACKAGES=(
 	zsh
 )
 
-# The checked-in monitor profile belongs to the Lenovo Yoga and must be reviewed
-# before it is linked on another computer, especially the ProArt P16.
-MACHINE_SPECIFIC_PACKAGES=(hypr)
 NON_STOW_DIRECTORIES=(agents docs omarchy scripts)
 
 dry_run=0
 backup_conflicts=0
-allow_machine_specific=0
 backed_up=0
 requested_packages=()
 selected_packages=()
@@ -70,7 +64,6 @@ provided, only those packages are installed.
 Options:
   --dry-run                    Show packages and conflicts without changing files
   --backup                     Move conflicting files into ~/.local/state first
-  --allow-machine-specific     Permit the Lenovo-specific hypr package
   -h, --help                   Show this help
 
 Recommended on a new Omarchy machine:
@@ -284,7 +277,7 @@ ensure_git_include() {
 }
 
 link_omarchy_nvim_theme() {
-	local source="$HOME/.config/omarchy/current/theme/neovim.lua"
+	local source="$HOME/.local/state/omarchy/current/theme/neovim.lua"
 	local target="$HOME/.config/nvim/lua/plugins/theme.lua"
 	local relative_path="${target#"$HOME/"}"
 
@@ -325,9 +318,6 @@ while (($#)); do
 	--backup)
 		backup_conflicts=1
 		;;
-	--allow-machine-specific)
-		allow_machine_specific=1
-		;;
 	-h | --help)
 		usage
 		exit 0
@@ -367,10 +357,6 @@ for package in "${selected_packages[@]}"; do
 	[[ $package =~ ^[A-Za-z0-9._-]+$ ]] || die "invalid package name: $package"
 	[[ -d $DOTFILES_DIR/$package ]] || die "package does not exist: $package"
 	contains "$package" "${NON_STOW_DIRECTORIES[@]}" && die "$package is not a Stow package"
-
-	if contains "$package" "${MACHINE_SPECIFIC_PACKAGES[@]}" && ((!allow_machine_specific)); then
-		die "$package is Lenovo-specific; review it and pass --allow-machine-specific to install it"
-	fi
 
 	package_has_files "$package" || die "package has no versioned files: $package"
 done
@@ -457,17 +443,17 @@ fi
 if package_selected shell-profile; then
 	log "populate the private environment: $HOME/.config/dotfiles-private/env.sh"
 fi
-if package_selected hypr-bindings || package_selected hypr-preferences; then
+if package_selected hypr-bindings; then
 	log "apply Hyprland changes: hyprctl reload && hyprctl configerrors"
 fi
 if package_selected desktop-defaults; then
 	log "apply XCompose changes: omarchy restart xcompose"
 fi
 if package_selected wireplumber; then
-	log "apply Bluetooth audio changes: omarchy restart pipewire"
+	log "apply Bluetooth audio changes: omarchy restart audio"
 fi
-if package_selected waybar; then
-	log "apply Waybar changes: omarchy restart waybar"
+if package_selected omarchy-shell; then
+	log "apply shell changes: omarchy restart shell"
 fi
 if package_selected xdph; then
 	log "apply screen-share changes: systemctl --user restart xdg-desktop-portal-hyprland xdg-desktop-portal"

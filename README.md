@@ -34,14 +34,14 @@ state can safely coexist beside the managed links.
 
 The default install includes every portable package in the repository:
 
-- Desktop: `waybar`, `xdph`, `omarchy-hooks`, `fontconfig`,
-  `desktop-defaults`, `hypr-bindings`, `hypr-preferences`, `wireplumber`
+- Desktop: `omarchy-shell`, `xdph`, `omarchy-hooks`, `fontconfig`,
+  `desktop-defaults`, `hypr-bindings`, `wireplumber`
 - Terminals and shells: `alacritty`, `ghostty`, `tmux`, `zellij`, `bash`,
   `zsh`, `shell-profile`, `starship`
 - Editors and developer tools: `nvim`, `mise`, `bat`, `btop`, `lazygit`,
   `mcphub`, `git`, `gh`, `ghui`, `cf`, `zed`, `ccstatusline`, `local-bin`
 - AI tools: `claude`, `codex`, `opencode`, `pi`, `ai-skills`
-- Other apps: **`herdr`**, `lvsk-calendar`
+- Other apps: **`herdr`**
 
 The tracked Mise configuration is linked to `~/.config/mise/config.toml`, and
 Herdr's portable configuration is linked to `~/.config/herdr/config.toml`.
@@ -52,7 +52,7 @@ and Git-AI runtime settings in `~/.config/git/config`.
 Install or refresh only selected packages by naming them:
 
 ```bash
-./install.sh --backup ai-skills herdr hypr-bindings mise nvim ghostty
+./install.sh --backup ai-skills herdr hypr-bindings omarchy-shell mise nvim ghostty
 ```
 
 The script links configuration; it does not install every application. Create
@@ -72,15 +72,6 @@ Then install configured Mise tools as needed:
 mise install
 ```
 
-Install CodexBar's Linux CLI and maintained Waybar integration:
-
-```bash
-./setup-codexbar.sh
-```
-
-This enables Codex and Claude using their existing CLI logins. CodexBar's
-runtime config, cache, and provider credentials remain machine-local.
-
 Install public AI skills and fetch licensed ui.sh skills after setting your
 local `UIDOTSH_TOKEN`:
 
@@ -98,8 +89,8 @@ Then apply running-app configuration:
 hyprctl reload
 hyprctl configerrors
 omarchy restart xcompose
-omarchy restart pipewire
-omarchy restart waybar
+omarchy restart audio
+omarchy restart shell
 omarchy restart terminal
 omarchy restart tmux
 systemctl --user restart xdg-desktop-portal-hyprland xdg-desktop-portal
@@ -107,24 +98,13 @@ systemctl --user restart xdg-desktop-portal-hyprland xdg-desktop-portal
 
 ## ProArt P16 hardware safety
 
-The portable `hypr-bindings` and `hypr-preferences` packages install the
-shared shortcuts, input preferences, and lock-screen configuration. The
-default installer still skips `hypr/.config/hypr/monitors.conf`, which contains
-the old Lenovo Yoga panel mode and specific external-monitor identifiers. On
-the ProArt P16, keep Omarchy's stock auto-detected monitor configuration until
-a P16-specific profile is created.
+The portable `hypr-bindings` package installs only personal Lua shortcuts.
+Input and monitor settings use Omarchy's Quattro defaults, including automatic
+monitor detection.
 
 The Intel BE200 suspend scripts under [`omarchy/`](omarchy/) are documented for
 the Lenovo Yoga only. Do **not** run them on the ProArt P16 without first
 confirming that its Wi-Fi hardware and failure mode match.
-
-To reinstall the old Lenovo monitor profile explicitly:
-
-```bash
-./install.sh --backup --allow-machine-specific hypr
-hyprctl reload
-hyprctl configerrors
-```
 
 ## Secrets and machine-local state
 
@@ -142,6 +122,5 @@ cd ~/dotfiles
 git pull --ff-only
 ./install.sh --backup
 mise install
-./setup-codexbar.sh
 ./setup-ai-skills.sh
 ```

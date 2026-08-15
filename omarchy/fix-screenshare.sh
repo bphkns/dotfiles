@@ -63,7 +63,7 @@ write_if_changed(
 picker_config = xdg_config / "hyprland-preview-share-picker/config.yaml"
 write_if_changed(
     picker_config,
-    """stylesheets: ["../omarchy/current/theme/hyprland-preview-share-picker.css"]
+    """stylesheets: ["../../.local/state/omarchy/current/theme/hyprland-preview-share-picker.css"]
 default_page: outputs
 
 window:

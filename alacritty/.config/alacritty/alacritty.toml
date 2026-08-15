@@ -39,5 +39,7 @@ decorations = "None"
 
 [keyboard]
 bindings = [
-{ key = "F11", action = "ToggleFullscreen" }
+{ key = "F11", action = "ToggleFullscreen" },
+# Send Shift+Return as CSI-u so TUIs can distinguish it from Return.
+{ key = "Return", mods = "Shift", chars = "\u001B[13;2u" },
 ]

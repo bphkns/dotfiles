@@ -4,7 +4,7 @@ set -euo pipefail
 dotfiles_dir="${DOTFILES_DIR:-$HOME/dotfiles}"
 nvim_package="$dotfiles_dir/nvim"
 nvim_config="$HOME/.config/nvim"
-theme_source="$HOME/.config/omarchy/current/theme/neovim.lua"
+theme_source="$HOME/.local/state/omarchy/current/theme/neovim.lua"
 theme_link="$nvim_config/lua/plugins/theme.lua"
 backup_root="$HOME/.config/dotfiles.omarchy-post-update.$(date +%Y%m%d-%H%M%S)"
 backed_up=0
