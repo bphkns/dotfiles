@@ -1,0 +1,21 @@
+bash/.bashrc
+  s_ce79e8cc1b7f8f::t_87acad0d0f0770 94-96
+zsh/.zshrc
+  s_ce79e8cc1b7f8f::t_87acad0d0f0770 146,211-213
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "9d519d24d41010e6ba32006699d6936a1cbfcfd8",
+  "prompts": {},
+  "sessions": {
+    "s_ce79e8cc1b7f8f": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_ff1a2d1c0ffe7PevxqUvzPAgcc",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
