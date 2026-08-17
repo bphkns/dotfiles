@@ -1,5 +1,21 @@
 # Omarchy Fixes
 
+The `omarchy/` directory is documentation and manually applied machine-specific
+fixes. It is intentionally excluded from GNU Stow by `install.sh`.
+
+## AMD ProArt P16 Suspend
+
+The ProArt P16 keeps the machine-local Limine parameter documented in the
+[AMD GPIO suspend gist](https://gist.github.com/bphkns/59d1d30b2acda9287ea6d62f7087e7dd):
+
+```text
+gpiolib_acpi.ignore_interrupt=AMDI0030:00@16
+```
+
+The optional `fan-suspend.service` and `/usr/local/bin/fan-suspend.sh` were
+removed because their ASUS hwmon writes failed. They are not portable dotfiles
+and must not be installed on the Intel laptop.
+
 ## Screenshare
 
 This records the Chrome/Chromium and Slack screenshare fix applied on Omarchy/Hyprland.
