@@ -143,7 +143,7 @@ export FZF_COMPLETION_OPTS="--bind 'tab:down,shift-tab:up'"
 # Vite+ bin (https://viteplus.dev)
 [[ -f "$HOME/.vite-plus/env" ]] && . "$HOME/.vite-plus/env"
 
-# Mise (cached activation + completions)
+# Mise (cached activation + completions; sourced after all PATH changes below)
 _mise_cache_dir="$_zsh_cache_dir"
 _mise_activate="$_mise_cache_dir/mise-activate.zsh"
 _mise_bin="$(command -v mise)"
@@ -151,7 +151,6 @@ if [[ -n "$_mise_bin" && (! -f "$_mise_activate" || "$_mise_bin" -nt "$_mise_act
     mkdir -p "$_mise_cache_dir"
     mise activate zsh > "$_mise_activate"
 fi
-[[ -f "$_mise_activate" ]] && source "$_mise_activate"
 
 # Starship prompt (cached)
 _starship_cache="$_mise_cache_dir/starship.zsh"
@@ -209,3 +208,6 @@ export PATH="/home/bikash/.git-ai/bin:$PATH"
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 export PATH=$PATH:$HOME/.local/opt/go/bin
+
+# Keep Mise-managed tools ahead of paths added by installers above.
+[[ -f "$_mise_activate" ]] && source "$_mise_activate"

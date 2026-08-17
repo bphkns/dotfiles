@@ -53,9 +53,6 @@ export FZF_ALT_C_OPTS="--preview 'eza --icons --group-directories-first {}'"
 # FZF keybindings (Ctrl-T, Ctrl-R, Alt-C)
 eval "$(fzf --bash)"
 
-# Mise (runtime manager)
-eval "$(mise activate bash)"
-
 # Starship prompt
 eval "$(starship init bash)"
 
@@ -94,3 +91,6 @@ export PATH="/home/bikash/.git-ai/bin:$PATH"
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+# Keep Mise-managed tools ahead of paths added by installers above.
+eval "$(mise activate bash)"
