@@ -1,0 +1,19 @@
+mise/.config/mise/config.toml
+  s_ff700803f36998::t_507ea8a3db236c 12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "d1b2675ad42759cc423f114714c49fcd5775d66b",
+  "prompts": {},
+  "sessions": {
+    "s_ff700803f36998": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_ffaecbeb7ffeBYJ16YNHREcE6Y",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

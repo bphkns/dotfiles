@@ -1,0 +1,39 @@
+hypr-bindings/.config/hypr/bindings.lua
+  s_ff700803f36998::t_643f2dd1e7efd3 1-11
+codex/.codex/config.toml
+  s_ff700803f36998::t_cb6443cdba755f 1,129
+README.md
+  s_ff700803f36998::t_cb6443cdba755f 44
+  s_ff700803f36998::t_3c5ce454f835e6 37-38,55,92-93,101-103
+alacritty/.config/alacritty/alacritty.toml
+  s_ff700803f36998::t_4d9b9a1739c3c3 42-44
+omarchy-shell/.config/omarchy/shell.toml
+  s_ff700803f36998::t_643f2dd1e7efd3 1-2
+omarchy-hooks/.config/omarchy/hooks/post-update
+  s_ff700803f36998::t_643f2dd1e7efd3 7
+install.sh
+  s_ff700803f36998::t_41a061b90c47ea 280,446,453,455-456
+  s_ff700803f36998::t_fb8b563227129d 33
+omarchy-shell/.config/omarchy/shell.json
+  s_ff700803f36998::t_643f2dd1e7efd3 1-66
+pi/.pi/agent/extensions/omarchy-system-theme.ts
+  s_ff700803f36998::t_643f2dd1e7efd3 5,13
+omarchy/fix-screenshare.sh
+  s_ff700803f36998::t_643f2dd1e7efd3 66
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "299c1fa3e48cc92e77a0a39e15685db3346c56a4",
+  "prompts": {},
+  "sessions": {
+    "s_ff700803f36998": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_ffaecbeb7ffeBYJ16YNHREcE6Y",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
