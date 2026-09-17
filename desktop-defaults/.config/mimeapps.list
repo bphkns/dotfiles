@@ -48,3 +48,5 @@ x-scheme-handler/mailto=chromium.desktop
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop
 x-scheme-handler/slack=slack.desktop
 x-scheme-handler/webcal=chromium.desktop
+x-scheme-handler/codex=chatgpt.desktop
+x-scheme-handler/t3code=t3code-url-handler.desktop

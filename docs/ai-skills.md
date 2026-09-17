@@ -19,6 +19,7 @@ under `~/.agents/skills`:
 - `to-issues`
 - `to-prd`
 - `write-a-skill`
+- `herdr-build-units` — lean Herdr/Pi/Claude delivery workflow; project checkpoints stay in their repositories
 - `zoom-out`
 - `plannotator-annotate`
 - `plannotator-last`

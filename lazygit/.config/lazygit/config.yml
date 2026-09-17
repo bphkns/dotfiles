@@ -2,9 +2,9 @@ gui:
   nerdFontsVersion: "3"
 git:
   skipHookPrefix: WIP
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --light --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+      command: delta --light --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
 os:
   edit: '[ -z "$NVIM" ] && (nvim -- {{filename}}) || (nvim --server $NVIM --remote-send ''<cmd>close<cr><cmd>EditFromLazygit {{filename}}<CR>'')'
   editAtLine: '[ -z "$NVIM" ] && (nvim +{{line}} -- {{filename}}) || nvim --server $NVIM --remote-send ''<cmd>close<CR><cmd>EditLineFromLazygit {{filename}} {{line}}<CR>'''

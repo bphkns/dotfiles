@@ -17,3 +17,14 @@ zls = "latest"
 "npm:agent-browser" = "latest"
 "npm:skills" = "latest"
 gh = "latest"
+claude = "latest"
+stripe = "latest"
+"npm:@opencode-ai/cli" = "next"
+"npm:command-code" = "latest"
+opencode = "latest"
+codex = "latest"
+"npm:playwright" = "latest"
+gemini = { version = "latest", allow_builds = ["@github/keytar", "node-pty"] }
+
+[settings.upgrade]
+auto_prune = false

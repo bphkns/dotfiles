@@ -2,7 +2,8 @@ model = "gpt-5.6-sol"
 model_reasoning_effort = "xhigh"
 personality = "pragmatic"
 project_doc_max_bytes = 65536
-service_tier = "fast"
+service_tier = "priority"
+approvals_reviewer = "user"
 
 [agents]
 max_depth = 1
@@ -17,6 +18,7 @@ shell_snapshot = true
 steer = true
 unified_exec = true
 use_linux_sandbox_bwrap = true
+js_repl = false
 
 [[hooks.PostToolUse]]
 
@@ -35,8 +37,6 @@ type = "command"
 [[hooks.Stop.hooks]]
 command = "/home/bikash/.git-ai/bin/git-ai checkpoint codex --hook-input stdin"
 type = "command"
-
-[hooks.state]
 
 [hooks.state."/home/bikash/.codex/config.toml:post_tool_use:0:0"]
 enabled = true
@@ -81,6 +81,28 @@ url = "https://ui.sh/mcp?agent=codex"
 [mcp_servers.uidotsh.tools.uidotsh_fetch]
 approval_mode = "approve"
 
+[mcp_servers.node_repl]
+args = []
+command = "/usr/lib/chatgpt/resources/cua_node/bin/node_repl"
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/usr/lib/chatgpt/resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/usr/lib/chatgpt/resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/home/bikash/.codex:/usr/lib/chatgpt/resources/cua_node/lib/node_modules"
+CODEX_HOME = "/home/bikash/.codex"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "9230e2bd8b24b7ac7a0ba6774c64bf0d78ecdabbdd91d0ed627b02a587bae2df"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.810.52044"
+CODEX_CLI_PATH = "/usr/lib/chatgpt/resources/codex"
+
+[mcp_servers.figma]
+url = "https://mcp.figma.com/mcp"
+
 [notice.model_migrations]
 "gpt-5.3-codex" = "gpt-5.4"
 "gpt-5.4" = "gpt-5.5"
@@ -124,6 +146,55 @@ trust_level = "trusted"
 [projects."/home/bikash/work/leapcomm"]
 trust_level = "trusted"
 
+[projects."/home/bikash/Documents/Codex/2026-08-19/realtime-voice-chat"]
+trust_level = "trusted"
+
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 "gpt-5.6-sol" = 4
+
+[marketplaces.openai-bundled]
+last_updated = "2026-08-20T04:02:40Z"
+source_type = "local"
+source = "/home/bikash/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+last_updated = "2026-08-20T02:39:29Z"
+source_type = "local"
+source = "/home/bikash/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[plugins."sites@openai-bundled"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."visualize@openai-bundled"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."template-creator@openai-primary-runtime"]
+enabled = true
+
+[plugins."chrome@openai-bundled"]
+enabled = true
+
+[shell_environment_policy.set]
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "9230e2bd8b24b7ac7a0ba6774c64bf0d78ecdabbdd91d0ed627b02a587bae2df"
+NODE_REPL_TRUSTED_CODE_PATHS = "/home/bikash/.codex:/usr/lib/chatgpt/resources/cua_node/lib/node_modules"
+
+[desktop]
+external-agent-import-sync-enabled = true
+followUpQueueMode = "queue"

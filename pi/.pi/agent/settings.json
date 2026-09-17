@@ -1,35 +1,48 @@
 {
-  "lastChangelogVersion": "0.82.1",
+  "lastChangelogVersion": "0.85.1",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-sol",
-  "defaultThinkingLevel": "max",
+  "defaultModel": "gpt-6-astra",
+  "defaultThinkingLevel": "xhigh",
   "collapseChangelog": true,
-  "enableInstallTelemetry": false,
+  "enableInstallTelemetry": true,
   "autocompleteMaxVisible": 8,
   "editorPaddingX": 1,
   "doubleEscapeAction": "tree",
   "shellCommandPrefix": "source ~/.pi/agent/shell.bash",
-  "npmCommand": [
-    "mise",
-    "exec",
-    "node@25",
-    "--",
-    "npm"
-  ],
+  "npmCommand": ["mise", "exec", "node@25", "--", "npm"],
   "packages": [
-    {
-      "source": "npm:@plannotator/pi-extension",
-      "skills": []
-    },
     "npm:pi-web-access",
     "npm:pi-lens",
-    "npm:pi-markdown-preview",
     "npm:@juicesharp/rpiv-ask-user-question",
     "npm:pi-powerline-footer",
     "npm:@sherif-fanous/pi-rtk",
     "npm:teach-me",
-    "npm:pi-claude-bridge"
+    "npm:@dietrichgebert/ponytail",
+    "npm:@ff-labs/pi-fff",
+    "npm:pi-context-view",
+    "npm:pi-mcp-adapter",
+    "npm:@narumitw/pi-btw",
+    "npm:@narumitw/pi-goal"
   ],
   "theme": "dark",
-  "hideThinkingBlock": true
+  "hideThinkingBlock": true,
+  "modelThinkingLevels": {
+    "openai-codex/gpt-5.6-sol": "xhigh"
+  },
+  "skills": ["+skills/zoom-out/SKILL.md"],
+  "images": {
+    "blockImages": true
+  },
+  "terminal": {
+    "showTerminalProgress": true,
+    "clearOnShrink": true
+  },
+  "markdown": {
+    "mermaid": "streaming"
+  },
+  "showCacheMissNotices": true,
+  "quietStartup": true,
+  "tuiMode": "fullscreen",
+  "fullscreenExitOutput": "resume-hint",
+  "fullscreenScrollbar": "auto"
 }

@@ -1,7 +1,19 @@
 {
-  "version": 3,
+  "version": 4,
   "lines": [
     [
+      {
+        "id": "m1",
+        "type": "model",
+        "color": "cyan",
+        "rawValue": true
+      },
+      {
+        "id": "e1",
+        "type": "thinking-effort",
+        "color": "magenta",
+        "rawValue": true
+      },
       {
         "id": "1",
         "type": "session-clock",
