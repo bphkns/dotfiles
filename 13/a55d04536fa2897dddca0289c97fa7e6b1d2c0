@@ -1,0 +1,27 @@
+local-bin/.local/bin/fix-audio-muffling
+  s_6eebe0fd739f95::t_91c565372fd5e4 2-16
+  s_6eebe0fd739f95::t_99b2dfdb12cfd8 1,17-36
+systemd/.config/systemd/user/bt-mic-watch.service
+  s_6eebe0fd739f95::t_91c565372fd5e4 1-10
+local-bin/.local/bin/bt-mic-watch
+  s_6eebe0fd739f95::t_91c565372fd5e4 1-14
+wireplumber/README.md
+  s_6eebe0fd739f95::t_93eaa905c2f2f0 1-2,4,10,12
+  s_6eebe0fd739f95::t_ae7555d4e4cacd 3,5-9,11,13-15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "13a55d04536fa2897dddca0289c97fa7e6b1d2c0",
+  "prompts": {},
+  "sessions": {
+    "s_6eebe0fd739f95": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "17136799-fb19-45a3-a5cc-d6b5ac830d72",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
