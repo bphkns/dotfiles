@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Logs Bluetooth profile changes and which apps hold a microphone. Read: journalctl --user -u bt-mic-watch
+set -uo pipefail
+last=""
+while true; do
+  prof=$(pactl list cards 2>/dev/null | awk '/Name: bluez_card/ { f = 1 } f && /Active Profile:/ { print $3; exit }')
+  holders=$(pactl list source-outputs 2>/dev/null | awk '/application.name|application.process.binary/ { sub(/.*= /, ""); gsub(/"/, ""); printf "%s ", $0 }')
+  cur="profile=${prof:-none} mic-holders=[${holders}]"
+  if [ "$cur" != "$last" ]; then
+    echo "$cur"
+    last=$cur
+  fi
+  sleep 2
+done

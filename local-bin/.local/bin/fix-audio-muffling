@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Muffled Bluetooth audio = device in HFP (phone-call) profile. Shows who holds the mic, forces A2DP back.
+set -euo pipefail
+
+cards=$(pactl list cards short | awk '$2 ~ /^bluez_card\./ { print $2 }')
+if [ -z "$cards" ]; then
+  echo "fix-audio-muffling: no Bluetooth audio device connected" >&2
+  exit 1
+fi
+
+holders=$(pactl list source-outputs | awk '/application.name/ { sub(/.*= /, ""); gsub(/"/, ""); print }' | sort -u)
+if [ -n "$holders" ]; then
+  echo "apps holding a microphone right now (these trigger HFP):"
+  printf '  %s\n' $holders
+  echo "close/mute the mic in them or A2DP will flip back to HFP."
+fi
+
+for card in $cards; do
+  active=$(pactl list cards | awk -v c="Name: $card" '$0 ~ c { f = 1 } f && /Active Profile:/ { print $3; exit }')
+  echo "$card: active profile is ${active:-unknown}"
+
+  if pactl set-card-profile "$card" a2dp-sink; then
+    echo "$card: switched to a2dp-sink"
+    continue
+  fi
+
+  addr=${card#bluez_card.}
+  addr=${addr//_/:}
+  echo "$card: profile switch failed, reconnecting $addr" >&2
+  bluetoothctl disconnect "$addr" >/dev/null || true
+  sleep 2
+  bluetoothctl connect "$addr" >/dev/null
+  sleep 3
+  pactl set-card-profile "$card" a2dp-sink
+  echo "$card: reconnected and switched to a2dp-sink"
+done

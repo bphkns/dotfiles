@@ -1,0 +1,10 @@
+[Unit]
+Description=Log Bluetooth audio profile changes and microphone holders
+After=pipewire-pulse.service
+
+[Service]
+ExecStart=%h/.local/bin/bt-mic-watch
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
