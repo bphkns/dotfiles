@@ -66,22 +66,22 @@ else
 	exit 1
 fi
 
-agent_arguments=(
-	--agent claude-code
+non_claude_agent_arguments=(
 	--agent codex
 	--agent gemini-cli
 	--agent github-copilot
 	--agent opencode
-	--agent pi
 )
+agent_arguments=(--agent claude-code "${non_claude_agent_arguments[@]}")
 
 install_all_from() {
 	local source="$1"
+	shift
 	log "installing skills from $source"
 	"${skills_command[@]}" add "$source" \
 		--global \
 		--skill '*' \
-		"${agent_arguments[@]}" \
+		"$@" \
 		--yes
 }
 
@@ -116,10 +116,15 @@ if ((install_upstream)); then
 		setup-matt-pocock-skills \
 		tdd \
 		triage
-	install_all_from gokapso/agent-skills
-	install_all_from nicobailon/visual-explainer
-	install_all_from cloudflare/skills
-	install_all_from pbakaus/impeccable
+	install_all_from gokapso/agent-skills "${agent_arguments[@]}"
+	install_all_from nicobailon/visual-explainer "${agent_arguments[@]}"
+	# Claude Code gets Cloudflare's skills and MCP server from its plugin.
+	install_all_from cloudflare/skills "${non_claude_agent_arguments[@]}"
+	if command -v claude >/dev/null 2>&1; then
+		log "installing the Cloudflare plugin for Claude Code"
+		claude plugin marketplace add cloudflare/skills
+		claude plugin install cloudflare@cloudflare
+	fi
 fi
 
 if ((fetch_ui)); then
@@ -153,13 +158,21 @@ if ((configure_mcp)) && command -v claude >/dev/null 2>&1; then
 	fi
 fi
 
+# Pi discovers ~/.agents/skills directly; targeting it in the Skills CLI also
+# copies skills to ~/.pi/agent/skills and causes name collisions.
 # Claude Code uses ~/.claude/skills. Other configured harnesses discover the
 # canonical ~/.agents/skills directory directly or are linked by the skills CLI.
 mkdir -p "$HOME/.claude/skills"
+cloudflare_plugin="$HOME/.claude/plugins/cache/cloudflare/cloudflare"
 for source in "$HOME/.agents/skills"/*; do
 	[[ -d $source || -L $source ]] || continue
 	name="${source##*/}"
 	target="$HOME/.claude/skills/$name"
+
+	# Claude Code already has this skill from the Cloudflare plugin.
+	if compgen -G "$cloudflare_plugin/*/skills/$name" >/dev/null; then
+		continue
+	fi
 
 	if [[ -L $target && ! -e $target ]]; then
 		rm -- "$target"
@@ -205,4 +218,5 @@ for directory in "$HOME/.agents/skills"/*; do
 done
 
 ((missing == 0)) || exit 1
+python3 "$DOTFILES_DIR/pi/patch-rpiv-manifests.py"
 log "setup complete"

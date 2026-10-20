@@ -10,6 +10,7 @@ Follow these defaults in every Codex session.
 - Always use the question tool when asking the user a question; do not ask free-text questions unless the tool is unavailable.
 - Keep secrets out of committed files; use environment variable names/placeholders only.
 - Prefer stowed dotfile changes over live-only config edits.
+- When interacting with Cloudflare, use the cf CLI unless the project has a Wrangler configuration file.
 - Treat `~/.config/opencode/instructions/global.md` as the canonical extended style guide when present.
 
 ## Coding Rules

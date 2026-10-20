@@ -14,7 +14,6 @@
     "ask": [],
     "defaultMode": "bypassPermissions"
   },
-  "model": "claude-fable-5-1[1m]",
   "hooks": {
     "PostToolUse": [
       {
@@ -60,7 +59,10 @@
     "frontend-design@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "plugin-dev@claude-plugins-official": true
+    "plugin-dev@claude-plugins-official": true,
+    "cc-plugin-you-should-know@builtin": true,
+    "slack@claude-plugins-official": true,
+    "cloudflare@cloudflare": true
   },
   "extraKnownMarketplaces": {
     "plannotator": {
@@ -68,13 +70,28 @@
         "source": "github",
         "repo": "backnotprop/plannotator"
       }
+    },
+    "design-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "0xdesign/design-plugin"
+      }
+    },
+    "cloudflare": {
+      "source": {
+        "source": "github",
+        "repo": "cloudflare/skills"
+      }
     }
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
   "modelSettings": {
     "claude-fable-5-1": {
-      "effortLevel": "high"
+      "effortLevel": "xhigh"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
     }
   },
   "autoUpdatesChannel": "latest",

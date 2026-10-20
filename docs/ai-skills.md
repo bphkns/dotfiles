@@ -47,10 +47,15 @@ under
 - `nicobailon/visual-explainer` — visual explanations
 - `cloudflare/skills` — Cloudflare, Workers, Wrangler, Durable Objects, and
   related platform skills
-- `pbakaus/impeccable` — interface design and review
 
-The installer targets Claude Code, Codex, Gemini CLI, GitHub Copilot, OpenCode,
-and Pi.
+The installer targets Claude Code, Codex, Gemini CLI, GitHub Copilot, and
+OpenCode. Pi discovers `~/.agents/skills` directly; installing a second copy in
+`~/.pi/agent/skills` causes skill name collisions.
+
+Claude Code gets `cloudflare/skills` from the `cloudflare@cloudflare` plugin
+instead, which also adds the Cloudflare MCP server. The installer adds that
+plugin and does not link those skills into `~/.claude/skills`, so they are not
+listed twice.
 
 ## Licensed ui.sh skills
 
@@ -78,6 +83,8 @@ user-scoped MCP entry for Claude Code without committing `~/.claude.json`.
 
 ## Pi package skills
 
-Pi's tracked settings install package-provided capabilities separately,
-including Pi Lens, web research/Librarian, Teach Me, Literature Review,
-Plannotator, Markdown preview, and the Claude bridge.
+Pi's tracked settings install package-provided capabilities separately.
+`setup-ai-skills.sh` patches the installed `rpiv-ask-user-question` and
+`rpiv-config` manifests to declare Pi's host-provided `typebox` as a peer until
+upstream fixes them. After `pi update`, rerun
+`python3 ~/dotfiles/pi/patch-rpiv-manifests.py` if the warning returns.

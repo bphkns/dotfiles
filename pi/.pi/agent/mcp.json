@@ -1,32 +1,7 @@
 {
   "mcpServers": {
-    "leapcast-dev": {
-      "url": "https://dev-mcp.leapcast.ai/mcp",
-      "auth": "oauth",
-      "oauth": {
-        "clientName": "pi coding agent"
-      },
-      "lifecycle": "lazy",
-      "searchKeywords": {
-        "*": [
-          "leapcast",
-          "meeting"
-        ]
-      }
-    },
-    "leapcast-prod": {
-      "url": "https://mcp.leapcast.ai/mcp",
-      "auth": "oauth",
-      "oauth": {
-        "clientName": "pi coding agent"
-      },
-      "lifecycle": "lazy",
-      "searchKeywords": {
-        "*": [
-          "leapcast",
-          "meeting"
-        ]
-      }
+    "cloudflare": {
+      "url": "https://mcp.cloudflare.com/mcp"
     }
   }
 }
