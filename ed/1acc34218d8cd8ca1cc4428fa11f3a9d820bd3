@@ -1,0 +1,44 @@
+docs/ai-skills.md
+  s_a62c921e266ece::t_d852ce3e0cd1e8 55-58
+  s_f1ef8006e0aaf7::t_95e89467ea66de 86-90
+  s_f1ef8006e0aaf7::t_2615f9f52cf964 51-53
+  s_a62c921e266ece::t_fd403f3a032e58 54
+opencode/.config/opencode/instructions/global.md
+  s_a62c921e266ece::t_106cb65a4450e3 6
+  s_a62c921e266ece::t_a64ff80310ebd8 5
+  s_a62c921e266ece::t_4b2c991c3bb90d 21-23
+setup-ai-skills.sh
+  s_f1ef8006e0aaf7::t_5db0dddd4c43bf 161-162
+  s_f1ef8006e0aaf7::t_f63d3511e02195 221
+  s_a62c921e266ece::t_0a663a1228fe4f 69,75,79,84,119-127,166,172-176
+codex/.codex/AGENTS.md
+  s_a62c921e266ece::t_27bd36cd947701 13
+claude/.claude/settings.json
+  s_a62c921e266ece::t_f10f4400f38c6c 62-65,73-84,91-94
+pi/.pi/agent/mcp.json
+  s_a62c921e266ece::t_04aaa3cbf09e18 3-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ed1acc34218d8cd8ca1cc4428fa11f3a9d820bd3",
+  "prompts": {},
+  "sessions": {
+    "s_a62c921e266ece": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "200dc87e-2132-47dc-adb1-42efe2937896",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_f1ef8006e0aaf7": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a0f0f8-7b29-73a8-8a04-aae71d03bd10",
+        "model": "gpt-6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
