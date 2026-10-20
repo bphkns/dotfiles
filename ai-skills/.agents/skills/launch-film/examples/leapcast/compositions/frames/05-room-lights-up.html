@@ -1,0 +1,415 @@
+<template>
+  <div
+    id="root"
+    data-composition-id="05-room-lights-up"
+    data-width="1920"
+    data-height="1080"
+    data-duration="3.87"
+  >
+    <style>
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/InterVariable.woff2") format("woff2");
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/InterVariable-Italic.woff2") format("woff2");
+        font-weight: 100 900;
+        font-style: italic;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Schibsted Grotesk";
+        src: url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2");
+        font-weight: 400 900;
+        font-style: normal;
+        font-display: block;
+      }
+
+      #root {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        container-type: size;
+        isolation: isolate;
+        color: #f4f4f5;
+        font-family: "Inter", sans-serif;
+      }
+
+      /* full-bleed ground on its own clip layer (never on #root) */
+      .\30 5-room-lights-up-ground {
+        position: absolute;
+        inset: 0;
+        background: #0c0b0e;
+        z-index: 0;
+      }
+
+      /* ── the room world: hero_img_1 in source px, one uniform transform ── */
+      .\30 5-room-lights-up-world {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 3020px;
+        height: 1646px;
+        transform-origin: 0 0;
+        will-change: transform;
+        z-index: 1;
+      }
+      .\30 5-room-lights-up-room {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 3020px;
+        height: 1646px;
+        display: block;
+      }
+      /* hides the real "Notes · Off" pill (source 2210–2875 × 14–75) */
+      .\30 5-room-lights-up-patch {
+        position: absolute;
+        left: 2210px;
+        top: 14px;
+        width: 665px;
+        height: 61px;
+        background: #0c0b0e;
+      }
+      /* dims the chat-panel body (inside its 1px border: source 2252–2987,
+         from the header divider at 219 down, full 60% to 640, 0 by 700) so
+         the thread recedes behind the 2.2× pill stack; the border stays */
+      .\30 5-room-lights-up-stackdim {
+        position: absolute;
+        left: 2252px;
+        top: 219px;
+        width: 735px;
+        height: 481px;
+        background: linear-gradient(
+          to bottom,
+          rgba(12, 11, 14, 0.6) 0px,
+          rgba(12, 11, 14, 0.6) 421px,
+          rgba(12, 11, 14, 0) 481px
+        );
+      }
+      /* canvas scrim behind the headline: at cam(1.0,2040,540) it covers
+         output x 0–1170, y 0–300 (source x 1080–2250); full 0.85 at the top,
+         0 by y 300, feathered out on the right from output x 1110 to 1170
+         so it stops short of the chat panel (border x 1172) and the whole
+         tab row stays at full brightness */
+      .\30 5-room-lights-up-scrim {
+        position: absolute;
+        left: -300px;
+        top: 0;
+        width: 2550px;
+        height: 300px;
+        background: linear-gradient(
+          to bottom,
+          rgba(12, 11, 14, 0.85) 0px,
+          rgba(12, 11, 14, 0.85) 210px,
+          rgba(12, 11, 14, 0.62) 250px,
+          rgba(12, 11, 14, 0.24) 280px,
+          rgba(12, 11, 14, 0) 300px
+        );
+        -webkit-mask-image: linear-gradient(to right, #000 0px, #000 2490px, transparent 2550px);
+        mask-image: linear-gradient(to right, #000 0px, #000 2490px, transparent 2550px);
+      }
+      /* top-bar signature: world (1176,24) = output (96,24) at cam(1.0) */
+      .\30 5-room-lights-up-sig {
+        position: absolute;
+        left: 1176px;
+        top: 24px;
+        width: 200px;
+        height: 65.143px;
+      }
+      .\30 5-room-lights-up-sig svg {
+        display: block;
+        width: 200px;
+        height: 65.143px;
+        fill: #c96442;
+      }
+
+      /* ── knockout wordmark: canvas with letter-shaped windows ── */
+      .\30 5-room-lights-up-knockout {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        z-index: 2;
+      }
+
+      /* ── headline (line-masked rise) ── */
+      /* 70px so the ink ends ≥ 48 px left of the chat panel hairline (x 1170):
+         ink x 98–1115; baseline y 209 (top 141 keeps the 72px baseline) */
+      .\30 5-room-lights-up-line {
+        position: absolute;
+        left: 96px;
+        top: 141px;
+        height: 88px;
+        overflow: hidden;
+        z-index: 3;
+      }
+      .\30 5-room-lights-up-line-inner {
+        display: block;
+        font-family: "Schibsted Grotesk", "Inter", sans-serif;
+        font-weight: 600;
+        font-size: 70px;
+        line-height: 88px;
+        letter-spacing: -0.022em;
+        color: #f4f4f5;
+        white-space: nowrap;
+      }
+
+      /* ── capture pills: vector rebuilds at 1× (hero_img_1 source px),
+            pixel-matched to meeting-avatars-recording.png at k = 47/56 ── */
+      .\30 5-room-lights-up-pill {
+        position: absolute;
+        top: 21px;
+        height: 47px;
+        box-sizing: border-box;
+        border-radius: 9999px;
+        background: #202124;
+        transform-origin: 100% 50%;
+        box-shadow: 0px 10px 34px 14px rgba(6, 5, 8, 0.8);
+        z-index: 4;
+      }
+      .\30 5-room-lights-up-pill-rec {
+        background: #1f1414;
+        border: 1.5px solid #5e2e2a;
+      }
+      .\30 5-room-lights-up-lbl {
+        position: absolute;
+        top: -0.5px;
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        font-size: 20.5px;
+        line-height: 47px;
+        letter-spacing: 0;
+        color: #f4f4f5;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+      }
+      .\30 5-room-lights-up-pill-rec .\30 5-room-lights-up-lbl {
+        top: -2px;
+        color: #d45d52;
+      }
+      .\30 5-room-lights-up-dot {
+        position: absolute;
+        top: 19px;
+        width: 9px;
+        height: 9px;
+        margin-left: -4.5px;
+        border-radius: 50%;
+        background: #4fc660;
+      }
+      .\30 5-room-lights-up-pill-rec .\30 5-room-lights-up-dot {
+        top: 17.5px;
+        background: #b55148;
+      }
+      /* the real notebook icon, CSS-cropped from meeting-avatars-recording.png
+         (source 1300–1334 × 35–69) and scaled with its pill */
+      .\30 5-room-lights-up-icon {
+        position: absolute;
+        left: 18.6px;
+        top: 9.2px;
+        width: 28.54px;
+        height: 28.54px;
+        overflow: hidden;
+      }
+      .\30 5-room-lights-up-icon img {
+        position: absolute;
+        left: -1091.1px;
+        top: -29.38px;
+        width: 1839.8px;
+        height: 1373.1px;
+        display: block;
+        max-width: none;
+      }
+    </style>
+
+    <!-- L0 ground -->
+    <div id="05-room-lights-up-ground" class="clip 05-room-lights-up-ground" data-start="0" data-duration="3.87" data-track-index="0"></div>
+
+    <!-- L1 the room world (camera = this wrapper's one transform) -->
+    <div id="05-room-lights-up-world" class="05-room-lights-up-world" data-layout-allow-overflow>
+      <img class="05-room-lights-up-room" src="assets/hero_img_1_dark.webp" alt="" />
+      <div id="05-room-lights-up-patch" class="05-room-lights-up-patch"></div>
+      <div id="05-room-lights-up-stackdim" class="05-room-lights-up-stackdim"></div>
+      <div id="05-room-lights-up-scrim" class="05-room-lights-up-scrim" data-layout-allow-overflow></div>
+      <div id="05-room-lights-up-sig" class="05-room-lights-up-sig">
+        <svg viewBox="0 0 175 57" xmlns="http://www.w3.org/2000/svg" aria-label="leapcast beta">
+              <path d="M2.86769 41.125H8.92619L14.9039 7.19745H8.84541L2.86769 41.125Z" />
+              <path d="M25.8884 41.125L26.9386 35.0665H18.4566L18.9009 32.6431H27.3828L31.2199 10.8325H16.6795L11.348 41.125H25.8884ZM24.0709 16.891L22.3745 26.5846H19.9511L21.6475 16.891H24.0709Z" />
+              <path d="M33.6401 10.8325L32.5496 16.891H41.0315L40.6276 19.3144H32.1457L28.3087 41.125H42.8491L48.1805 10.8325H33.6401ZM35.4173 35.0665L37.1137 25.3729H39.5371L37.8407 35.0665H35.4173Z" />
+              <path d="M51.3278 41.125H59.8097L65.1412 10.8325H50.6008L44.6231 44.7601H50.6816L51.3278 41.125ZM55.5687 16.891H57.9921L54.8013 35.0665H52.3779L55.5687 16.891Z" />
+              <path d="M69.3386 35.0665L72.5294 16.891H74.9528L73.7007 24.1612H79.7592L82.1018 10.8325H67.5614L62.2299 41.125H76.7703L79.3149 26.5443H73.2564L71.762 35.0665H69.3386Z" />
+              <path d="M84.5221 10.8325L83.4315 16.891H91.9134L91.5095 19.3144H83.0276L79.1906 41.125H93.731L99.0625 10.8325H84.5221ZM86.2992 35.0665L87.9956 25.3729H90.419L88.7226 35.0665H86.2992Z" />
+              <path d="M116.023 10.8325H101.483L98.2515 29.008H106.733L105.683 35.0665H103.26L103.906 31.4314H97.8476L96.1512 41.125H110.692L113.882 22.9495H105.401L106.451 16.891H108.874L108.268 20.5261H114.327L116.023 10.8325Z" />
+              <path d="M120.221 35.0665L123.411 16.891H131.893L132.984 10.8325H124.502L125.148 7.19745H119.09L113.112 41.125H127.652L131.489 19.2741H125.431L122.644 35.0665H120.221Z" />
+              <path d="M140.141 40.2529C139.528 40.2529 138.991 40.1216 138.532 39.8589C138.083 39.5962 137.733 39.2295 137.481 38.7588L137.432 40.0559H135.084V28.3982H137.547V32.503C137.776 32.098 138.116 31.7587 138.565 31.4851C139.013 31.2005 139.539 31.0582 140.141 31.0582C140.885 31.0582 141.531 31.2497 142.078 31.6328C142.626 32.005 143.047 32.5359 143.343 33.2255C143.649 33.9151 143.802 34.7251 143.802 35.6555C143.802 36.586 143.649 37.396 143.343 38.0856C143.047 38.7752 142.626 39.3116 142.078 39.6947C141.531 40.0669 140.885 40.2529 140.141 40.2529ZM139.451 38.3647C139.999 38.3647 140.436 38.1294 140.765 37.6587C141.104 37.1771 141.274 36.5093 141.274 35.6555C141.274 34.8017 141.11 34.1395 140.781 33.6688C140.453 33.1872 140.015 32.9464 139.468 32.9464C139.063 32.9464 138.712 33.0558 138.417 33.2748C138.132 33.4827 137.913 33.7892 137.76 34.1942C137.618 34.5992 137.547 35.0863 137.547 35.6555C137.547 36.2138 137.618 36.6954 137.76 37.1004C137.913 37.5054 138.132 37.8174 138.417 38.0363C138.712 38.2553 139.057 38.3647 139.451 38.3647ZM148.466 40.2529C147.568 40.2529 146.786 40.0669 146.118 39.6947C145.461 39.3116 144.947 38.7752 144.574 38.0856C144.213 37.396 144.033 36.586 144.033 35.6555C144.033 34.7251 144.213 33.9206 144.574 33.2419C144.947 32.5523 145.461 32.0159 146.118 31.6328C146.775 31.2497 147.552 31.0582 148.449 31.0582C149.325 31.0582 150.086 31.2497 150.732 31.6328C151.377 32.0159 151.875 32.5633 152.226 33.2748C152.587 33.9863 152.768 34.8346 152.768 35.8197V36.3123H146.578C146.61 37.0129 146.796 37.5328 147.136 37.8721C147.486 38.2115 147.946 38.3811 148.515 38.3811C148.931 38.3811 149.276 38.2936 149.549 38.1184C149.834 37.9433 150.037 37.6751 150.157 37.3139L152.636 37.4617C152.406 38.3374 151.919 39.0215 151.175 39.5141C150.431 40.0067 149.528 40.2529 148.466 40.2529ZM146.578 34.8017H150.239C150.206 34.1559 150.026 33.6743 149.697 33.3568C149.38 33.0394 148.964 32.8807 148.449 32.8807C147.935 32.8807 147.508 33.0504 147.169 33.3897C146.84 33.7181 146.643 34.1888 146.578 34.8017ZM156.841 40.0559C155.933 40.0559 155.265 39.8479 154.838 39.432C154.411 39.0051 154.198 38.3319 154.198 37.4124V29.1864H156.661V37.1169C156.661 37.5438 156.748 37.8338 156.923 37.9871C157.109 38.1403 157.383 38.217 157.744 38.217H158.976V40.0559H156.841ZM152.786 33.0941V31.2552H158.976V33.0941H152.786ZM162.169 40.2529C161.261 40.2529 160.516 40.045 159.936 39.629C159.367 39.2021 159.082 38.611 159.082 37.8557C159.082 37.0785 159.323 36.482 159.805 36.066C160.298 35.6391 161.02 35.3272 161.972 35.1301L164.813 34.5719C164.813 34.0027 164.681 33.5758 164.419 33.2912C164.167 32.9956 163.8 32.8479 163.319 32.8479C162.848 32.8479 162.481 32.9573 162.219 33.1762C161.956 33.3842 161.786 33.6962 161.71 34.1121L159.23 33.9972C159.394 33.0339 159.827 32.306 160.527 31.8134C161.239 31.3099 162.169 31.0582 163.319 31.0582C164.632 31.0582 165.617 31.3701 166.274 31.994C166.942 32.618 167.276 33.532 167.276 34.7361V37.7408C167.276 37.9926 167.314 38.1622 167.391 38.2498C167.478 38.3264 167.604 38.3647 167.768 38.3647H168.015V40.0559C167.938 40.0778 167.812 40.0997 167.637 40.1216C167.473 40.1435 167.309 40.1544 167.144 40.1544C166.794 40.1544 166.466 40.0942 166.159 39.9738C165.864 39.8534 165.623 39.6509 165.437 39.3663C165.251 39.0708 165.158 38.6548 165.158 38.1184L165.371 38.2826C165.262 38.6767 165.065 39.0215 164.78 39.317C164.506 39.6126 164.145 39.8425 163.696 40.0067C163.258 40.1708 162.749 40.2529 162.169 40.2529ZM162.76 38.5618C163.165 38.5618 163.521 38.4851 163.828 38.3319C164.134 38.1677 164.375 37.9324 164.55 37.6259C164.725 37.3194 164.813 36.9581 164.813 36.5422V36.1153L162.81 36.5422C162.416 36.6188 162.115 36.7502 161.907 36.9362C161.71 37.1114 161.611 37.3413 161.611 37.6259C161.611 37.9214 161.71 38.1513 161.907 38.3155C162.104 38.4797 162.388 38.5618 162.76 38.5618Z" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- L2 knockout wordmark: canvas with letter-shaped windows onto the room.
+         The canvas is a screen-fixed rect (one soft terracotta light centred on
+         the wordmark) shown through a mask = big rect minus the letters; only
+         the mask geometry and the letter edge (4px stroke + 8% veil) scale
+         about (986, 594). -->
+    <svg id="05-room-lights-up-knockout" class="05-room-lights-up-knockout" viewBox="0 0 1920 1080" width="1920" height="1080"
+      xmlns="http://www.w3.org/2000/svg" aria-label="leapcast" data-layout-allow-overflow>
+      <defs>
+        <radialGradient id="05-room-lights-up-bloom" gradientUnits="userSpaceOnUse" cx="960" cy="454" r="1150"
+          gradientTransform="translate(960 454) scale(1 0.55) translate(-960 -454)">
+          <stop offset="0" stop-color="#22110f" />
+          <stop offset="0.45" stop-color="#170e0e" />
+          <stop offset="0.78" stop-color="#0c0b0e" />
+        </radialGradient>
+        <mask id="05-room-lights-up-cutout" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+          <g id="05-room-lights-up-mask-push" transform="matrix(1 0 0 1 0 0)">
+            <!-- wordmark units: x 2.64–133.2, y 7.2–44.9 → box x 210–1710, y 237.5–670.5 -->
+            <g transform="translate(210 237.5) scale(11.49) translate(-2.64 -7.2)">
+              <path fill="#ffffff" fill-rule="evenodd" d="M-300 -300H450V350H-300Z M2.86769 41.125H8.92619L14.9039 7.19745H8.84541L2.86769 41.125Z M25.8884 41.125L26.9386 35.0665H18.4566L18.9009 32.6431H27.3828L31.2199 10.8325H16.6795L11.348 41.125H25.8884ZM24.0709 16.891L22.3745 26.5846H19.9511L21.6475 16.891H24.0709Z M33.6401 10.8325L32.5496 16.891H41.0315L40.6276 19.3144H32.1457L28.3087 41.125H42.8491L48.1805 10.8325H33.6401ZM35.4173 35.0665L37.1137 25.3729H39.5371L37.8407 35.0665H35.4173Z M51.3278 41.125H59.8097L65.1412 10.8325H50.6008L44.6231 44.7601H50.6816L51.3278 41.125ZM55.5687 16.891H57.9921L54.8013 35.0665H52.3779L55.5687 16.891Z M69.3386 35.0665L72.5294 16.891H74.9528L73.7007 24.1612H79.7592L82.1018 10.8325H67.5614L62.2299 41.125H76.7703L79.3149 26.5443H73.2564L71.762 35.0665H69.3386Z M84.5221 10.8325L83.4315 16.891H91.9134L91.5095 19.3144H83.0276L79.1906 41.125H93.731L99.0625 10.8325H84.5221ZM86.2992 35.0665L87.9956 25.3729H90.419L88.7226 35.0665H86.2992Z M116.023 10.8325H101.483L98.2515 29.008H106.733L105.683 35.0665H103.26L103.906 31.4314H97.8476L96.1512 41.125H110.692L113.882 22.9495H105.401L106.451 16.891H108.874L108.268 20.5261H114.327L116.023 10.8325Z M120.221 35.0665L123.411 16.891H131.893L132.984 10.8325H124.502L125.148 7.19745H119.09L113.112 41.125H127.652L131.489 19.2741H125.431L122.644 35.0665H120.221Z" />
+            </g>
+          </g>
+        </mask>
+      </defs>
+      <rect x="0" y="0" width="1920" height="1080" fill="url(#05-room-lights-up-bloom)" mask="url(#05-room-lights-up-cutout)" />
+      <g id="05-room-lights-up-stroke-push" transform="matrix(1 0 0 1 0 0)">
+        <g transform="translate(210 237.5) scale(11.49) translate(-2.64 -7.2)">
+          <!-- 8% veil inside the letters so the dark chat panel in "ast" still
+               reads as a filled letter against the canvas -->
+          <path id="05-room-lights-up-veil" fill="#f4f4f5" fill-opacity="0.08" fill-rule="evenodd" d="M2.86769 41.125H8.92619L14.9039 7.19745H8.84541L2.86769 41.125Z M25.8884 41.125L26.9386 35.0665H18.4566L18.9009 32.6431H27.3828L31.2199 10.8325H16.6795L11.348 41.125H25.8884ZM24.0709 16.891L22.3745 26.5846H19.9511L21.6475 16.891H24.0709Z M33.6401 10.8325L32.5496 16.891H41.0315L40.6276 19.3144H32.1457L28.3087 41.125H42.8491L48.1805 10.8325H33.6401ZM35.4173 35.0665L37.1137 25.3729H39.5371L37.8407 35.0665H35.4173Z M51.3278 41.125H59.8097L65.1412 10.8325H50.6008L44.6231 44.7601H50.6816L51.3278 41.125ZM55.5687 16.891H57.9921L54.8013 35.0665H52.3779L55.5687 16.891Z M69.3386 35.0665L72.5294 16.891H74.9528L73.7007 24.1612H79.7592L82.1018 10.8325H67.5614L62.2299 41.125H76.7703L79.3149 26.5443H73.2564L71.762 35.0665H69.3386Z M84.5221 10.8325L83.4315 16.891H91.9134L91.5095 19.3144H83.0276L79.1906 41.125H93.731L99.0625 10.8325H84.5221ZM86.2992 35.0665L87.9956 25.3729H90.419L88.7226 35.0665H86.2992Z M116.023 10.8325H101.483L98.2515 29.008H106.733L105.683 35.0665H103.26L103.906 31.4314H97.8476L96.1512 41.125H110.692L113.882 22.9495H105.401L106.451 16.891H108.874L108.268 20.5261H114.327L116.023 10.8325Z M120.221 35.0665L123.411 16.891H131.893L132.984 10.8325H124.502L125.148 7.19745H119.09L113.112 41.125H127.652L131.489 19.2741H125.431L122.644 35.0665H120.221Z" />
+          <path id="05-room-lights-up-stroke" fill="none" stroke="#c96442" stroke-width="4" stroke-opacity="1" stroke-linejoin="miter"
+            vector-effect="non-scaling-stroke" d="M2.86769 41.125H8.92619L14.9039 7.19745H8.84541L2.86769 41.125Z M25.8884 41.125L26.9386 35.0665H18.4566L18.9009 32.6431H27.3828L31.2199 10.8325H16.6795L11.348 41.125H25.8884ZM24.0709 16.891L22.3745 26.5846H19.9511L21.6475 16.891H24.0709Z M33.6401 10.8325L32.5496 16.891H41.0315L40.6276 19.3144H32.1457L28.3087 41.125H42.8491L48.1805 10.8325H33.6401ZM35.4173 35.0665L37.1137 25.3729H39.5371L37.8407 35.0665H35.4173Z M51.3278 41.125H59.8097L65.1412 10.8325H50.6008L44.6231 44.7601H50.6816L51.3278 41.125ZM55.5687 16.891H57.9921L54.8013 35.0665H52.3779L55.5687 16.891Z M69.3386 35.0665L72.5294 16.891H74.9528L73.7007 24.1612H79.7592L82.1018 10.8325H67.5614L62.2299 41.125H76.7703L79.3149 26.5443H73.2564L71.762 35.0665H69.3386Z M84.5221 10.8325L83.4315 16.891H91.9134L91.5095 19.3144H83.0276L79.1906 41.125H93.731L99.0625 10.8325H84.5221ZM86.2992 35.0665L87.9956 25.3729H90.419L88.7226 35.0665H86.2992Z M116.023 10.8325H101.483L98.2515 29.008H106.733L105.683 35.0665H103.26L103.906 31.4314H97.8476L96.1512 41.125H110.692L113.882 22.9495H105.401L106.451 16.891H108.874L108.268 20.5261H114.327L116.023 10.8325Z M120.221 35.0665L123.411 16.891H131.893L132.984 10.8325H124.502L125.148 7.19745H119.09L113.112 41.125H127.652L131.489 19.2741H125.431L122.644 35.0665H120.221Z" />
+        </g>
+      </g>
+    </svg>
+
+    <!-- L3 headline -->
+    <div class="05-room-lights-up-line">
+      <span id="05-room-lights-up-headline" class="05-room-lights-up-line-inner" data-layout-allow-overflow>This time, the room remembers.</span>
+    </div>
+
+    <!-- L4 capture pills, laid out at their 1× top-bar slots -->
+    <div id="05-room-lights-up-pill-notes" class="05-room-lights-up-pill" style="left: 1148px; width: 185px">
+      <span class="05-room-lights-up-icon" data-layout-allow-overflow><img src="assets/meeting-avatars-recording.png" alt="" data-layout-allow-overflow /></span>
+      <span class="05-room-lights-up-lbl" style="left: 54.1px">Notes</span>
+      <span class="05-room-lights-up-dot" style="left: 126.9px"></span>
+      <span class="05-room-lights-up-lbl" style="left: 138.5px">On</span>
+    </div>
+    <div id="05-room-lights-up-pill-transcribing" class="05-room-lights-up-pill" style="left: 1356px; width: 185px">
+      <span class="05-room-lights-up-dot" style="left: 26.2px"></span>
+      <span class="05-room-lights-up-lbl" style="left: 41.7px">Transcribing</span>
+    </div>
+    <div id="05-room-lights-up-pill-recording" class="05-room-lights-up-pill 05-room-lights-up-pill-rec" style="left: 1564px; width: 221px">
+      <span class="05-room-lights-up-dot" style="left: 25.9px"></span>
+      <span class="05-room-lights-up-lbl" style="left: 40.2px">Recording · 0:22</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        "use strict";
+        var ID = "05-room-lights-up";
+        var el = function (name) {
+          return document.getElementById(ID + "-" + name);
+        };
+        var world = el("world");
+        var knockout = el("knockout");
+        var pushGroups = [el("mask-push"), el("stroke-push")];
+        var letterEdge = [el("veil"), el("stroke")];
+        var pills = [
+          { node: el("pill-notes"), x: 491, y: 257, at: 1.94 },
+          { node: el("pill-transcribing"), x: 283, y: 384, at: 2.43 },
+          { node: el("pill-recording"), x: 39, y: 511, at: 2.91 },
+        ];
+        var tl = gsap.timeline({ paused: true });
+        window.__timelines = window.__timelines || {};
+        window.__timelines[ID] = tl;
+        if (!world || !knockout) return;
+
+        // Camera: one proxy u (0→1) drives the room world from cam(0.5, 1510, 940)
+        // to cam(1.0, 2040, 540) in ONE continuous move 0.97–1.94 (power2.inOut:
+        // the rush accelerates, peaks at the mask removal 1.46, lands on bar 9).
+        // S interpolates in log space; the centre lags the zoom (cx ~ u², cy ~ u^1.5)
+        // so the room already covers the frame at 1.46 (cam(0.715, 1651, 792))
+        // and keeps covering it to the lock.
+        // cam(S,cx,cy) → world translate(960 − cx·S, 540 − cy·S) scale(S), origin 0 0
+        var camWrite = function (u) {
+          var s = Math.exp(Math.log(0.5) * (1 - u));
+          var x = 960 - (1510 + 530 * u * u) * s;
+          var y = 540 - (940 - 400 * Math.pow(u, 1.5)) * s;
+          world.style.transform = "translate(" + x.toFixed(3) + "px, " + y.toFixed(3) + "px) scale(" + s.toFixed(5) + ")";
+        };
+        var cam = { u: 0 };
+        camWrite(0);
+        var camUpdate = function () {
+          camWrite(cam.u);
+        };
+        tl.fromTo(cam, { u: 0 }, { u: 1, duration: 0.97, ease: "power2.inOut", onUpdate: camUpdate }, 0.97);
+
+        // scale s about (986, 594), the centre of the "c"'s bottom arm, as one
+        // matrix(s 0 0 s 986(1−s) 594(1−s)); linear in s, so one ease is exact
+        var push = function (s) {
+          return "matrix(" + s + " 0 0 " + s + " " + (986 * (1 - s)).toFixed(3) + " " + (594 * (1 - s)).toFixed(3) + ")";
+        };
+        // Scene 1 (0.00–0.97): the name holds; the mask pushes gently
+        tl.fromTo(pushGroups, { attr: { transform: push(1) } }, { attr: { transform: push(1.05) }, duration: 0.97, ease: "power2.out" }, 0);
+        // Scene 2 (0.97–1.46): rush-through; the letter edge (stroke + veil) fades
+        tl.to(pushGroups, { attr: { transform: push(20) }, duration: 0.49, ease: "power3.in" }, 0.97);
+        tl.fromTo(letterEdge, { opacity: 1 }, { opacity: 0, duration: 0.15, ease: "power1.in" }, 0.97);
+        tl.set(knockout, { autoAlpha: 0 }, 1.46);
+
+        // Scene 3 (1.46–1.94): pill patch on; scrim and signature fade up
+        tl.fromTo(el("patch"), { opacity: 0 }, { opacity: 1, duration: 0.001, ease: "none" }, 1.46);
+        tl.fromTo(el("scrim"), { opacity: 0 }, { opacity: 1, duration: 0.24, ease: "power2.out" }, 1.7);
+        tl.fromTo(el("sig"), { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 1.7);
+
+        // Scene 4 (1.94): headline line-masked rise on the bar-9 downbeat; the chat
+        // body dims under the pill stack (lifted again as the pills dock)
+        tl.fromTo(el("headline"), { yPercent: 100 }, { yPercent: 0, duration: 0.6, ease: "power3.out" }, 1.94);
+        tl.fromTo(el("headline"), { opacity: 0 }, { opacity: 1, duration: 0.24, ease: "none" }, 1.94);
+        tl.fromTo(el("stackdim"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 1.94);
+        tl.to(el("stackdim"), { opacity: 0, duration: 0.16, ease: "power2.in" }, 3.39);
+
+        // Scenes 4–5: each pill springs into its 2.2× stack slot about its right edge
+        pills.forEach(function (p) {
+          tl.fromTo(p.node, { x: p.x, y: p.y, scale: 1.87, opacity: 0 }, { x: p.x, y: p.y, scale: 2.2, opacity: 1, duration: 0.4, ease: "power3.out" }, p.at);
+        });
+
+        // Scene 5 (3.39–3.82): the dock, staggered top to bottom by 0.05 s so each
+        // pill clears the next one's path. Per pill, three nudge chains (power3.in
+        // ramp 20% time / 10% distance, linear burst 18% / to 75%, power4.out tail
+        // 62%): y over 0.33 s; scale over 0.231 s (near 1× before the top bar); x
+        // over 0.28 s from +0.05 s (lifts clear of the headline, then slides left).
+        // Notes 3.39–3.72, Transcribing 3.44–3.77, Recording 3.49–3.82.
+        var nudge = function (node, prop, from, to, start, dur) {
+          [[0.1, 0.2, "power3.in", 0], [0.75, 0.18, "none", 0.2], [1, 0.62, "power4.out", 0.38]].forEach(function (k) {
+            var v = { duration: dur * k[1], ease: k[2] };
+            v[prop] = from + (to - from) * k[0];
+            tl.to(node, v, start + dur * k[3]);
+          });
+        };
+        pills.forEach(function (p, i) {
+          var t0 = 3.39 + 0.05 * i;
+          nudge(p.node, "y", p.y, 0, t0, 0.33);
+          nudge(p.node, "scale", 2.2, 1, t0, 0.231);
+          nudge(p.node, "x", p.x, 0, t0 + 0.05, 0.28);
+          // the stack halo lifts off over the pill's ramp and burst
+          tl.to(p.node, { boxShadow: "0px 0px 0px 0px rgba(6, 5, 8, 0)", duration: 0.125, ease: "power1.in" }, t0);
+        });
+
+        // Handoff (the last 8th, from 3.63): the headline leaves up through its
+        // line mask and the scrim lifts, both gone by 3.83 so every 30 fps frame
+        // from 3.8333 to the cut shows only the room, the docked 1× pills and
+        // the signature
+        tl.fromTo(el("headline"), { yPercent: 0, opacity: 1 }, { yPercent: -100, opacity: 0, duration: 0.2, ease: "power2.in", immediateRender: false }, 3.63);
+        tl.fromTo(el("scrim"), { opacity: 1 }, { opacity: 0, duration: 0.2, ease: "power2.in", immediateRender: false }, 3.63);
+      })();
+    </script>
+  </div>
+</template>

@@ -1,0 +1,43 @@
+{
+  "_comment": "Example args for workflows/capture.js. Placeholders only: copy to <scratch>/secrets/capture-args.json (never into the project or this skill), fill in the real values, and pass the object as Workflow args. <project> = the film project (absolute). <scratch> = THIS session's scratchpad. <skill> = this skill dir. Tokens inside a task: SESSION_NAME, {{password}}, {{login.<name>}}, {{login_url}}, {{demo_url}}. password_probe = a distinctive substring of the password; the verifier greps the project for it and for every login and redacts hits.",
+  "project": "<project>",
+  "scratch": "<scratch>",
+  "browser": "<HYPERFRAMES_BROWSER_PATH from SKILL step 0.5>",
+  "hf": "0.8.73",
+  "skills": "<scratch>/hyperframes-src/skills",
+  "reference": "<skill>/examples/leapcast",
+  "product": {
+    "name": "<Product name>",
+    "tagline": "<the product's own one-liner, verbatim from its site>",
+    "platform_context": "<one sentence: the larger platform it belongs to, or empty>",
+    "demo_url": "https://<demo host>/",
+    "login_url": "https://<demo host>/<login path>",
+    "data_context": "<what the demo data is: fictional org, region, place names>",
+    "theme": "light"
+  },
+  "roles": [
+    {
+      "key": "admin",
+      "task": "Log in at {{login_url}} as the ADMIN ({{login.admin}} / password {{password}}). Tour the WHOLE app and record the full nav tree. Capture the dashboard fully loaded, every list with rich data, one detail page per object type, the settings pages, and the product's hero artifact (the one screen the film is about) beautifully, including element crops."
+    },
+    {
+      "key": "member",
+      "task": "Log in at {{login_url}} as a MEMBER ({{login.members}}; password {{password}}). Use the account with the richest data. Capture the member's world at desktop AND on a phone (phone shots named id-member-NN-mobile-slug.png). If a second role must be compared, use two sessions SESSION_NAME and SESSION_NAME-b."
+    }
+  ],
+  "site": {
+    "key": "site",
+    "task": "The marketing site {{demo_url}}: routes /, /features, /pricing, the footer and the language menu. Also the login page left panel at {{login_url}}."
+  },
+  "music": {
+    "mood": "confident, modern, trustworthy, hopeful, premium tech; think Linear/Stripe launch films, not corporate stock cheese, not aggressive EDM/trap",
+    "avoid": "Deep Urban (Mixkit id 623; used for the Leapcast film)"
+  },
+  "logins": {
+    "admin": "<admin login>",
+    "members": ["<member login 1>", "<member login 2>"]
+  },
+  "password": "<password>",
+  "password_probe": "<distinctive part of the password>",
+  "secrets_file": "<scratch>/secrets/<product>-logins.env"
+}

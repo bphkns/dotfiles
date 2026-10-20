@@ -19,12 +19,16 @@ zls = "latest"
 gh = "latest"
 claude = "latest"
 stripe = "latest"
-"npm:@opencode-ai/cli" = "next"
+"npm:@opencode-ai/cli" = { version = "0", allow_builds = ["@opencode-ai/cli"] }
 "npm:command-code" = "latest"
 opencode = "latest"
 codex = "latest"
 "npm:playwright" = "latest"
 gemini = { version = "latest", allow_builds = ["@github/keytar", "node-pty"] }
+cloud-sql-proxy = "2.26.0"
+
+[settings]
+minimum_release_age = "0"
 
 [settings.upgrade]
 auto_prune = false

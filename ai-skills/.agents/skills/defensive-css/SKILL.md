@@ -99,6 +99,12 @@ a {
 - Prevent scroll chaining in modal/panel -> `overscroll-behavior-y: contain`.
 - Prevent layout shift on scrollbar appearance -> `scrollbar-gutter: stable`.
 
+### Borders and focus rings
+
+- Rounded element with mixed border sides (different width or color per side) -> sides meet at a diagonal and taper around the radius; use one uniform border on every side.
+- Active, selected or status state -> background, text weight or a separate indicator element (`::after` underline), never a side stripe (`border-l-4`, `border-b-2` on a rounded tab).
+- Focus ring or outline inside an `overflow: hidden` ancestor -> it gets clipped; give the ancestor padding, inset the ring, or drop the clip.
+
 ### Interaction and device conditions
 
 - Hover styles should not leak to touch -> wrap hover styles:

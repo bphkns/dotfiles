@@ -1,0 +1,650 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Inter";
+      src: url("assets/fonts/InterVariable.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Inter";
+      src: url("assets/fonts/InterVariable-Italic.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: italic;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Schibsted Grotesk";
+      src: url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2");
+      font-weight: 400 900;
+      font-style: normal;
+      font-display: block;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: "Inter", sans-serif;
+      color: #f4f4f5;
+    }
+
+    /* ── ground + static glow-field ─────────────────────────────── */
+    .\30 8-nothing-lost-ground {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      background: #0c0b0e;
+      container-type: size;
+    }
+    .\30 8-nothing-lost-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse 1000px 720px at 1800px 70px,
+        rgba(215, 61, 19, 0.1) 0%,
+        rgba(215, 61, 19, 0.045) 45%,
+        rgba(215, 61, 19, 0) 72%
+      );
+    }
+
+    /* ── the floating panel (window onto hero_img_4) ────────────── */
+    .\30 8-nothing-lost-panel {
+      position: absolute;
+      left: 752px;
+      top: 96px;
+      width: 1127px;
+      height: 800px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #0e1011;
+      box-shadow:
+        0 40px 60px -20px rgba(6, 5, 8, 0.55),
+        0 0 0 1px rgba(6, 5, 8, 0.4);
+    }
+    /* right-edge feather on the panel content (panel-local px): opaque to --fx, clear at the edge.
+       Phase A --fx 1057 (x 1809, the decision line ends at 1808) → 967 (x 1719) across the push */
+    .\30 8-nothing-lost-feather {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1127px;
+      height: 800px;
+      --fx: 1057;
+      -webkit-mask-image: linear-gradient(to right, #000 calc(var(--fx) * 1px), transparent 1127px);
+      mask-image: linear-gradient(to right, #000 calc(var(--fx) * 1px), transparent 1127px);
+    }
+    .\30 8-nothing-lost-scale {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3024px;
+      height: 1650px;
+      transform-origin: 0 0;
+    }
+    .\30 8-nothing-lost-scroll {
+      position: absolute;
+      left: -1498px;
+      top: 0;
+      width: 3024px;
+      height: 1650px;
+      isolation: isolate;
+    }
+    .\30 8-nothing-lost-shot {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3024px;
+      height: 1650px;
+      display: block;
+    }
+    .\30 8-nothing-lost-patch {
+      position: absolute;
+      background: #0e1011;
+    }
+    /* slices of the screenshot (same image, cropped): the decision line re-wraps onto two lines
+       during the push, because at S 1.15 the whole sentence (1082 source px) is wider than the
+       panel. Hidden until the push; at rest they sit on their own pixels */
+    .\30 8-nothing-lost-slice {
+      position: absolute;
+      opacity: 0;
+      background-image: url("assets/hero_img_4_dark.webp");
+      background-size: 3024px 1650px;
+      background-repeat: no-repeat;
+    }
+    /* glow bands sit "behind" the screenshot text: lighten keeps text pixels, tints only the ground */
+    .\30 8-nothing-lost-band {
+      position: absolute;
+      border-radius: 6px;
+      background: rgb(42, 22, 17);
+      mix-blend-mode: lighten;
+      transform-origin: 0 50%;
+    }
+    .\30 8-nothing-lost-bloom {
+      position: absolute;
+      border-radius: 22px;
+      background: rgb(70, 41, 32);
+      mix-blend-mode: lighten;
+      filter: blur(8px);
+      transform-origin: 50% 50%;
+      opacity: 0;
+    }
+    .\30 8-nothing-lost-ui {
+      position: absolute;
+      white-space: pre;
+      font-family: "Inter", sans-serif;
+      font-weight: 400;
+      font-variation-settings: "opsz" 14;
+      font-size: 24px;
+      line-height: 24px;
+      height: 24px;
+      -webkit-text-stroke: 0.25px currentColor;
+    }
+    .\30 8-nothing-lost-one {
+      left: 1522px;
+      top: 1278.3px;
+      color: #babdb9;
+      font-feature-settings: "tnum" 1;
+      transform-origin: 50% 55%;
+    }
+    .\30 8-nothing-lost-owner {
+      left: 1521.5px;
+      color: #c3c0b6;
+    }
+    .\30 8-nothing-lost-caret {
+      display: none;
+      width: 2px;
+      height: 22px;
+      margin-left: 1px;
+      vertical-align: -3px;
+      background: #c3c0b6;
+    }
+    .\30 8-nothing-lost-fade {
+      position: absolute;
+      pointer-events: none;
+    }
+    .\30 8-nothing-lost-edge {
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      pointer-events: none;
+      box-shadow:
+        inset 0 0 0 1px rgba(244, 244, 245, 0.1),
+        inset 0 1px 0 rgba(244, 244, 245, 0.06);
+    }
+
+    /* ── type column ────────────────────────────────────────────── */
+    .\30 8-nothing-lost-mask {
+      position: absolute;
+      left: 0;
+      width: 752px;
+      overflow: hidden;
+    }
+    .\30 8-nothing-lost-eyebrow {
+      position: absolute;
+      left: 96px;
+      top: 0;
+      height: 34px;
+      line-height: 34px;
+      font-family: "Inter", sans-serif;
+      font-weight: 600;
+      font-size: 26px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #d73d13;
+      white-space: nowrap;
+    }
+    .\30 8-nothing-lost-rule {
+      position: absolute;
+      left: 96px;
+      top: 326px;
+      width: 40px;
+      height: 3px;
+      border-radius: 2px;
+      background: #d73d13;
+      transform-origin: 0 50%;
+    }
+    .\30 8-nothing-lost-line {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 752px;
+      height: 104px;
+      padding-left: 96px;
+      box-sizing: border-box;
+      font-family: "Schibsted Grotesk", "Inter", sans-serif;
+      font-weight: 700;
+      font-size: 104px;
+      line-height: 104px;
+      letter-spacing: -0.028em;
+      color: #f4f4f5;
+      white-space: nowrap;
+    }
+    .\30 8-nothing-lost-w {
+      display: inline-block;
+    }
+
+    /* ── ghost lines (the two items lost in Frame 3) ────────────── */
+    .\30 8-nothing-lost-ghost {
+      position: absolute;
+      left: 779.03px;
+      height: 30px;
+      line-height: 30px;
+      font-family: "Inter", sans-serif;
+      font-size: 30px;
+      font-weight: 400;
+      font-variation-settings: "opsz" 14;
+      color: #f4f4f5;
+      white-space: nowrap;
+      transform-origin: 0 50%;
+      z-index: 5;
+      /* soft ground halo so the line reads over the panel's Summary text */
+      text-shadow:
+        0 0 10px #0e1011,
+        0 0 10px #0e1011;
+    }
+    /* feathered backing that travels with ghost A: its path crosses the Summary and the
+       Action items heading, so it dims (never blanks) the panel text around the line. An
+       elliptical falloff in the page ground, at most 40% opacity. It lives inside the panel
+       (clipped by it, under the window edge), in panel-local px */
+    .\30 8-nothing-lost-plate {
+      position: absolute;
+      background: radial-gradient(farthest-side, #0e1011 55%, rgba(14, 16, 17, 0) 100%);
+      transform-origin: 140px 50%;
+      opacity: 0;
+    }
+    .\30 8-nothing-lost-underline {
+      position: absolute;
+      left: 956px;
+      top: 739px;
+      width: 93px;
+      height: 2px;
+      border-radius: 1px;
+      background: #d73d13;
+      transform-origin: 0 50%;
+    }
+  </style>
+
+  <div
+    id="root"
+    data-composition-id="08-nothing-lost"
+    data-width="1920"
+    data-height="1080"
+    data-duration="8.24"
+  >
+    <!-- ground + glow-field (static) -->
+    <div
+      id="08-nothing-lost-ground"
+      class="clip 08-nothing-lost-ground"
+      data-start="0"
+      data-duration="8.24"
+      data-track-index="0"
+    >
+      <div class="08-nothing-lost-glow"></div>
+    </div>
+
+    <!-- the floating panel: real post-call page, one element scroll + one push -->
+    <div class="08-nothing-lost-panel" data-layout-allow-overflow>
+      <div id="08-nothing-lost-feather" class="08-nothing-lost-feather" data-layout-allow-overflow>
+        <div id="08-nothing-lost-scale" class="08-nothing-lost-scale" data-layout-allow-overflow>
+          <div id="08-nothing-lost-scroll" class="08-nothing-lost-scroll" data-layout-allow-overflow>
+            <img
+              id="08-nothing-lost-shot"
+              class="08-nothing-lost-shot"
+              src="assets/hero_img_4_dark.webp"
+              alt=""
+            />
+
+            <!-- patches (source px, page ground #0E1011) -->
+            <!-- stats-row divider hairline (source y 497–498) — never shows, would double the panel's top edge at entry -->
+            <div class="08-nothing-lost-patch" style="left: 1517px; top: 494px; width: 1420px; height: 8px"></div>
+            <div class="08-nothing-lost-patch" style="left: 1517px; top: 575px; width: 370px; height: 33px"></div>
+            <div class="08-nothing-lost-patch" style="left: 1519px; top: 1277px; width: 28px; height: 26px"></div>
+            <div id="08-nothing-lost-p-row1" class="08-nothing-lost-patch" style="left: 1517px; top: 1439px; width: 628px; height: 41px"></div>
+            <div class="08-nothing-lost-patch" style="left: 1517px; top: 1480px; width: 246px; height: 35px"></div>
+            <div id="08-nothing-lost-p-row2" class="08-nothing-lost-patch" style="left: 1517px; top: 1530px; width: 564px; height: 39px"></div>
+            <div id="08-nothing-lost-p-own2" class="08-nothing-lost-patch" style="left: 1517px; top: 1571px; width: 189px; height: 32px"></div>
+            <!-- third action row "Deploy the requested item" — never shows (a half row along the bottom edge) -->
+            <div class="08-nothing-lost-patch" style="left: 1518px; top: 1605px; width: 682px; height: 45px"></div>
+
+            <!-- decision line re-wrap (source px): the line's glyphs sit at 1279–1306, "The" at 1564,
+                 "…and" ends 2223, "proceed to the design meeting." runs 2235–2646. On the push the
+                 original is patched and its slices take over: line 1 ("The … and") rises 16px to
+                 1263–1290, the tail dissolves and re-appears as line 2 at 1299–1326 under "The" -->
+            <div id="08-nothing-lost-p-dec" class="08-nothing-lost-patch" style="left: 1550px; top: 1274px; width: 1110px; height: 36px; opacity: 0"></div>
+            <div id="08-nothing-lost-dec-head" class="08-nothing-lost-slice" style="left: 1550px; top: 1272px; width: 679px; height: 42px; background-position: -1550px -1272px"></div>
+            <div id="08-nothing-lost-dec-tail" class="08-nothing-lost-slice" style="left: 2229px; top: 1272px; width: 431px; height: 42px; background-position: -2229px -1272px"></div>
+            <div id="08-nothing-lost-dec-wrap" class="08-nothing-lost-slice" style="left: 1558px; top: 1292px; width: 431px; height: 42px; background-position: -2229px -1272px"></div>
+
+            <!-- Summary reading sweeps (terracotta-glow 14%) -->
+            <div id="08-nothing-lost-s1" class="08-nothing-lost-band" style="left: 1510px; top: 958px; width: 1220px; height: 41px"></div>
+            <div id="08-nothing-lost-s2" class="08-nothing-lost-band" style="left: 1510px; top: 1006px; width: 1229px; height: 41px"></div>
+            <div id="08-nothing-lost-s3" class="08-nothing-lost-band" style="left: 1510px; top: 1054px; width: 1211px; height: 41px"></div>
+            <div id="08-nothing-lost-s4" class="08-nothing-lost-band" style="left: 1510px; top: 1102px; width: 874px; height: 41px"></div>
+            <!-- decision band -->
+            <div id="08-nothing-lost-dband" class="08-nothing-lost-band" style="left: 1556px; top: 1273px; width: 1100px; height: 40px"></div>
+            <!-- its second line after the re-wrap (behind "proceed to the design meeting.") -->
+            <div id="08-nothing-lost-dband2" class="08-nothing-lost-band" style="left: 1556px; top: 1296px; width: 430px; height: 34px; opacity: 0"></div>
+            <!-- landing blooms (terracotta-soft 30%) -->
+            <div id="08-nothing-lost-bloom-b" class="08-nothing-lost-bloom" style="left: 1506px; top: 1528px; width: 584px; height: 44px"></div>
+            <div id="08-nothing-lost-bloom-a" class="08-nothing-lost-bloom" style="left: 1506px; top: 1437px; width: 646px; height: 44px"></div>
+            <!-- owner band behind "Bikash Phukan" (terracotta-tint 20% over #0E1011; output x 772–978, y 806–846) -->
+            <div id="08-nothing-lost-own-band" class="08-nothing-lost-band" style="left: 1515px; top: 1571px; width: 180px; height: 35px; border-radius: 3.5px; background: rgb(55, 38, 33)"></div>
+
+            <!-- rebuilt decision marker -->
+            <div id="08-nothing-lost-one" class="08-nothing-lost-ui 08-nothing-lost-one" data-layout-allow-occlusion>1.</div>
+
+            <!-- owner line of row 2 (types, then hands over to the real pixels) -->
+            <div id="08-nothing-lost-own-b" class="08-nothing-lost-ui 08-nothing-lost-owner" data-layout-allow-occlusion style="top: 1576.8px"><span id="08-nothing-lost-ob-text"></span><span id="08-nothing-lost-caret-b" class="08-nothing-lost-caret"></span></div>
+
+            <!-- owner line of row 1 (types, stays rebuilt so "tonight" can glow) -->
+            <div class="08-nothing-lost-ui 08-nothing-lost-owner" style="top: 1484.8px"><span id="08-nothing-lost-oa-text"></span><span id="08-nothing-lost-tonight"></span><span id="08-nothing-lost-caret-a" class="08-nothing-lost-caret"></span></div>
+            <!-- dims "Unassigned ·" (output x 779–950, y 706–736) so "tonight" is the one focal -->
+            <div id="08-nothing-lost-dim-a" class="08-nothing-lost-patch" style="left: 1521px; top: 1484px; width: 150px; height: 27px; opacity: 0"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ghost A's feathered backing: ghost A's text is 671px wide (Inter 500 30px); the ellipse
+           pads it 140px left and right and 50px above and below, and scales about the ghost's
+           anchor (left edge, vertical centre). Output x 639–1590, y 610–740 at its row -->
+      <div id="08-nothing-lost-ghost-a-plate" class="08-nothing-lost-plate" style="left: -112.97px; top: 514.04px; width: 951px; height: 130px"></div>
+
+      <!-- window edge fades (content continues past the crop); drawn at their pushed size and
+           scaled down for phase A, so they deepen on the push's own progress; the right edge is
+           the feather mask above -->
+      <div id="08-nothing-lost-fade-top" class="08-nothing-lost-fade" style="left: 0; top: 0; width: 1127px; height: 72px; transform-origin: 50% 0; background: linear-gradient(to bottom, #0e1011 0px, #0e1011 12px, rgba(14, 16, 17, 0) 72px)"></div>
+      <div id="08-nothing-lost-fade-bottom" class="08-nothing-lost-fade" style="left: 0; bottom: 0; width: 1127px; height: 56px; transform-origin: 50% 100%; background: linear-gradient(to top, #0e1011 0px, #0e1011 6px, rgba(14, 16, 17, 0.82) 22px, rgba(14, 16, 17, 0) 56px)"></div>
+      <div class="08-nothing-lost-edge"></div>
+    </div>
+
+    <!-- type column -->
+    <div class="08-nothing-lost-mask" data-layout-allow-overflow style="top: 284px; height: 34px">
+      <div id="08-nothing-lost-eyebrow" class="08-nothing-lost-eyebrow" data-layout-allow-occlusion>After the call</div>
+    </div>
+    <div id="08-nothing-lost-rule" class="08-nothing-lost-rule"></div>
+
+    <div class="08-nothing-lost-mask" data-layout-allow-overflow style="top: 368px; height: 112px">
+      <div id="08-nothing-lost-h1a" class="08-nothing-lost-line" data-layout-allow-occlusion><span id="08-nothing-lost-w-what" class="08-nothing-lost-w" data-layout-allow-occlusion>What</span> <span id="08-nothing-lost-w-was" class="08-nothing-lost-w" data-layout-allow-occlusion>was</span></div>
+      <div class="08-nothing-lost-line" data-layout-allow-occlusion><span id="08-nothing-lost-w-who" class="08-nothing-lost-w" data-layout-allow-occlusion>Who</span></div>
+      <div class="08-nothing-lost-line" data-layout-allow-occlusion><span id="08-nothing-lost-w-and" class="08-nothing-lost-w" data-layout-allow-occlusion>And</span></div>
+    </div>
+    <div class="08-nothing-lost-mask" data-layout-allow-overflow style="top: 474px; height: 112px">
+      <div id="08-nothing-lost-h1b" class="08-nothing-lost-line" data-layout-allow-occlusion><span id="08-nothing-lost-w-decided" class="08-nothing-lost-w" data-layout-allow-occlusion>decided.</span></div>
+      <div class="08-nothing-lost-line" data-layout-allow-occlusion><span id="08-nothing-lost-w-owns" class="08-nothing-lost-w" data-layout-allow-occlusion>owns</span> <span id="08-nothing-lost-w-it" class="08-nothing-lost-w" data-layout-allow-occlusion>it.</span></div>
+      <div class="08-nothing-lost-line" data-layout-allow-occlusion><span id="08-nothing-lost-w-by" class="08-nothing-lost-w" data-layout-allow-occlusion>by</span> <span id="08-nothing-lost-w-when" class="08-nothing-lost-w" data-layout-allow-occlusion>when.</span></div>
+    </div>
+
+    <!-- the two lines lost in Frame 3, flying back (anchor: left edge / vertical centre); at their
+         1.6× start scale they run past the right edge for the first frames -->
+    <div id="08-nothing-lost-ghost-b" class="08-nothing-lost-ghost" data-layout-allow-overflow style="top: 765.61px">Send the filled form/information to Sandip</div>
+    <div id="08-nothing-lost-ghost-a" class="08-nothing-lost-ghost" data-layout-allow-overflow style="top: 660.04px">Find time tonight to go through the information</div>
+
+    <div id="08-nothing-lost-underline" class="08-nothing-lost-underline"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var FID = "08-nothing-lost";
+      function el(name) {
+        return document.getElementById(FID + "-" + name);
+      }
+
+      var tl = gsap.timeline({ paused: true });
+
+      // ── camera world: S = output px per source px, Y0 = source y at the panel top.
+      //    panel-local = S · (src − (1498, Y0)); scale on the outer wrapper, scroll on the inner.
+      var scale = el("scale");
+      var scroll = el("scroll");
+      // Scene 2 — the one traversal: element scroll Y0 480 → 742 (starts on 0.50 on a sine ease,
+      // so the picture is already moving off the cut)
+      tl.fromTo(scroll, { y: -480 }, { y: -742, duration: 1.93, ease: "sine.inOut" }, 0.5);
+      // Scene 4 — the push: S 0.92 → 1.15, Y0 742 → 954, one eased progress, left edge fixed
+      tl.fromTo(scale, { scale: 0.92 }, { scale: 1.15, duration: 0.44, ease: "power3.inOut" }, 3.87);
+      tl.to(scroll, { y: -954, duration: 0.44, ease: "power3.inOut" }, 3.87);
+      // window edge fades deepen with the push (phase A: top 40px, bottom ≈39px); the right-edge
+      // feather widens on the same progress: opaque to x 1809 → x 1719, clear at x 1879
+      tl.fromTo(el("fade-top"), { scaleY: 40 / 72 }, { scaleY: 1, duration: 0.44, ease: "power3.inOut" }, 3.87);
+      tl.fromTo(el("feather"), { "--fx": 1057 }, { "--fx": 967, duration: 0.44, ease: "power3.inOut" }, 3.87);
+      tl.fromTo(el("fade-bottom"), { scaleY: 0.7 }, { scaleY: 1, duration: 0.44, ease: "power3.inOut" }, 3.87);
+
+      // ── Scene 1 — eyebrow rise + rule draw
+      tl.fromTo(el("eyebrow"), { yPercent: 100 }, { yPercent: 0, duration: 0.6, ease: "power3.out" }, 0.25);
+      tl.fromTo(el("eyebrow"), { opacity: 0 }, { opacity: 1, duration: 0.24, ease: "power1.out" }, 0.25);
+      tl.fromTo(el("rule"), { scaleX: 0 }, { scaleX: 1, duration: 0.49, ease: "power3.out" }, 0.25);
+
+      // ── Scene 2 — Summary reading sweeps (world space, ride the scroll)
+      var sweeps = [
+        { id: "s1", at: 1.22, fadeAt: 1.52, fadeDur: 0.3 },
+        { id: "s2", at: 1.46, fadeAt: 1.76, fadeDur: 0.3 },
+        { id: "s3", at: 1.71, fadeAt: 2.01, fadeDur: 0.3 },
+        { id: "s4", at: 1.95, fadeAt: 2.23, fadeDur: 0.2 }
+      ];
+      sweeps.forEach(function (s) {
+        var band = el(s.id);
+        tl.fromTo(band, { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 0.28, ease: "power2.out" }, s.at);
+        tl.to(band, { opacity: 0, duration: s.fadeDur, ease: "power1.inOut" }, s.fadeAt);
+      });
+
+      // Headline "What was / decided." — line-masked rise on the bar-15 downbeat
+      [
+        { id: "h1a", at: 1.94 },
+        { id: "h1b", at: 2.06 }
+      ].forEach(function (r) {
+        var line = el(r.id);
+        tl.fromTo(line, { yPercent: 100 }, { yPercent: 0, duration: 0.6, ease: "power3.out" }, r.at);
+        tl.fromTo(line, { opacity: 0 }, { opacity: 1, duration: 0.24, ease: "power1.out" }, r.at);
+      });
+
+      // ── Scene 3 — the decision: "1." pops + flashes, band sweeps and rests at 10%
+      var one = el("one");
+      tl.set(one, { scale: 1.35, color: "#d97f60" }, 2.43);
+      tl.to(one, { scale: 1, duration: 0.5, ease: "power3.out" }, 2.43);
+      tl.to(one, { color: "#babdb9", duration: 0.25, ease: "power1.inOut" }, 3.03);
+      var dband = el("dband");
+      tl.fromTo(dband, { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 0.38, ease: "power2.out" }, 2.43);
+      tl.to(dband, { opacity: 10 / 14, duration: 0.4, ease: "power1.inOut" }, 2.81);
+
+      // ── Scene 4 — the decision re-wraps on the push: at S 1.15 the sentence (1082 source px)
+      //    is wider than the panel, so its tail would fade mid-word at the right edge. Its slices
+      //    take over from the screenshot on the push's first frame (same pixels), line 1 rises
+      //    16px with the push, the tail dissolves into the edge feather and re-appears as line 2.
+      var DEC_UP = -16;
+      tl.set([el("p-dec"), el("dec-head"), el("dec-tail")], { opacity: 1 }, 3.87);
+      tl.to([el("dec-head"), el("dec-tail"), one], { y: DEC_UP, duration: 0.44, ease: "power3.inOut" }, 3.87);
+      // the band follows line 1 (40 → 34px tall, ends after "and") and a second band takes line 2
+      tl.to(dband, { y: DEC_UP, scaleX: 677 / 1100, scaleY: 34 / 40, duration: 0.44, ease: "power3.inOut" }, 3.87);
+      tl.to(el("dec-tail"), { opacity: 0, duration: 0.22, ease: "power1.inOut" }, 3.95);
+      tl.fromTo(el("dec-wrap"), { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power1.inOut" }, 4.03);
+      tl.fromTo(el("dband2"), { opacity: 0 }, { opacity: 10 / 14, duration: 0.22, ease: "power1.inOut" }, 4.03);
+
+      // ── Typing (discrete-text-sequence, smooth-slice variation): one char per step, first char just after `at`
+      function typeOn(parts, at, dur) {
+        var total = parts.reduce(function (n, p) { return n + p.text.length; }, 0);
+        var proxy = { v: 0 };
+        tl.fromTo(
+          proxy,
+          { v: 0 },
+          {
+            v: 1,
+            duration: dur,
+            ease: "none",
+            onUpdate: function () {
+              var count = proxy.v <= 0 ? 0 : Math.min(total, 1 + Math.floor(proxy.v * (total - 1) + 1e-6));
+              var left = count;
+              parts.forEach(function (p) {
+                var take = Math.max(0, Math.min(p.text.length, left));
+                p.node.textContent = p.text.slice(0, take);
+                left -= take;
+              });
+            }
+          },
+          at
+        );
+      }
+
+      // ── Waterfall cut helper (cut-catalog §4)
+      function entryOpacity(p) {
+        return p <= 0 ? 0 : 0.35 + 0.65 * (1 - Math.pow(1 - p, 5));
+      }
+      function waterfall(outIds, inIds, cut) {
+        var n = outIds.length;
+        outIds.forEach(function (id, i) {
+          var w = el(id);
+          var start = cut - 0.18 - (n - 1 - i) * 0.022;
+          tl.to(w, { x: -230, duration: 0.34, ease: "power4.in" }, start);
+          tl.to(w, { opacity: 0, duration: 0.18, ease: "power1.in" }, start);
+        });
+        var gap = 0.05;
+        var t = cut;
+        inIds.forEach(function (id) {
+          var w = el(id);
+          tl.fromTo(w, { x: 230 }, { x: 0, duration: 0.3, ease: "power4.out" }, t);
+          tl.fromTo(w, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: entryOpacity }, t);
+          t += gap;
+          gap *= 0.84;
+        });
+      }
+
+      // ── Scene 4 — SIGNATURE: each ghost first resolves IN PLACE at its Frame 3 vanish point
+      //    (0.1 s: opacity 0→0.6, blur resolving, already at its flight scale 1.6), so the viewer
+      //    sees where it comes from, then flies to its real row (scale 1.6→L about its left edge
+      //    on power3.out) and locks. It stays soft (on screen blur ≥ 6px, opacity 0.6) over the
+      //    first half of its path, while it crosses the panel's text, and sharpens to blur 0 /
+      //    opacity 1 over the empty row slot. Ghosts sit above the panel with a ground halo.
+      var L = 32.2 / 30; // the real row text at S 1.15 (28 source px) over the 30px ghost
+      var G0 = 1.6; // flight start scale
+      // the filter blurs in the ghost's own (scaled) space: 4.5px reads as ≈ 7px on screen at
+      // 1.6 and ≈ 6px at the end of the soft stretch (scale ≈ 1.34)
+      var SOFT_BLUR = 4.5;
+      // blur / opacity ease for one flight, keyed on its path progress `keyEase`: held soft until
+      // `softTo`, then 1 − ((1 − p) / (1 − softTo))³ of the way to blur 0 / opacity 1
+      function flightLook(keyEase, softTo) {
+        var key = gsap.parseEase(keyEase);
+        return function (t) {
+          var p = key(t);
+          return p < softTo ? 0 : 1 - Math.pow((1 - p) / (1 - softTo), 3);
+        };
+      }
+      // o: from {x, y}, resolveAt, flyAt, flyDur, xEase, yEase, keyEase (path progress), softTo
+      function ghostReturn(g, o) {
+        var look = flightLook(o.keyEase, o.softTo);
+        tl.fromTo(
+          g,
+          { scale: G0, fontWeight: 500 },
+          { scale: L, fontWeight: 400, duration: o.flyDur, ease: "power3.out" },
+          o.flyAt
+        );
+        tl.fromTo(g, { x: o.from.x }, { x: 0, duration: o.flyDur, ease: o.xEase }, o.flyAt);
+        tl.fromTo(g, { y: o.from.y }, { y: 0, duration: o.flyDur, ease: o.yEase }, o.flyAt);
+        tl.fromTo(g, { opacity: 0 }, { opacity: 0.6, duration: 0.1, ease: "expo.out" }, o.resolveAt);
+        tl.to(g, { opacity: 1, duration: o.flyDur, ease: look }, o.flyAt);
+        tl.fromTo(
+          g,
+          { filter: "blur(14px)" },
+          { filter: "blur(" + SOFT_BLUR + "px)", duration: 0.1, ease: "expo.out" },
+          o.resolveAt
+        );
+        tl.to(g, { filter: "blur(0px)", duration: o.flyDur, ease: look }, o.flyAt);
+        // the halo is only for the crossing: it clears over the empty row slot just before the
+        // lock, so it never darkens the landing bloom
+        tl.fromTo(
+          g,
+          { textShadow: "0 0 10px rgba(14,16,17,1), 0 0 10px rgba(14,16,17,1)" },
+          { textShadow: "0 0 10px rgba(14,16,17,0), 0 0 10px rgba(14,16,17,0)", duration: 0.1, ease: "none" },
+          o.flyAt + o.flyDur - 0.1
+        );
+      }
+      // Both ghosts drop first (y on expo.out, soft, to the right of the Action items heading) and
+      // then glide left into their row (x on power2.inOut), so neither lands on the heading;
+      // they stay soft over the first half of that path (75% of the drop).
+      // ghost B: (980, 652) → row 2 (780, 778), resolves 3.87–3.97, flies 3.97–4.37
+      var ghostB = el("ghost-b");
+      ghostReturn(ghostB, {
+        from: { x: 200.97, y: -128.61 },
+        resolveAt: 3.87,
+        flyAt: 3.97,
+        flyDur: 0.4,
+        xEase: "power2.inOut",
+        yEase: "expo.out",
+        keyEase: "expo.out",
+        softTo: 0.75
+      });
+      // landing B (4.37): bloom + pop, patch off, rebuilt hands over to the real row
+      tl.set(el("bloom-b"), { opacity: 1, scaleX: 0.94 }, 4.37);
+      tl.to(el("bloom-b"), { opacity: 0, scaleX: 1.03, duration: 0.5, ease: "power2.out" }, 4.37);
+      tl.fromTo(el("p-row2"), { opacity: 1 }, { opacity: 0, duration: 0.1, ease: "none" }, 4.37);
+      tl.to(ghostB, { opacity: 0, duration: 0.25, ease: "power1.inOut" }, 4.47);
+      // owner "Bikash Phukan" types 4.37–4.71, then hands over to the real pixels
+      typeOn([{ node: el("ob-text"), text: "Bikash Phukan" }], 4.37, 0.34);
+      tl.set(el("caret-b"), { display: "inline-block" }, 4.37);
+      tl.set(el("caret-b"), { display: "none" }, 4.8);
+      tl.fromTo(el("p-own2"), { opacity: 1 }, { opacity: 0, duration: 0.1, ease: "none" }, 4.8);
+      tl.to(el("own-b"), { opacity: 0, duration: 0.15, ease: "none" }, 4.9);
+      // the named owner gets the emphasis: a terracotta-tint band sweeps behind "Bikash Phukan"
+      // as its typing finishes (4.71–5.01) and rests
+      tl.fromTo(el("own-band"), { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 0.3, ease: "power2.out" }, 4.71);
+
+      // headline waterfall → "Who / owns it." on the landing
+      waterfall(["w-what", "w-was", "w-decided"], ["w-who", "w-owns", "w-it"], 4.37);
+
+      // ghost A: (1060, 156) → row 1 (780, 675), resolves 4.37–4.47, flies 4.47–4.85; its drop
+      // crosses the Summary and the decision while soft, over its feathered backing
+      var ghostA = el("ghost-a");
+      ghostReturn(ghostA, {
+        from: { x: 280.97, y: -519.04 },
+        resolveAt: 4.37,
+        flyAt: 4.47,
+        flyDur: 0.38,
+        xEase: "power2.inOut",
+        yEase: "expo.out",
+        keyEase: "expo.out",
+        softTo: 0.75
+      });
+      // its feathered backing resolves with it, rides the same path and clears before the row
+      var plateA = el("ghost-a-plate");
+      tl.fromTo(plateA, { scale: G0 }, { scale: L, duration: 0.38, ease: "power3.out" }, 4.47);
+      tl.fromTo(plateA, { x: 280.97 }, { x: 0, duration: 0.38, ease: "power2.inOut" }, 4.47);
+      tl.fromTo(plateA, { y: -519.04 }, { y: 0, duration: 0.38, ease: "expo.out" }, 4.47);
+      tl.fromTo(plateA, { opacity: 0 }, { opacity: 0.4, duration: 0.1, ease: "expo.out" }, 4.37);
+      tl.to(plateA, { opacity: 0, duration: 0.1, ease: "power1.inOut" }, 4.72);
+      tl.set(el("bloom-a"), { opacity: 1, scaleX: 0.94 }, 4.85);
+      tl.to(el("bloom-a"), { opacity: 0, scaleX: 1.03, duration: 0.5, ease: "power2.out" }, 4.85);
+      tl.fromTo(el("p-row1"), { opacity: 1 }, { opacity: 0, duration: 0.1, ease: "none" }, 4.85);
+      tl.to(ghostA, { opacity: 0, duration: 0.25, ease: "power1.inOut" }, 4.95);
+      // owner "Unassigned · tonight" types 4.85–5.34
+      typeOn(
+        [
+          { node: el("oa-text"), text: "Unassigned \u00b7 " },
+          { node: el("tonight"), text: "tonight" }
+        ],
+        4.85,
+        0.49
+      );
+      tl.set(el("caret-a"), { display: "inline-block" }, 4.85);
+      tl.set(el("caret-a"), { display: "none" }, 5.46);
+
+      // ── Scene 5 — "And / by when." + "tonight" glows, underline draws
+      waterfall(["w-who", "w-owns", "w-it"], ["w-and", "w-by", "w-when"], 6.3);
+      tl.fromTo(
+        el("tonight"),
+        { color: "#c3c0b6", textShadow: "0 0 0px rgba(217,127,96,0)" },
+        { color: "#d97f60", textShadow: "0 0 10px rgba(217,127,96,0.45)", duration: 0.3, ease: "power2.out" },
+        6.3
+      );
+      tl.fromTo(el("underline"), { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power2.out" }, 6.3);
+      // "tonight" becomes the one focal: "Unassigned ·" dims to ≈55% (#0E1011 45% overlay) and
+      // the owner band settles from 20% to 8%
+      tl.fromTo(el("dim-a"), { opacity: 0 }, { opacity: 0.45, duration: 0.3, ease: "power1.inOut" }, 6.3);
+      tl.to(el("own-band"), { opacity: 0.08 / 0.2, duration: 0.3, ease: "power1.inOut" }, 6.3);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines[FID] = tl;
+    })();
+  </script>
+</template>

@@ -197,9 +197,6 @@ else
     printf '\033[38;2;255;162;71m󰔛 %.0fms\033[0m\n' $_zsh_startup_ms   # Orange - slow
 fi
 unset _zsh_startup_ms _zsh_start_time
-# add Pulumi to the PATH
-[[ -d "$HOME/.pulumi/bin" ]] && export PATH="$PATH:$HOME/.pulumi/bin"
-
 # Added by git-ai installer on Wed May 13 10:00:04 AM IST 2026
 export PATH="/home/bikash/.git-ai/bin:$PATH"
 # CF CLI completions
@@ -211,3 +208,4 @@ export PATH=$PATH:$HOME/.local/opt/go/bin
 
 # Keep Mise-managed tools ahead of paths added by installers above.
 [[ -f "$_mise_activate" ]] && source "$_mise_activate"
+[[ -d "$HOME/.pulumi/bin" ]] && export PATH="$PATH:$HOME/.pulumi/bin"

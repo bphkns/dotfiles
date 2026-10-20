@@ -1,0 +1,347 @@
+<template>
+  <div
+    id="root"
+    data-composition-id="13-end-card"
+    data-width="1920"
+    data-height="1080"
+    data-duration="5.81"
+  >
+    <style>
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/InterVariable.woff2") format("woff2");
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/InterVariable-Italic.woff2") format("woff2");
+        font-weight: 100 900;
+        font-style: italic;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Schibsted Grotesk";
+        src: url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2");
+        font-weight: 400 900;
+        font-style: normal;
+        font-display: block;
+      }
+
+      #root {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        container-type: size;
+        isolation: isolate;
+        color: #f4f4f5;
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: geometricPrecision;
+      }
+
+      /* ground: full-bleed canvas on its own clip layer */
+      [id="13-end-card-ground"] {
+        position: absolute;
+        inset: 0;
+        background: #0c0b0e;
+      }
+
+      /* glow-field: terracotta bloom behind the wordmark, core at (960, 250), 10% peak.
+         The bloom grows its ellipse radii via --end-card-glow (0.82 -> 1) inside a
+         frame-sized box, so no box edge can ever show while it scales. */
+      [id="13-end-card-glow"] {
+        --end-card-glow: 1;
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          ellipse calc(var(--end-card-glow) * 1152px) calc(var(--end-card-glow) * 594px) at 960px 250px,
+          rgba(215, 61, 19, 0.1) 0%,
+          rgba(215, 61, 19, 0.079) 16%,
+          rgba(215, 61, 19, 0.052) 34%,
+          rgba(215, 61, 19, 0.027) 52%,
+          rgba(215, 61, 19, 0.01) 66%,
+          rgba(215, 61, 19, 0) 78%
+        );
+        will-change: opacity;
+      }
+
+      /* wordmark: 960px wide (5.4857 px per viewBox unit), box x 480-1440 from y 110.5;
+         letters y 150-356, "beta" x 1221-1402, y 266-331 */
+      [class~="13-end-card-mark"] {
+        position: absolute;
+        left: 480px;
+        top: 110.5px;
+        width: 960px;
+        height: 312.686px;
+      }
+      [class~="13-end-card-mark"] svg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: block;
+        width: 960px;
+        height: 312.686px;
+        overflow: visible;
+      }
+      /* slanted wipe: leading edge leans with the italic (0.1762 x 312.686 = 55.10px over the
+         box, ~36px over the letters), top edge leads; --end-card-wipe is the top-edge x in
+         box-local px */
+      [id="13-end-card-mark-letters"] {
+        --end-card-wipe: 808.4;
+        clip-path: polygon(
+          -101px 0px,
+          calc(var(--end-card-wipe) * 1px) 0px,
+          calc(var(--end-card-wipe) * 1px - 55.1px) 312.686px,
+          -101px 312.686px
+        );
+      }
+      [id="13-end-card-mark-letters-inner"] {
+        position: absolute;
+        inset: 0;
+        will-change: transform;
+      }
+      /* beta pops in place around its own centre (local 831.4, 188.3) */
+      [id="13-end-card-mark-beta"] {
+        transform-origin: 831.4px 188.3px;
+        will-change: transform, opacity;
+      }
+
+      /* line-masked headline rows, centred on x 960; line box 112px, baseline 88.35px below
+         the box top -> baselines y 520 and 616 */
+      [class~="13-end-card-mask"] {
+        position: absolute;
+        left: 0;
+        width: 1920px;
+        height: 112px;
+        overflow: hidden;
+      }
+      [class~="13-end-card-mask-1"] {
+        top: 431.65px;
+      }
+      [class~="13-end-card-mask-2"] {
+        top: 527.65px;
+      }
+      [class~="13-end-card-line"] {
+        display: block;
+        margin: 0;
+        height: 112px;
+        font-family: "Schibsted Grotesk", "Inter", sans-serif;
+        font-size: 90px;
+        font-weight: 600;
+        line-height: 112px;
+        letter-spacing: -0.022em;
+        text-align: center;
+        white-space: nowrap;
+        color: #f4f4f5;
+        will-change: transform, opacity;
+      }
+
+      /* URL row: Schibsted 600 72px, centred, baseline y 764 (line box 88px, baseline 69.88px down) */
+      [id="13-end-card-url"] {
+        position: absolute;
+        left: 0;
+        top: 694.12px;
+        width: 1920px;
+        margin: 0;
+        height: 88px;
+        font-family: "Schibsted Grotesk", "Inter", sans-serif;
+        font-size: 72px;
+        font-weight: 600;
+        line-height: 88px;
+        letter-spacing: -0.02em;
+        text-align: center;
+        white-space: nowrap;
+        color: #f4f4f5;
+        will-change: transform, opacity;
+      }
+
+      /* price row: Inter 500 40px, tabular-nums, centred, baseline y 836 (line box 48px,
+         baseline 38.55px down) */
+      [id="13-end-card-price"] {
+        position: absolute;
+        left: 0;
+        top: 797.45px;
+        width: 1920px;
+        margin: 0;
+        height: 48px;
+        font-family: "Inter", sans-serif;
+        font-size: 40px;
+        font-weight: 500;
+        line-height: 48px;
+        text-align: center;
+        letter-spacing: 0;
+        font-variant-numeric: tabular-nums;
+        font-feature-settings: "tnum" 1;
+        white-space: nowrap;
+        color: #c3c0b6;
+        will-change: transform, opacity;
+      }
+      [class~="13-end-card-sep"] {
+        color: rgba(244, 244, 245, 0.55);
+      }
+    </style>
+
+    <div
+      id="13-end-card-ground"
+      class="clip 13-end-card-ground"
+      data-start="0"
+      data-duration="5.81"
+      data-track-index="0"
+    ></div>
+
+    <div id="13-end-card-glow" class="13-end-card-glow"></div>
+
+    <div id="13-end-card-mark-letters" class="13-end-card-mark" aria-label="leapcast">
+      <div id="13-end-card-mark-letters-inner" class="13-end-card-mark-inner">
+        <svg
+          viewBox="0 0 175 57"
+          width="960"
+          height="312.686"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path d="M2.86769 41.125H8.92619L14.9039 7.19745H8.84541L2.86769 41.125Z" fill="#C96442" />
+          <path
+            d="M25.8884 41.125L26.9386 35.0665H18.4566L18.9009 32.6431H27.3828L31.2199 10.8325H16.6795L11.348 41.125H25.8884ZM24.0709 16.891L22.3745 26.5846H19.9511L21.6475 16.891H24.0709Z"
+            fill="#C96442"
+          />
+          <path
+            d="M33.6401 10.8325L32.5496 16.891H41.0315L40.6276 19.3144H32.1457L28.3087 41.125H42.8491L48.1805 10.8325H33.6401ZM35.4173 35.0665L37.1137 25.3729H39.5371L37.8407 35.0665H35.4173Z"
+            fill="#C96442"
+          />
+          <path
+            d="M51.3278 41.125H59.8097L65.1412 10.8325H50.6008L44.6231 44.7601H50.6816L51.3278 41.125ZM55.5687 16.891H57.9921L54.8013 35.0665H52.3779L55.5687 16.891Z"
+            fill="#C96442"
+          />
+          <path
+            d="M69.3386 35.0665L72.5294 16.891H74.9528L73.7007 24.1612H79.7592L82.1018 10.8325H67.5614L62.2299 41.125H76.7703L79.3149 26.5443H73.2564L71.762 35.0665H69.3386Z"
+            fill="#C96442"
+          />
+          <path
+            d="M84.5221 10.8325L83.4315 16.891H91.9134L91.5095 19.3144H83.0276L79.1906 41.125H93.731L99.0625 10.8325H84.5221ZM86.2992 35.0665L87.9956 25.3729H90.419L88.7226 35.0665H86.2992Z"
+            fill="#C96442"
+          />
+          <path
+            d="M116.023 10.8325H101.483L98.2515 29.008H106.733L105.683 35.0665H103.26L103.906 31.4314H97.8476L96.1512 41.125H110.692L113.882 22.9495H105.401L106.451 16.891H108.874L108.268 20.5261H114.327L116.023 10.8325Z"
+            fill="#C96442"
+          />
+          <path
+            d="M120.221 35.0665L123.411 16.891H131.893L132.984 10.8325H124.502L125.148 7.19745H119.09L113.112 41.125H127.652L131.489 19.2741H125.431L122.644 35.0665H120.221Z"
+            fill="#C96442"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <div id="13-end-card-mark-beta" class="13-end-card-mark" aria-label="beta">
+      <svg
+        viewBox="0 0 175 57"
+        width="960"
+        height="312.686"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <path
+          d="M140.141 40.2529C139.528 40.2529 138.991 40.1216 138.532 39.8589C138.083 39.5962 137.733 39.2295 137.481 38.7588L137.432 40.0559H135.084V28.3982H137.547V32.503C137.776 32.098 138.116 31.7587 138.565 31.4851C139.013 31.2005 139.539 31.0582 140.141 31.0582C140.885 31.0582 141.531 31.2497 142.078 31.6328C142.626 32.005 143.047 32.5359 143.343 33.2255C143.649 33.9151 143.802 34.7251 143.802 35.6555C143.802 36.586 143.649 37.396 143.343 38.0856C143.047 38.7752 142.626 39.3116 142.078 39.6947C141.531 40.0669 140.885 40.2529 140.141 40.2529ZM139.451 38.3647C139.999 38.3647 140.436 38.1294 140.765 37.6587C141.104 37.1771 141.274 36.5093 141.274 35.6555C141.274 34.8017 141.11 34.1395 140.781 33.6688C140.453 33.1872 140.015 32.9464 139.468 32.9464C139.063 32.9464 138.712 33.0558 138.417 33.2748C138.132 33.4827 137.913 33.7892 137.76 34.1942C137.618 34.5992 137.547 35.0863 137.547 35.6555C137.547 36.2138 137.618 36.6954 137.76 37.1004C137.913 37.5054 138.132 37.8174 138.417 38.0363C138.712 38.2553 139.057 38.3647 139.451 38.3647ZM148.466 40.2529C147.568 40.2529 146.786 40.0669 146.118 39.6947C145.461 39.3116 144.947 38.7752 144.574 38.0856C144.213 37.396 144.033 36.586 144.033 35.6555C144.033 34.7251 144.213 33.9206 144.574 33.2419C144.947 32.5523 145.461 32.0159 146.118 31.6328C146.775 31.2497 147.552 31.0582 148.449 31.0582C149.325 31.0582 150.086 31.2497 150.732 31.6328C151.377 32.0159 151.875 32.5633 152.226 33.2748C152.587 33.9863 152.768 34.8346 152.768 35.8197V36.3123H146.578C146.61 37.0129 146.796 37.5328 147.136 37.8721C147.486 38.2115 147.946 38.3811 148.515 38.3811C148.931 38.3811 149.276 38.2936 149.549 38.1184C149.834 37.9433 150.037 37.6751 150.157 37.3139L152.636 37.4617C152.406 38.3374 151.919 39.0215 151.175 39.5141C150.431 40.0067 149.528 40.2529 148.466 40.2529ZM146.578 34.8017H150.239C150.206 34.1559 150.026 33.6743 149.697 33.3568C149.38 33.0394 148.964 32.8807 148.449 32.8807C147.935 32.8807 147.508 33.0504 147.169 33.3897C146.84 33.7181 146.643 34.1888 146.578 34.8017ZM156.841 40.0559C155.933 40.0559 155.265 39.8479 154.838 39.432C154.411 39.0051 154.198 38.3319 154.198 37.4124V29.1864H156.661V37.1169C156.661 37.5438 156.748 37.8338 156.923 37.9871C157.109 38.1403 157.383 38.217 157.744 38.217H158.976V40.0559H156.841ZM152.786 33.0941V31.2552H158.976V33.0941H152.786ZM162.169 40.2529C161.261 40.2529 160.516 40.045 159.936 39.629C159.367 39.2021 159.082 38.611 159.082 37.8557C159.082 37.0785 159.323 36.482 159.805 36.066C160.298 35.6391 161.02 35.3272 161.972 35.1301L164.813 34.5719C164.813 34.0027 164.681 33.5758 164.419 33.2912C164.167 32.9956 163.8 32.8479 163.319 32.8479C162.848 32.8479 162.481 32.9573 162.219 33.1762C161.956 33.3842 161.786 33.6962 161.71 34.1121L159.23 33.9972C159.394 33.0339 159.827 32.306 160.527 31.8134C161.239 31.3099 162.169 31.0582 163.319 31.0582C164.632 31.0582 165.617 31.3701 166.274 31.994C166.942 32.618 167.276 33.532 167.276 34.7361V37.7408C167.276 37.9926 167.314 38.1622 167.391 38.2498C167.478 38.3264 167.604 38.3647 167.768 38.3647H168.015V40.0559C167.938 40.0778 167.812 40.0997 167.637 40.1216C167.473 40.1435 167.309 40.1544 167.144 40.1544C166.794 40.1544 166.466 40.0942 166.159 39.9738C165.864 39.8534 165.623 39.6509 165.437 39.3663C165.251 39.0708 165.158 38.6548 165.158 38.1184L165.371 38.2826C165.262 38.6767 165.065 39.0215 164.78 39.317C164.506 39.6126 164.145 39.8425 163.696 40.0067C163.258 40.1708 162.749 40.2529 162.169 40.2529ZM162.76 38.5618C163.165 38.5618 163.521 38.4851 163.828 38.3319C164.134 38.1677 164.375 37.9324 164.55 37.6259C164.725 37.3194 164.813 36.9581 164.813 36.5422V36.1153L162.81 36.5422C162.416 36.6188 162.115 36.7502 161.907 36.9362C161.71 37.1114 161.611 37.3413 161.611 37.6259C161.611 37.9214 161.71 38.1513 161.907 38.3155C162.104 38.4797 162.388 38.5618 162.76 38.5618Z"
+          fill="#C96442"
+        />
+      </svg>
+    </div>
+
+    <div class="13-end-card-mask 13-end-card-mask-1">
+      <p id="13-end-card-row-1" class="13-end-card-line">Meetings that keep working</p>
+    </div>
+    <div class="13-end-card-mask 13-end-card-mask-2">
+      <p id="13-end-card-row-2" class="13-end-card-line">after the call</p>
+    </div>
+
+    <p id="13-end-card-url" class="13-end-card-url">leapcast.ai</p>
+
+    <p id="13-end-card-price" class="13-end-card-price">
+      From $5/month<span class="13-end-card-sep"> · </span>240 AI minutes included
+    </p>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        "use strict";
+
+        var ID = "13-end-card";
+        var tl = gsap.timeline({ paused: true });
+        window.__timelines = window.__timelines || {};
+        window.__timelines[ID] = tl;
+
+        var el = function (name) {
+          return document.getElementById(ID + "-" + name);
+        };
+        var glow = el("glow");
+        var letters = el("mark-letters");
+        var lettersInner = el("mark-letters-inner");
+        var beta = el("mark-beta");
+        var row1 = el("row-1");
+        var row2 = el("row-2");
+        var url = el("url");
+        var price = el("price");
+        if (!glow || !letters || !lettersInner || !beta || !row1 || !row2 || !url || !price) return;
+
+        // Scene 1 (0.00-1.94): wordmark wipe on the bar-26 impact (hard cut in), glow bloom,
+        // beta pop. The wipe starts at 0.00 on expo.out, so the first letters show by 0.10.
+        tl.fromTo(
+          glow,
+          { opacity: 0, "--end-card-glow": 0.82 },
+          { opacity: 1, "--end-card-glow": 1, duration: 0.99, ease: "power2.out" },
+          0
+        );
+        tl.fromTo(
+          letters,
+          { "--end-card-wipe": 0 },
+          { "--end-card-wipe": 808.4, duration: 0.74, ease: "expo.out" },
+          0
+        );
+        tl.fromTo(
+          lettersInner,
+          { x: -35 },
+          { x: 0, duration: 0.74, ease: "expo.out" },
+          0
+        );
+        tl.fromTo(
+          beta,
+          { opacity: 0, scale: 0.85 },
+          { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" },
+          0.74
+        );
+
+        // Scene 2 (1.94-3.16): line-masked headline on the bar-27 downbeat, URL, price.
+        var rise = function (line, at) {
+          tl.fromTo(line, { yPercent: 100 }, { yPercent: 0, duration: 0.6, ease: "power3.out" }, at);
+          tl.fromTo(line, { opacity: 0 }, { opacity: 1, duration: 0.24, ease: "power1.out" }, at);
+        };
+        rise(row1, 1.94);
+        rise(row2, 2.02);
+
+        tl.fromTo(
+          url,
+          { y: 12, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" },
+          2.44
+        );
+        // The price lands by 3.16 so the lockup is dead still from there.
+        tl.fromTo(
+          price,
+          { y: 12, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.24, ease: "power3.out" },
+          2.92
+        );
+
+        // Scene 3 (3.16-5.81): dead still. No drift, no breathing, no glow pulse, no exit.
+      })();
+    </script>
+  </div>
+</template>

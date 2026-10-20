@@ -16,18 +16,18 @@
           "verticalFormat": "HH\n—\nmm"
         },
         {
-          "id": "omarchy.weather"
+          "id": "omarchy.system-update"
         },
         {
-          "id": "omarchy.system-update"
+          "id": "omarchy.weather"
         }
       ],
       "left": [
         {
-          "id": "omarchy.menu"
+          "id": "omarchy.workspaces"
         },
         {
-          "id": "omarchy.workspaces"
+          "id": "omarchy.menu"
         }
       ],
       "right": [
@@ -35,10 +35,10 @@
           "id": "omarchy.tray"
         },
         {
-          "id": "omarchy.bluetooth"
+          "id": "omarchy.network"
         },
         {
-          "id": "omarchy.network"
+          "id": "omarchy.bluetooth"
         },
         {
           "id": "omarchy.audio"

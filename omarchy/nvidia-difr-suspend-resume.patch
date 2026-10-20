@@ -1,0 +1,85 @@
+From: NVIDIA 595.99.02 (e394a404108a9ce5bba988c1dddf694dabbd4a43)
+Subject: Backport DIFR teardown before suspend and allocation after resume
+
+Source: https://github.com/NVIDIA/open-gpu-kernel-modules/compare/595.71.05...595.99.02
+Explanation: https://github.com/NVIDIA/open-gpu-kernel-modules/pull/1286
+
+Only the released nvkms-evo.c change is backported; this is not the
+unmerged timeout/channel-recovery patch proposed in PR #1286.
+
+--- a/src/nvidia-modeset/src/nvkms-evo.c
++++ b/src/nvidia-modeset/src/nvkms-evo.c
+@@ -5616,6 +5616,26 @@ static void RestoreSorAssignList(NVDispEvoRec *pDispEvo,
+     }
+ }
+ 
++static void AllocDIFRState(NVDevEvoPtr pDevEvo)
++{
++    pDevEvo->pDifrState = nvDIFRAllocate(pDevEvo);
++    if (pDevEvo->pDifrState) {
++        if (!nvRmRegisterDIFREventHandler(pDevEvo)) {
++            nvDIFRFree(pDevEvo->pDifrState);
++            pDevEvo->pDifrState = NULL;
++        }
++    }
++}
++
++static void FreeDIFRState(NVDevEvoPtr pDevEvo)
++{
++    if (pDevEvo->pDifrState) {
++        nvRmUnregisterDIFREventHandler(pDevEvo);
++        nvDIFRFree(pDevEvo->pDifrState);
++        pDevEvo->pDifrState = NULL;
++    }
++}
++
+ NvBool nvResumeDevEvo(NVDevEvoRec *pDevEvo)
+ {
+     struct {
+@@ -5670,11 +5690,14 @@ NvBool nvResumeDevEvo(NVDevEvoRec *pDevEvo)
+         }
+     }
+ 
++    AllocDIFRState(pDevEvo);
++
+     return TRUE;
+ }
+ 
+ void nvSuspendDevEvo(NVDevEvoRec *pDevEvo)
+ {
++    FreeDIFRState(pDevEvo);
+     nvFreeCoreChannelEvo(pDevEvo);
+ }
+ 
+@@ -8841,11 +8864,7 @@ NvBool nvFreeDevEvo(NVDevEvoPtr pDevEvo)
+         return FALSE;
+     }
+ 
+-    if (pDevEvo->pDifrState) {
+-        nvRmUnregisterDIFREventHandler(pDevEvo);
+-        nvDIFRFree(pDevEvo->pDifrState);
+-        pDevEvo->pDifrState = NULL;
+-    }
++    FreeDIFRState(pDevEvo);
+ 
+     if (pDevEvo->pNvKmsOpenDev != NULL) {
+         /*
+@@ -9038,17 +9057,7 @@ NVDevEvoPtr nvAllocDevEvo(const struct NvKmsAllocDeviceRequest *pRequest,
+ 
+     status = NVKMS_ALLOC_DEVICE_STATUS_SUCCESS;
+ 
+-    /*
+-     * We can't allocate DIFR state if h/w doesn't support it. Only register
+-     * event handlers with DIFR state.
+-     */
+-    pDevEvo->pDifrState = nvDIFRAllocate(pDevEvo);
+-    if (pDevEvo->pDifrState) {
+-        if (!nvRmRegisterDIFREventHandler(pDevEvo)) {
+-            nvDIFRFree(pDevEvo->pDifrState);
+-            pDevEvo->pDifrState = NULL;
+-        }
+-    }
++    AllocDIFRState(pDevEvo);
+ 
+     /* fall through */
+ 

@@ -44,6 +44,7 @@ Focus on:
 NEVER use generic AI-generated aesthetics like:
 - Overused font families (Inter, Roboto, Arial, system fonts)
 - Cliched color schemes (particularly purple gradients on white backgrounds)
+- Side-stripe borders: a thick or colored border on only some sides of a rounded card, tab or callout (`border-left: 4px solid`, `border-l-4`, a mismatched `border-b-2`). Mixed sides meet at a diagonal and taper around the radius. Use one uniform border; show state with background, weight or a separate indicator element
 - Predictable layouts and component patterns
 - Cookie-cutter design that lacks context-specific character
 

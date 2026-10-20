@@ -1,0 +1,68 @@
+{
+  "_comment": "Example args for the design/build/film-review/gate workflows, filled with the real Leapcast values. Copy, then replace product/music/screens/angles for the next product. <scratch> = THIS session's scratchpad: re-clone the skill library each session (SKILL step 0.3). browser = the HYPERFRAMES_BROWSER_PATH exported in SKILL step 0.5. harness = <args.project>/tools/preview-frame.mjs as an absolute path (tools/ copied in step 0.6). product.theme = 'dark' | 'light' (the film's ground). music.bed = make-audio --out; music.bed_lufs = integrated LUFS of the bed (SKILL step 1, Music). frames = contents of .hyperframes/frames.json (node <skill>/tools/frames-json.mjs STORYBOARD.md). film-review adds render; gate adds current/previous/changes/complaints/polish.",
+  "project": "/home/bikash/product-demos/leapcast",
+  "skills": "<scratch>/hyperframes-src/skills",
+  "browser": "<HYPERFRAMES_BROWSER_PATH from SKILL step 0.5>",
+  "hf": "0.8.73",
+  "scratch": "<scratch>",
+  "harness": "/home/bikash/product-demos/leapcast/tools/preview-frame.mjs",
+  "product": {
+    "name": "Leapcast",
+    "theme": "dark",
+    "url": "leapcast.ai",
+    "what": "a browser-based meeting workspace that turns every live conversation into summaries, decisions, action items, searchable knowledge and follow-through.",
+    "assistant": "Ori (pink #FC097F S-curved hourglass mark; pink ONLY on Ori)",
+    "message": "Meetings that keep working after the call",
+    "endcard": "the leapcast wordmark lockup + beta tag, \"Meetings that keep working after the call\", leapcast.ai, \"From $5/month · 240 AI minutes included\"",
+    "brand_rules": "Terracotta #D73D13 is the ONLY accent (punches), #C96442 for UI/wordmark, #D97F60 tint; Ori pink #FC097F only on Ori; canvas #0C0B0E; never purple/blue AI gradients; Schibsted Grotesk headlines, Inter UI.",
+    "design_notes": "canvas/bg #0C0B0E, surface #17191A, card #202124, raised #262624, hairline rgba(255,255,255,.10), text #F4F4F5, text-muted #C3C0B6, text-dim ~55% white, terracotta #D73D13 / soft #C96442 / tint #D97F60 / glow 14%, ori-pink #FC097F + ori-glow, success #3FA65A, record-red #E5484D. Fonts: assets/fonts/InterVariable.woff2 (100 900), InterVariable-Italic.woff2, SchibstedGrotesk-latin.woff2 (400 900). The wordmark SVG ships cream fills — recolor to #C96442.",
+    "continuity": "F1/F12 bookend (same room-card framing + glow), tile outlines F2→F3→F4, the room world F5→F6 (no visible cut), the lost action-item ghosts (F3 vanish points = F8 start points)"
+  },
+  "canvas": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "ground": "#0c0b0e"
+  },
+  "music": {
+    "file": "assets/music/deep-urban.mp3",
+    "name": "Mixkit \"Deep Urban\" (id 623, free license)",
+    "bpm": 124,
+    "beat_s": 0.484,
+    "bar_s": 1.935,
+    "drop_bar": 8,
+    "drop_s": 15.48,
+    "total_bars": 29,
+    "total_s": 56.12,
+    "energy": "quiet 0–5 s, builds 5–15 s, full energy from the bar-8 drop (15.48 s) to the end",
+    "beats_json": "beats/assets/music/deep-urban.mp3.json",
+    "bed": "assets/music/leapcast-bed.m4a",
+    "bed_lufs": -10.1
+  },
+  "screens": [
+    "capture/assets/app/hero_img_1_dark.webp",
+    "capture/assets/app/hero_img_2_dark.webp",
+    "capture/assets/app/hero_img_3_dark.webp",
+    "capture/assets/app/hero_img_4_dark.webp",
+    "capture/assets/app/hero_img_5_dark.webp",
+    "capture/assets/app/hero_img_6_dark.webp",
+    "capture/assets/app/meeting-avatars-recording.png",
+    "capture/assets/app/hub-center.png",
+    "capture/assets/brand/og-dark.png"
+  ],
+  "angles": [
+    {
+      "key": "statement-led",
+      "brief": "ANGLE 1 — Statement-led (Linear-style). Big display statements on near-black carry the film; each claim is proved by a real product shot that pushes in / masks / parallaxes under it. Ends on the wordmark lockup."
+    },
+    {
+      "key": "product-led-camera",
+      "brief": "ANGLE 2 — Product-led camera journey. One continuous dark world of real screens; the camera dives through the live room, into the assistant, out to the post-meeting outputs, library and analytics. Copy is small eyebrows and one big line at the drop."
+    },
+    {
+      "key": "before-after",
+      "brief": "ANGLE 3 — Before/after. Dramatize the problem first (a meeting ends, everything said scatters and fades), flip it at the drop with the product, then the outputs cascade. Close with pricing + CTA."
+    }
+  ],
+  "sfx_list": "chime 2.50s · click 0.37s · click-soft 0.37s (same file as click) · error 1.62s · glitch-1 2.64s · glitch-2 3.50s · glitch-3 3.10s · impact-bass-1 2.12s · impact-bass-2 2.59s · key-press 0.40s · notification 2.46s · ping 1.32s · pop 0.72s · riser 10.03s · sparkle 1.80s · typing 1.50s · whoosh-cinematic 5.54s · whoosh 0.57s · whoosh-short 0.57s"
+}

@@ -3,6 +3,18 @@
 The `omarchy/` directory is documentation and manually applied machine-specific
 fixes. It is intentionally excluded from GNU Stow by `install.sh`.
 
+## ProArt P16 NVIDIA Freezes
+
+See [the RCA, released driver backport, verification, and rollback](nvidia-difr-rca.md).
+The patch targets NVIDIA 610.57.04 on the ProArt P16 H7606WW and Omarchy kernels
+only. It is manually installed into `/etc/dkms/`, never deployed by dotfile sync
+or the portable installer. Other laptop models are guarded out even if the
+config is copied manually.
+
+After rebooting this ProArt into `linux-omarchy`, run
+`~/dotfiles/omarchy/check-nvidia-difr.sh` to verify it is loaded.
+Cross-machine safety check: `python3 ~/dotfiles/omarchy/test-nvidia-difr-portability.py`.
+
 ## AMD ProArt P16 Suspend
 
 The ProArt P16 keeps the machine-local Limine parameter documented in the
@@ -15,6 +27,24 @@ gpiolib_acpi.ignore_interrupt=AMDI0030:00@16
 The optional `fan-suspend.service` and `/usr/local/bin/fan-suspend.sh` were
 removed because their ASUS hwmon writes failed. They are not portable dotfiles
 and must not be installed on the Intel laptop.
+
+## Locking While Plugged In
+
+With the lid closed, locking turns off the external display after five seconds.
+Logind counts only enabled external displays, so display power-off can remove
+its docked exemption and trigger real suspend, disconnecting running agents.
+
+`30-lid-on-ac.conf` ignores lid-triggered sleep on AC only. Battery lid-sleep,
+manual suspend, and screen locking remain unchanged. Apply manually:
+
+```sh
+sudo install -Dm644 ~/dotfiles/omarchy/30-lid-on-ac.conf /etc/systemd/logind.conf.d/30-lid-on-ac.conf
+sudo systemctl reload systemd-logind
+busctl get-property org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager HandleLidSwitchExternalPower
+```
+
+Expected: `s "ignore"`. Reloading does not restart the desktop session.
+Undo: remove the installed drop-in and reload logind.
 
 ## Screenshare
 
