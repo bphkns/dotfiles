@@ -1,0 +1,21 @@
+claude/.claude/settings.json
+  s_f33fc0b1427ff2::t_c47fd02cd735d6 55
+claude/.claude/statusline-command.sh
+  s_f33fc0b1427ff2::t_06d7c95d5f362a 1-53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "adc4bd8930662f2560d0e89a968f3309bc69986f",
+  "prompts": {},
+  "sessions": {
+    "s_f33fc0b1427ff2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "69cf1da1-12a1-4501-93d0-d27e1336f3fe",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
