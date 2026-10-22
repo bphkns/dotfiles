@@ -52,7 +52,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "npx -y ccstatusline@latest",
+    "command": "bash /home/bikash/.claude/statusline-command.sh",
     "padding": 0
   },
   "enabledPlugins": {
