@@ -7,6 +7,9 @@
           "id": "omarchy.indicators"
         },
         {
+          "id": "njpatel.omapager"
+        },
+        {
           "id": "omarchy.keyboard-layout"
         },
         {
@@ -20,11 +23,20 @@
         },
         {
           "id": "omarchy.weather"
+        },
+        {
+          "id": "omarchy.agents"
+        },
+        {
+          "id": "omarchy.microphone"
         }
       ],
       "left": [
         {
           "id": "omarchy.workspaces"
+        },
+        {
+          "id": "omarchy.active-window"
         },
         {
           "id": "omarchy.menu"
@@ -35,10 +47,19 @@
           "id": "omarchy.tray"
         },
         {
-          "id": "omarchy.network"
+          "id": "io.github.jhaney3.bluetooth-modes"
         },
         {
-          "id": "omarchy.bluetooth"
+          "id": "io.github.mb-jambon.omapods"
+        },
+        {
+          "id": "daferia.lid-sleep"
+        },
+        {
+          "id": "io.github.omarchy-asus.panel"
+        },
+        {
+          "id": "omarchy.network"
         },
         {
           "id": "omarchy.audio"
@@ -58,6 +79,20 @@
     "lock": 300,
     "screensaver": 150
   },
-  "plugins": [],
-  "version": 1
+  "plugins": [
+    {
+      "id": "renanmt.switch-magic"
+    },
+    {
+      "id": "io.github.smoothpixels.lock-designs"
+    }
+  ],
+  "version": 1,
+  "disabledPlugins": [
+    "omarchy.notifications",
+    "omarchy.lock"
+  ],
+  "cloneSourceRestores": [
+    "io.github.smoothpixels.lock-designs"
+  ]
 }

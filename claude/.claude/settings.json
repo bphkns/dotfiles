@@ -62,7 +62,8 @@
     "plugin-dev@claude-plugins-official": true,
     "cc-plugin-you-should-know@builtin": true,
     "slack@claude-plugins-official": true,
-    "cloudflare@cloudflare": true
+    "cloudflare@cloudflare": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "plannotator": {
