@@ -45,6 +45,18 @@ PORTABLE_PACKAGES=(
 
 NON_STOW_DIRECTORIES=(agents docs omarchy scripts)
 
+# Git-managed Omarchy shell plugins that omarchy-shell's shell.json uses, as
+# "<plugin id> <git url>". The plugin code is not stowed; it is cloned.
+OMARCHY_SHELL_PLUGINS=(
+	"daferia.lid-sleep https://github.com/Daferia/omarchy-lid-sleep.git"
+	"io.github.jhaney3.bluetooth-modes https://github.com/jhaney3/omarchy-bluetooth-modes.git"
+	"io.github.mb-jambon.omapods https://github.com/MB-JAMBON/omarchy-pods.git"
+	"io.github.omarchy-asus.panel https://github.com/omarchy-asus/omarchy-asus-plugin.git"
+	"io.github.smoothpixels.lock-designs https://github.com/SmoothPixels/lock-designs.git"
+	"njpatel.omapager https://github.com/njpatel/omapager.git"
+	"renanmt.switch-magic https://github.com/renanmt/switch-magic.git"
+)
+
 dry_run=0
 backup_conflicts=0
 backed_up=0
@@ -295,6 +307,23 @@ link_omarchy_nvim_theme() {
 	ln -s -- "$source" "$target"
 }
 
+add_omarchy_shell_plugins() {
+	local plugins_dir="$HOME/.config/omarchy/plugins"
+	local entry id url
+
+	if ! command -v omarchy >/dev/null 2>&1; then
+		warn "Omarchy not found; skipped shell plugins"
+		return
+	fi
+
+	for entry in "${OMARCHY_SHELL_PLUGINS[@]}"; do
+		read -r id url <<<"$entry"
+		[[ -e $plugins_dir/$id ]] && continue
+		log "adding Omarchy shell plugin $id"
+		omarchy plugin add "$url" --yes || warn "could not add $id from $url"
+	done
+}
+
 load_shared_stow_ignores() {
 	local ignore_file="$DOTFILES_DIR/.stow-local-ignore"
 	local pattern
@@ -430,6 +459,10 @@ fi
 
 if package_selected git; then
 	ensure_git_include
+fi
+
+if package_selected omarchy-shell; then
+	add_omarchy_shell_plugins
 fi
 
 if ((backed_up)); then

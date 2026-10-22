@@ -55,6 +55,11 @@ Install or refresh only selected packages by naming them:
 ./install.sh --backup ai-skills herdr hypr-bindings omarchy-shell mise nvim ghostty
 ```
 
+With `omarchy-shell`, the script also clones the shell plugins that
+`shell.json` uses (`OMARCHY_SHELL_PLUGINS` in `install.sh`) when they are
+missing, with `omarchy plugin add --yes`. Add a plugin's id and git URL there
+when you add it to the bar.
+
 The script links configuration; it does not install every application. Create
 the private shell environment from the secret-free template and fill it only
 with newly rotated credentials:
