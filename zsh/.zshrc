@@ -47,6 +47,9 @@ fi
 autoload -Uz compinit
 compinit
 
+# Complete the `omarchy` dispatcher (_omarchy), not its omarchy-* binaries, as Omarchy's Bash setup does.
+zstyle ':completion:*:-command-:*:commands' ignored-patterns 'omarchy-*'
+
 # Zinit
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 if [[ ! -f "$ZINIT_HOME/zinit.zsh" && -n "${commands[git]}" ]]; then
@@ -209,3 +212,6 @@ export PATH=$PATH:$HOME/.local/opt/go/bin
 # Keep Mise-managed tools ahead of paths added by installers above.
 [[ -f "$_mise_activate" ]] && source "$_mise_activate"
 [[ -d "$HOME/.pulumi/bin" ]] && export PATH="$PATH:$HOME/.pulumi/bin"
+
+# clauth completions
+[[ -f "$HOME/.clauth/completions/clauth.zsh" ]] && source "$HOME/.clauth/completions/clauth.zsh"

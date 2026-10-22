@@ -1,0 +1,130 @@
+#compdef omarchy
+# Completion for the omarchy dispatcher, built from `omarchy commands --json`
+# (Omarchy ships Bash completion only). Command data is read once per shell.
+
+_omarchy_load() {
+  (( ${+_omarchy_summary} )) && return 0
+  (( ${+commands[omarchy]} && ${+commands[jq]} )) || return 1
+  typeset -gA _omarchy_summary _omarchy_args
+  local route summary args line name desc key
+  while IFS=$'\x1f' read -r route summary args; do
+    _omarchy_summary[$route]=$summary
+    _omarchy_args[$route]=$args
+  done < <(omarchy commands --json 2>/dev/null | jq -r '.commands[] | .summary as $s | (.args // "") as $a | .routes[] | [., $s, $a] | join("\u001f")')
+  # Groups have no entry of their own; their summaries come from `omarchy --help`.
+  for line in "${(@f)$(omarchy --help 2>/dev/null | sed -n '/^Groups:/,/^$/p')}"; do
+    [[ $line == '  '[^\ ]* ]] || continue
+    read -r name desc <<<"$line"
+    key="omarchy $name"
+    [[ -n ${_omarchy_summary[$key]-} ]] || _omarchy_summary[$key]=$desc
+  done
+  key='omarchy commands'
+  [[ -n ${_omarchy_summary[$key]-} ]] || _omarchy_summary[$key]='List all commands'
+  [[ -n ${_omarchy_args[$key]-} ]] || _omarchy_args[$key]='[--all] [--json] [--markdown] [--check]'
+}
+
+# Sets reply to the positional tokens of one args alternative, dropping flags.
+_omarchy_positionals() {
+  reply=()
+  local tok skip=0
+  for tok in ${(s: :)1}; do
+    if (( skip )); then
+      [[ $tok == *\] ]] && skip=0
+      continue
+    fi
+    if [[ $tok == -* || $tok == \[-* ]]; then
+      [[ $tok == \[-* && $tok != *\] ]] && skip=1
+      continue
+    fi
+    reply+=("$tok")
+  done
+}
+
+# Whether an args token (literal, <placeholder> or <a|b> choice) accepts a word.
+_omarchy_accepts() {
+  local tok=$1
+  if [[ $tok != [\<\[]*[\>\]] ]]; then
+    [[ $tok == "$2" ]]
+    return
+  fi
+  tok=${${tok#?}%?}
+  [[ $tok == *\|* ]] || return 0
+  (( ${${(s:|:)tok}[(Ie)$2]} ))
+}
+
+# Offers a command's flags, or the choices its args allow after the given words.
+_omarchy_complete_args() {
+  local args=${_omarchy_args[$1]-}
+  [[ -n $args ]] || return 1
+  shift
+  local -a given=("$@") spec choices
+  local alt tok i ok ret=1
+
+  if [[ $PREFIX == -* ]]; then
+    for tok in ${(s: :)${args//[\[\]]/ }}; do
+      [[ $tok == --* ]] || continue
+      if [[ $tok == *=* ]]; then
+        compadd -S '' -- "${tok%%=*}=" && ret=0
+      else
+        compadd -- "$tok" && ret=0
+      fi
+    done
+    return ret
+  fi
+
+  for alt in "${(@s: | :)args}"; do
+    _omarchy_positionals "$alt"
+    spec=("${reply[@]}")
+    (( $#spec > $#given )) || continue
+    ok=1
+    for (( i = 1; i <= $#given; i++ )); do
+      _omarchy_accepts "$spec[i]" "$given[i]" || { ok=0; break }
+    done
+    (( ok )) || continue
+    tok=$spec[$#given+1]
+    if [[ $tok != [\<\[]*[\>\]] ]]; then
+      choices+=("$tok")
+      continue
+    fi
+    tok=${${tok#?}%?}
+    [[ $tok == *\|* ]] && choices+=("${(@s:|:)tok}")
+  done
+  (( $#choices )) || return 1
+  compadd -- "${(@u)choices}"
+}
+
+_omarchy() {
+  _omarchy_load || return 1
+
+  local -a typed subs
+  local -A seen
+  local word route next prefix=omarchy cmd=omarchy n ret=1
+  for word in "${(@)words[2,CURRENT-1]}"; do
+    [[ -n $word && $word != -* ]] && typed+=("$word")
+  done
+  (( $#typed )) && prefix+=" ${(j: :)typed}"
+
+  for route in "${(@k)_omarchy_summary}"; do
+    [[ $route == "$prefix "* ]] || continue
+    next=${${route#"$prefix "}%% *}
+    (( ${+seen[$next]} )) && continue
+    seen[$next]=1
+    subs+=("${next//:/\\:}:${_omarchy_summary[$prefix $next]-}")
+  done
+  (( $#subs )) && _describe -t commands 'omarchy command' subs && ret=0
+
+  # The command is the longest route the typed words start with.
+  for (( n = $#typed; n > 0; n-- )); do
+    if (( ${+_omarchy_args[omarchy ${(j: :)typed[1,n]}]} )); then
+      cmd="omarchy ${(j: :)typed[1,n]}"
+      break
+    fi
+  done
+  _omarchy_complete_args "$cmd" "${(@)typed[n+1,-1]}" && ret=0
+
+  # Like Omarchy's Bash completion, fall back to files.
+  (( ret )) && _files && ret=0
+  return ret
+}
+
+_omarchy "$@"
