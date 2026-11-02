@@ -1,0 +1,23 @@
+desktop-defaults/.config/mimeapps.list
+  s_c79d2b207b94c3::t_696dc5a62355b9 55
+nvim/.config/nvim/lazy-lock.json
+  s_c79d2b207b94c3::t_ca390a5ab57396 20-21,33,52,58-59,63
+omarchy-shell/.config/omarchy/shell.json
+  s_c79d2b207b94c3::t_28c93bde7607d5 10,13,40-42,76
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1b9c57051eaeb31abd02b888417be5fc9f4c4e31",
+  "prompts": {},
+  "sessions": {
+    "s_c79d2b207b94c3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "585b4056-5405-4451-a661-c6ec8f237825",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
