@@ -7,10 +7,10 @@
           "id": "omarchy.indicators"
         },
         {
-          "id": "njpatel.omapager"
+          "id": "omarchy.keyboard-layout"
         },
         {
-          "id": "omarchy.keyboard-layout"
+          "id": "njpatel.omapager"
         },
         {
           "format": "dddd HH:mm",
@@ -33,13 +33,13 @@
       ],
       "left": [
         {
-          "id": "omarchy.workspaces"
-        },
-        {
           "id": "omarchy.active-window"
         },
         {
           "id": "omarchy.menu"
+        },
+        {
+          "id": "omarchy.workspaces"
         }
       ],
       "right": [
@@ -73,7 +73,7 @@
       ]
     },
     "position": "top",
-    "transparent": true
+    "transparent": false
   },
   "idle": {
     "lock": 300,

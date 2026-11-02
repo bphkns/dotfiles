@@ -52,3 +52,4 @@ x-scheme-handler/codex=chatgpt.desktop
 x-scheme-handler/t3code=t3code-url-handler.desktop
 x-scheme-handler/grokbot=grok-bot.desktop
 x-scheme-handler/sand=grok-bot.desktop
+x-scheme-handler/leapcast=leapcast.desktop
