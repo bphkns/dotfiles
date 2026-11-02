@@ -273,3 +273,14 @@ switch_ascii_input_source_in_prefix = false
 # Maximum scrollback buffer size in bytes retained per pane terminal.
 # Matches Ghostty's default scrollback-limit behavior.
 scrollback_limit_bytes = 10000000
+
+# clauth herdr plugin
+[[keys.command]]
+key = "prefix+a"
+type = "plugin_action"
+command = "clauth.open"
+description = "clauth accounts"
+
+# clauth herdr plugin: `$clauth` renders the account each Claude Code pane burns
+[ui.sidebar.agents.rows_by_agent]
+claude = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent", "$clauth"]]
