@@ -1,5 +1,8 @@
 {
   "mcpServers": {
+    "cloudflare": {
+      "url": "https://mcp.cloudflare.com/mcp"
+    },
     "figma": {
       "url": "https://mcp.figma.com/mcp",
       "auth": "oauth",
