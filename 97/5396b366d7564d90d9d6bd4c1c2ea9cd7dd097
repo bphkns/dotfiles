@@ -1,0 +1,19 @@
+herdr/.config/herdr/config.toml
+  s_0c171ff7d6a7f5::t_9e37fbfc70bfd6 276-286
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "975396b366d7564d90d9d6bd4c1c2ea9cd7dd097",
+  "prompts": {},
+  "sessions": {
+    "s_0c171ff7d6a7f5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "journal",
+        "model": "unknown"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
