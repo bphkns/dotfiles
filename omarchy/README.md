@@ -34,17 +34,22 @@ With the lid closed, locking turns off the external display after five seconds.
 Logind counts only enabled external displays, so display power-off can remove
 its docked exemption and trigger real suspend, disconnecting running agents.
 
-`30-lid-on-ac.conf` ignores lid-triggered sleep on AC only. Battery lid-sleep,
-manual suspend, and screen locking remain unchanged. Apply manually:
+`90-lid-on-ac.conf` ignores lid-triggered sleep on AC only. It must load after
+the lid-sleep plugin's `30-lid-sleep.conf`, which also sets the AC action and
+would override the old `30-lid-on-ac.conf`. Battery lid-sleep, manual suspend,
+and screen locking remain unchanged. The plugin's docked-display exemption
+still keeps the laptop awake with an active external monitor, even on battery.
+Apply manually:
 
 ```sh
-sudo install -Dm644 ~/dotfiles/omarchy/30-lid-on-ac.conf /etc/systemd/logind.conf.d/30-lid-on-ac.conf
+sudo install -Dm644 ~/dotfiles/omarchy/90-lid-on-ac.conf /etc/systemd/logind.conf.d/90-lid-on-ac.conf
+sudo rm -f /etc/systemd/logind.conf.d/30-lid-on-ac.conf
 sudo systemctl reload systemd-logind
 busctl get-property org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager HandleLidSwitchExternalPower
 ```
 
 Expected: `s "ignore"`. Reloading does not restart the desktop session.
-Undo: remove the installed drop-in and reload logind.
+Undo: remove `/etc/systemd/logind.conf.d/90-lid-on-ac.conf` and reload logind.
 
 ## Screenshare
 
