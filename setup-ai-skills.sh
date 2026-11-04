@@ -164,10 +164,19 @@ fi
 # canonical ~/.agents/skills directory directly or are linked by the skills CLI.
 mkdir -p "$HOME/.claude/skills"
 cloudflare_plugin="$HOME/.claude/plugins/cache/cloudflare/cloudflare"
+claude_skip_file="$DOTFILES_DIR/ai-skills/claude-skills-skip.txt"
 for source in "$HOME/.agents/skills"/*; do
 	[[ -d $source || -L $source ]] || continue
 	name="${source##*/}"
 	target="$HOME/.claude/skills/$name"
+
+	# Kept out of Claude Code to keep its skill list small.
+	if [[ -f $claude_skip_file ]] && grep -qxF -- "$name" "$claude_skip_file"; then
+		if [[ -L $target ]]; then
+			rm -- "$target"
+		fi
+		continue
+	fi
 
 	# Claude Code already has this skill from the Cloudflare plugin.
 	if compgen -G "$cloudflare_plugin/*/skills/$name" >/dev/null; then

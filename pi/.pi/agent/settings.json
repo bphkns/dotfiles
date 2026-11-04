@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "1.4.0",
+  "lastChangelogVersion": "1.5.0",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-6.1-sol",
   "defaultThinkingLevel": "xhigh",
@@ -54,5 +54,12 @@
   "tuiMode": "fullscreen",
   "fullscreenExitOutput": "resume-hint",
   "fullscreenScrollbar": "auto",
-  "treeFilterMode": "all"
+  "treeFilterMode": "all",
+  "extensionChangelogVersions": {
+    "{\"source\":\"npm:pi-web-access\",\"scope\":\"user\"}": "0.46.0",
+    "{\"source\":\"npm:pi-powerline-footer\",\"scope\":\"user\"}": "0.22.0",
+    "{\"source\":\"npm:@sherif-fanous/pi-rtk\",\"scope\":\"user\"}": "0.7.0",
+    "{\"source\":\"npm:pi-mcp-adapter@3.3.0\",\"scope\":\"user\"}": "3.3.0",
+    "{\"source\":\"npm:pi-annotate\",\"scope\":\"user\"}": "0.5.2"
+  }
 }

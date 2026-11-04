@@ -101,6 +101,24 @@ omarchy restart tmux
 systemctl --user restart xdg-desktop-portal-hyprland xdg-desktop-portal
 ```
 
+## AI configuration
+
+Claude settings in `claude/.claude/settings.json` set effort to `high`, including
+`CLAUDE_CODE_EFFORT_LEVEL` so the level applies across models and subagents.
+Codex and Pi keep their own reasoning levels.
+
+Chrome DevTools MCP runs as `npx -y chrome-devtools-mcp@latest`. Its portable
+entries live in `codex/.codex/config.toml` and
+`pi/.pi/agent/mcp-adapter.json` (Pi uses `pi-mcp-adapter`). Claude keeps user MCP
+servers in its machine-local `~/.claude.json`; register it on each machine:
+
+```bash
+claude mcp add --scope user chrome-devtools -- npx -y chrome-devtools-mcp@latest
+```
+
+Restart Claude and Codex, and run `/reload` in Pi after changing MCP config.
+The `@latest` tag intentionally follows upstream releases.
+
 ## ProArt P16 hardware safety
 
 The portable `hypr-bindings` package installs only personal Lua shortcuts.

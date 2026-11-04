@@ -72,6 +72,5 @@
   },
   "autoshare": false,
   "autoupdate": false,
-  "plugin": ["@ex-machina/opencode-anthropic-auth"],
   "instructions": ["/home/bikash/.config/opencode/instructions/global.md"]
 }

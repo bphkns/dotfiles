@@ -21,3 +21,14 @@
 - anti slop UI
 - polish UI
 - no hacks and shortcuts
+
+## Verification
+
+- Verify over review: prove a change works for real (relevant tests, drive the app, call the endpoint, query the DB, read logs) and report the evidence. Say what couldn't be verified.
+- Review agents are optional; use one only for risky changes (money, migrations, auth, prod data). No max-effort review by default.
+
+## Tests
+
+- Add a test only for logic that can really regress: state machines, money, parsing, permissions, a fixed bug.
+- No tests for wiring, trivial mappers, markup/snapshots, or mock-heavy tests restating the implementation. No coverage-driven tests.
+- Prefer one real end-to-end check over many shallow unit tests. Deleting low-value tests is welcome; slow CI is a real cost.
