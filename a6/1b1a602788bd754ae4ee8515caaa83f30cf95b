@@ -1,0 +1,40 @@
+claude/.claude/settings.json
+  s_383050fdfd8970::t_7b031d02cf407f 3-4
+  s_8007d3f607135a::t_74d24702d41251 21,64,67,73,109-113,120
+pi/.pi/agent/mcp-adapter.json
+  s_383050fdfd8970::t_108adb7a9903ad 3-6
+README.md
+  s_383050fdfd8970::t_17b16b1951361b 104-121
+codex/.codex/config.toml
+  s_383050fdfd8970::t_046cf7518f5dc9 59-62
+ai-skills/claude-skills-skip.txt
+  s_8007d3f607135a::t_7f224d8014b83a 1-74
+opencode/.config/opencode/instructions/global.md
+  s_8007d3f607135a::t_b3649b902e07bb 24-34
+setup-ai-skills.sh
+  s_8007d3f607135a::t_47622ccb19de21 167,173-180
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a61b1a602788bd754ae4ee8515caaa83f30cf95b",
+  "prompts": {},
+  "sessions": {
+    "s_383050fdfd8970": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1a4c6-e2e5-75cf-bf6a-fe7863bbd733",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_8007d3f607135a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2331b55c-cc66-44ab-95f3-2f024ea0b3b0",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
