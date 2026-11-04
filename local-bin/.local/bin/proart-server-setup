@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+# Makes the ProArt run as an always-on home server that recovers from network drops,
+# power cuts and reboots. Run once with sudo; safe to re-run:
+#   sudo ~/.local/bin/proart-server-setup
+#
+# Disk unlock stays a typed passphrase, so after a reboot or full power-off someone must
+# type it at the laptop. Everything else comes back without a login.
+set -euo pipefail
+
+if [ "$EUID" -ne 0 ]; then
+  echo "Run with sudo." >&2
+  exit 1
+fi
+
+USER_NAME="${SUDO_USER:-bikash}"
+HERE="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+
+step() { printf '\n== %s\n' "$*"; }
+
+step "Start $USER_NAME's services at boot without a login (linger)"
+loginctl enable-linger "$USER_NAME"
+
+step "Keep running with the lid closed on battery (power cut)"
+cat >/etc/systemd/logind.conf.d/95-server-lid.conf <<'EOF'
+# Home server: never sleep on lid close. 90-lid-on-ac.conf already ignores it on AC.
+[Login]
+HandleLidSwitch=ignore
+EOF
+systemctl kill -s HUP systemd-logind
+
+step "Hibernate at 5% battery instead of dying (power cut longer than the battery)"
+cat >/etc/UPower/UPower.conf.d/90-server.conf <<'EOF'
+[UPower]
+UsePercentageForPolicy=true
+PercentageLow=20.0
+PercentageCritical=8.0
+PercentageAction=5.0
+CriticalPowerAction=Hibernate
+EOF
+systemctl restart upower
+
+step "Network watchdog (every minute)"
+install -m 755 "$HERE/net-watchdog" /usr/local/bin/net-watchdog
+cat >/etc/systemd/system/net-watchdog.service <<'EOF'
+[Unit]
+Description=Restart networking when the router is unreachable
+After=NetworkManager.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/net-watchdog
+EOF
+cat >/etc/systemd/system/net-watchdog.timer <<'EOF'
+[Unit]
+Description=Check the network every minute
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=1min
+AccuracySec=10s
+
+[Install]
+WantedBy=timers.target
+EOF
+systemctl daemon-reload
+systemctl enable --now net-watchdog.timer
+
+step "Wi-Fi reconnects on its own"
+for conn in $(nmcli -t -f NAME,TYPE connection show | awk -F: '$2 == "802-11-wireless" { print $1 }'); do
+  nmcli connection modify "$conn" connection.autoconnect yes connection.autoconnect-retries 0
+done
+
+step "Tailscale (reconnects on its own)"
+pacman -S --needed --noconfirm tailscale >/dev/null
+systemctl enable --now tailscaled
+
+step "Docker at boot"
+systemctl enable --now docker.service
+
+cat <<EOF
+
+Done. By hand, as $USER_NAME:
+
+  sudo tailscale up --ssh                 # approve in the browser
+  # Tailscale admin console > Machines > this laptop > Disable key expiry
+  curl -fsSL https://t3.codes/install.sh | sh
+  t3 up --connect --lan
+  t3 service install
+
+Also check:
+  - BIOS: an option to power on when AC returns (for a power cut longer than the battery)
+  - a small UPS for the Deco and the Airtel box
+  - after any reboot, type the disk passphrase at the laptop
+EOF
