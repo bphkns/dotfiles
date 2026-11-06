@@ -1,0 +1,13 @@
+[Unit]
+Description=Cloudflare tunnel for laptop dev ports (p3000/p5173/p8787.thewebkernel.com, behind Cloudflare Access)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+# Token lives outside dotfiles: ~/.config/cloudflared/bikash-laptop.token (mode 600).
+ExecStart=%h/.local/share/mise/installs/cloudflared/latest/cloudflared tunnel --no-autoupdate run --token-file %h/.config/cloudflared/bikash-laptop.token
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
