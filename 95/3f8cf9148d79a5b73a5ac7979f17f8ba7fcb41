@@ -1,0 +1,27 @@
+local-bin/.local/bin/gws-personal
+  s_fd7add918fd3d3::t_be5b1eaaca52cd 1-7
+local-bin/.local/bin/gws-work
+  s_fd7add918fd3d3::t_407b94e4b1866a 1-7
+local-bin/.local/bin/slack-cli
+  s_fd7add918fd3d3::t_abf31908ba224b 1-4
+opencode/.config/opencode/instructions/global.md
+  s_fd7add918fd3d3::t_aecfc2b9141a3c 35-39
+shell-profile/.config/dotfiles-private/env.sh.example
+  s_fd7add918fd3d3::t_03e66599e69484 14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "953f8cf9148d79a5b73a5ac7979f17f8ba7fcb41",
+  "prompts": {},
+  "sessions": {
+    "s_fd7add918fd3d3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "38a5df5b-3fca-4e59-b749-2925b8ffd782",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
