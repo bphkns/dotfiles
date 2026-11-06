@@ -1,0 +1,19 @@
+hypr-bindings/.config/hypr/bindings.lua
+  s_b953e2e2f7968c::t_23874ea82bffb3 3-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "7d93d69e3a560c85771f27dde08e2576ef118138",
+  "prompts": {},
+  "sessions": {
+    "s_b953e2e2f7968c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bcb1c08c-07a3-4d8d-a0be-f9b28eb43473",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
