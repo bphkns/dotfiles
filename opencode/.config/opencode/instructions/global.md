@@ -32,3 +32,8 @@
 - Add a test only for logic that can really regress: state machines, money, parsing, permissions, a fixed bug.
 - No tests for wiring, trivial mappers, markup/snapshots, or mock-heavy tests restating the implementation. No coverage-driven tests.
 - Prefer one real end-to-end check over many shallow unit tests. Deleting low-value tests is welcome; slow CI is a real cost.
+
+## Slack and Google (any agent)
+
+- Slack (TrueLeap Inc., as Bikash): `slack-cli api <method> key=value`, e.g. `search.messages query="…"`, `conversations.history channel=C…`. Uses `SLACK_USER_TOKEN`. Confirm before posting.
+- Google: `gws-work` (bikash@trueleap.io), `gws-personal` (bphkns@gmail.com). E.g. `gws-work gmail +triage`, `gws-work calendar events list --params '{"calendarId":"primary"}'`; `--help` per service. Confirm before sending mail or changing anything.

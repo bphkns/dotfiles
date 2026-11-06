@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# gws for the personal Google account, with its own OAuth client and tokens.
+unset GOOGLE_WORKSPACE_CLI_CREDENTIALS_FILE
+export GOOGLE_WORKSPACE_CLI_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/gws-personal"
+# File key so background agents work without an unlocked desktop keyring.
+export GOOGLE_WORKSPACE_CLI_KEYRING_BACKEND=file
+exec gws "$@"

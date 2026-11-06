@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Slack CLI under a name that does not clash with the Slack desktop app.
+# `slack-cli api <method> key=value` uses SLACK_USER_TOKEN from dotfiles-private/env.sh.
+exec "$HOME/.slack/bin/slack" --skip-update "$@"
