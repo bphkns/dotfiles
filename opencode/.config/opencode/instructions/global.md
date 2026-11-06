@@ -37,3 +37,8 @@
 
 - Slack (TrueLeap Inc., as Bikash): `slack-cli api <method> key=value`, e.g. `search.messages query="…"`, `conversations.history channel=C…`. Uses `SLACK_USER_TOKEN`. Confirm before posting.
 - Google: `gws-work` (bikash@trueleap.io), `gws-personal` (bphkns@gmail.com). E.g. `gws-work gmail +triage`, `gws-work calendar events list --params '{"calendarId":"primary"}'`; `--help` per service. Confirm before sending mail or changing anything.
+
+## Phone and remote testing of local dev servers
+
+- Always-on tunnel (`devtunnel.service`): `https://p3000|p5173|p8787.thewebkernel.com` → `localhost:<port>`, behind Cloudflare Access (one-time email code; bphkns@gmail.com, bikash@trueleap.io). Host header is rewritten to `localhost`. For another port, add an ingress rule, DNS CNAME and Access hostname on the personal Cloudflare account (`cf` profile `personal`, run from `~/work/thewebkernel`).
+- Leapcast sign-in through the tunnel: before phone tests, add `https://p3000.thewebkernel.com` to `BETTER_AUTH_TRUSTED_ORIGINS` (comma-separated) in `apps/leapcast-public-api/.dev.vars`, restart the local public API, then prove one real sign-in from the phone. Use email-code sign-in; Google sign-in returns to `BETTER_AUTH_URL` (localhost) and fails on a phone. Never commit `.dev.vars`.
