@@ -1,6 +1,7 @@
 -- Personal bindings not provided by Omarchy's Quattro defaults.
 
-o.bind("SUPER + SHIFT + T", "Terminal", { omarchy = "terminal" })
+-- Was: Activity (btop).
+o.rebind("SUPER + SHIFT + T", "Terminal", { omarchy = "terminal" })
 
 -- Was: HEY Calendar.
 hl.unbind("SUPER + SHIFT + C")

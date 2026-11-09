@@ -23,6 +23,7 @@ PORTABLE_PACKAGES=(
 	ghui
 	git
 	herdr
+	herdr-app
 	hypr-bindings
 	lazygit
 	local-bin
