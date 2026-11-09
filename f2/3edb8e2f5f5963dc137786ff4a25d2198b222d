@@ -1,0 +1,19 @@
+nvim/.config/nvim/lua/plugins/navigator.lua
+  s_c690e3ec8ae0f4::t_2b4cf31a4dcac6 27-42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f23edb8e2f5f5963dc137786ff4a25d2198b222d",
+  "prompts": {},
+  "sessions": {
+    "s_c690e3ec8ae0f4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5c0ce00f-2b3e-4cbe-bd49-5402290e546f",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
