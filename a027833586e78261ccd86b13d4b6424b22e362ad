@@ -1,0 +1,29 @@
+pi/.pi/agent/mcp-adapter.json
+  s_da4c55d7987373::t_253286e0570c36 3-5
+pi/.pi/agent/settings.json
+  s_0c171ff7d6a7f5::t_a7fca4224bd483 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a027833586e78261ccd86b13d4b6424b22e362ad",
+  "prompts": {},
+  "sessions": {
+    "s_0c171ff7d6a7f5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "journal",
+        "model": "unknown"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_da4c55d7987373": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a18112-28bd-7691-b954-4a7ba278de99",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

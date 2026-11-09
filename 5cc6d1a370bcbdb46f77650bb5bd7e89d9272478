@@ -1,0 +1,19 @@
+omarchy/README.md
+  s_c773aa306cafad::t_2b209515837425 37-42,45-46,52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5cc6d1a370bcbdb46f77650bb5bd7e89d9272478",
+  "prompts": {},
+  "sessions": {
+    "s_c773aa306cafad": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a18101-2dee-7283-87cc-9ec259077f3e",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

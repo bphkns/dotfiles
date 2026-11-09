@@ -1,0 +1,19 @@
+systemd/.config/systemd/user/devtunnel.service
+  s_fd7add918fd3d3::t_618312821fecd9 1-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "090e63a6bf5fa3e72a27301d1b633a4e55dc07d1",
+  "prompts": {},
+  "sessions": {
+    "s_fd7add918fd3d3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "38a5df5b-3fca-4e59-b749-2925b8ffd782",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

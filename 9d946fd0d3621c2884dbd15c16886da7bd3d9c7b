@@ -1,0 +1,19 @@
+wireplumber/.config/wireplumber/wireplumber.conf.d/bluetooth-a2dp-autoconnect.conf
+  s_7ce8dd59a5027a::t_ee8b26986f11d1 4-8,19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "9d946fd0d3621c2884dbd15c16886da7bd3d9c7b",
+  "prompts": {},
+  "sessions": {
+    "s_7ce8dd59a5027a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8bc35b9f-13fe-4cde-aba5-aa9a09079b6e",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+opencode/.config/opencode/instructions/global.md
+  s_fd7add918fd3d3::t_2ef8bd53813492 40-44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1855e1a15e0c618c48a2ee7dd7161201044ebf9c",
+  "prompts": {},
+  "sessions": {
+    "s_fd7add918fd3d3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "38a5df5b-3fca-4e59-b749-2925b8ffd782",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

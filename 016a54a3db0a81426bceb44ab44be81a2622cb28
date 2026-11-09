@@ -1,0 +1,32 @@
+zsh/.local/share/zsh/completions/_omarchy
+  s_f33fc0b1427ff2::t_9ca2b334eb9019 9,18-19,21-23
+  s_f33fc0b1427ff2::t_6e0045b33eaccc 1-8,10-17,20,24-130
+zsh/.zshrc
+  s_f33fc0b1427ff2::t_6be165c09cdc87 50-52
+  s_f33fc0b1427ff2::t_8e91c9a24ea2b3 217
+  s_58df22664e7a75::t_ec46b7625a775e 215-216
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "016a54a3db0a81426bceb44ab44be81a2622cb28",
+  "prompts": {},
+  "sessions": {
+    "s_58df22664e7a75": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8cd10087-dad1-4225-a35f-5aa82a72d5ab",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_f33fc0b1427ff2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "69cf1da1-12a1-4501-93d0-d27e1336f3fe",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

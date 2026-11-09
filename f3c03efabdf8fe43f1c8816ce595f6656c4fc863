@@ -1,0 +1,50 @@
+docs/ai-skills.md
+  s_03160e1667b794::t_8246bba1ffd232 22
+nvim/.config/nvim/lua/plugins/snacks.lua
+  s_67f62feec50388::t_e75b155059f42c 11,14-20,22-28,40,44-55,57-59
+  s_67f62feec50388::t_b0f680bb86e8c2 13,33-39,41-43,56
+.gitignore
+  s_816ba64ca202b4::t_90495268138d1b 62-65
+pi/.pi/agent/mcp.json
+  s_9016ff06954bcc::t_d255bb4d79f2ae 1-32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "f3c03efabdf8fe43f1c8816ce595f6656c4fc863",
+  "prompts": {},
+  "sessions": {
+    "s_03160e1667b794": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a0706b-14d3-76ee-b2c2-27007af439a3",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_67f62feec50388": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a03cb0-2916-7f0f-9878-4be80be8e585",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_816ba64ca202b4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8d9c9343-10ef-4c57-8df5-3feb62f4e5e3",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_9016ff06954bcc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "df61f61f-50a2-497f-89ea-6d7bc53db93c",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

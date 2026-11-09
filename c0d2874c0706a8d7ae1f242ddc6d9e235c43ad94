@@ -1,0 +1,33 @@
+claude/.claude/settings.json
+  s_58df22664e7a75::t_c4ab9e108b3a4e 65-66
+omarchy-shell/.config/omarchy/shell.toml
+  s_f33fc0b1427ff2::t_ff7f5fd74da5bb 2
+nvim/.config/nvim/lazy-lock.json
+  s_58df22664e7a75::t_ebf3e8bb65996f 20-22,32-33,49,52-53,57-59,63,65
+omarchy-shell/.config/omarchy/shell.json
+  s_58df22664e7a75::t_6b95e07301486c 9-11,26-31,38-40,50,53-62,82-97
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c0d2874c0706a8d7ae1f242ddc6d9e235c43ad94",
+  "prompts": {},
+  "sessions": {
+    "s_58df22664e7a75": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8cd10087-dad1-4225-a35f-5aa82a72d5ab",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_f33fc0b1427ff2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "69cf1da1-12a1-4501-93d0-d27e1336f3fe",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}

@@ -1,0 +1,215 @@
+ai-skills/.agents/skills/launch-film/tools/make-audio.mjs
+  s_c2433085217ad9::t_965c8afee26c21 1-72
+  s_f9e9e45f26f432::t_bd8b6065531f91 73-74
+pi/.pi/agent/extensions/skill-context.ts
+  s_6a87a5b5ad4e62::t_f1698b8d05e0ac 7-10,14,16,19,23-24,28
+  s_10ea6092e80adc::t_12b242f621d782 1-4,6,17,25-27,29-55
+  s_6a87a5b5ad4e62::t_283f72931d3e92 5,11-13,15,18,20-22
+omarchy/README.md
+  s_4a7acd55edd570::t_edd846323de51e 9-16
+  s_4a7acd55edd570::t_b980d3ef5430ef 6-8,17
+  s_840887bd215d1e::t_9bb2e716c7addb 31-47
+  s_b3e001f9debc03::t_0891799ffe436f 48
+ai-skills/.agents/skills/launch-film/workflows/film-review.js
+  s_c2433085217ad9::t_1ce7aa66a31344 1-202
+  s_c2433085217ad9::t_cc92bb326db306 203-218
+ai-skills/.agents/skills/launch-film/tools/master-audio.sh
+  s_c2433085217ad9::t_fde9bbb9ea143a 1-16
+ai-skills/.agents/skills/launch-film/workflows/capture.js
+  s_c2433085217ad9::t_22e2735ee8b175 1-236
+  s_c2433085217ad9::t_8560f4c034260a 237
+ai-skills/.agents/skills/launch-film/workflows/build.js
+  s_c2433085217ad9::t_95887e4a670f90 1-182
+  s_c2433085217ad9::t_271191eb552d77 183-201
+omarchy/nvidia-610.57.04.conf
+  s_4a7acd55edd570::t_d23af13bc45fe1 1-2
+  s_4a7acd55edd570::t_6fceba2d84f665 3-9
+ai-skills/.agents/skills/defensive-css/SKILL.md
+  s_ea5644ad088d3d::t_813f87c7075a36 102-107
+ai-skills/.agents/skills/launch-film/workflows/gate.js
+  s_c2433085217ad9::t_202b5f053cb616 1-131
+  s_c2433085217ad9::t_2ad5a1b434fbf6 132-164
+ai-skills/.agents/skills/launch-film/workflows/design.js
+  s_c2433085217ad9::t_54fa9bab8ba703 1-230
+  s_c2433085217ad9::t_cc4449789d70bb 231-249
+ai-skills/.agents/skills/launch-film/workflows/args.capture.example.json
+  s_c2433085217ad9::t_1ec2efda1dc248 1-43
+ai-skills/.agents/skills/frontend-design/SKILL.md
+  s_ea5644ad088d3d::t_2b0932be0a9800 47
+ai-skills/.agents/skills/launch-film/tools/cue-lift.py
+  s_c2433085217ad9::t_39014f67e9e3d0 1-63
+  s_c2433085217ad9::t_8dab8f609cfe7f 64-66
+pi/patch-rpiv-manifests.py
+  s_f1ef8006e0aaf7::t_18da5d60a32d11 1-18
+omarchy/nvidia-difr-suspend-resume.patch
+  s_4a7acd55edd570::t_9c9e8cd6e02074 1-85
+ai-skills/.agents/skills/launch-film/SKILL.md
+  s_c2433085217ad9::t_1fb269a564cfe0 1-7,9,11-19,21-22,24,26-27,29-31,33,49-52,54-55,57-58,63-64,67-68,77-79,81-86,93-100,102,109-110,131-135,140-142,145-146,148,152-161,163-164,172-179
+  s_c2433085217ad9::t_d8893e16d1c623 8,10,20,23,25,28,32,34-48,53,56,59-62,65-66,69-76,80,87-92,101,111-130,136-139,143-144,147,149-151,162,165-171,180
+  s_c2433085217ad9::t_b675c2f4e9ec5d 103-108
+  s_f9e9e45f26f432::t_f302966e312a21 181-196
+ai-skills/.agents/skills/launch-film/tools/preview-frame.mjs
+  s_c2433085217ad9::t_f903c5e7c0b7cc 1-116
+pi/.pi/agent/mcp-adapter.json
+  s_888d4aceee90d3::t_e70663b7bc1886 1-11
+omarchy/check-nvidia-difr.sh
+  s_4a7acd55edd570::t_9de08bcb30bf6d 1-4,11-37
+  s_4a7acd55edd570::t_80147d3bcd9246 5-10
+ai-skills/.agents/skills/launch-film/tools/frames-json.mjs
+  s_c2433085217ad9::t_efe7931c9421fe 1-40
+  s_c2433085217ad9::t_e43dbfd8e3d218 41-51
+omarchy/test-nvidia-difr-portability.py
+  s_4a7acd55edd570::t_235f91e6adfeda 31,59
+  s_4a7acd55edd570::t_354425a88fc784 1-30,32-58,60-67
+omarchy/nvidia-difr-rca.md
+  s_4a7acd55edd570::t_3ed62f5add109f 1-80,84-93,115-138,141-178,182-199
+  s_4a7acd55edd570::t_43256645db2d1b 81-83,94-114,139-140,179-181
+ai-skills/.agents/skills/launch-film/references/products.md
+  s_c2433085217ad9::t_feac5d03678b69 8-12,14-15,19,21,28,44-54,56-64,66-71,73-75
+  s_c2433085217ad9::t_3308d7c49119ad 1-7,13,16-18,20,22-27,29,43,55,65,72
+  s_c2433085217ad9::t_00e736a5f380ee 30-42
+ai-skills/.agents/skills/launch-film/workflows/args.leapcast.json
+  s_c2433085217ad9::t_a7e08ebc0d762e 1-52
+  s_c2433085217ad9::t_a7206474120679 53-68
+omarchy/30-lid-on-ac.conf
+  s_840887bd215d1e::t_0996c17c754e65 1-3
+ai-skills/.agents/skills/launch-film/references/lessons.md
+  s_c2433085217ad9::t_456c248da1da2d 1-64
+  s_f9e9e45f26f432::t_7012e40618a7d1 65-72
+zsh/.zshrc
+  s_c2a2ce5eac6f19::t_4d39c72c06f643 211
+ai-skills/.agents/skills/launch-film/examples/leapcast/BRIEF.md
+  s_c2433085217ad9::t_8cb4144b817139 1-41
+ai-skills/.agents/skills/launch-film/examples/leapcast/STORYBOARD.md
+  s_c2433085217ad9::t_0d691daec251bc 1-464
+ai-skills/.agents/skills/launch-film/examples/leapcast/capture/extracted/asset-descriptions.md
+  s_c2433085217ad9::t_5df4a0c949a5b9 1-51
+ai-skills/.agents/skills/launch-film/examples/leapcast/capture/extracted/brand-facts.md
+  s_c2433085217ad9::t_d998294b80fe9d 1-36
+ai-skills/.agents/skills/launch-film/examples/leapcast/compositions/frames/05-room-lights-up.html
+  s_c2433085217ad9::t_4f15dae4579ee0 1-415
+ai-skills/.agents/skills/launch-film/examples/leapcast/compositions/frames/08-nothing-lost.html
+  s_c2433085217ad9::t_a8527896a57dbb 1-650
+ai-skills/.agents/skills/launch-film/examples/leapcast/compositions/frames/13-end-card.html
+  s_c2433085217ad9::t_c82e31b9be4697 1-347
+ai-skills/.agents/skills/launch-film/examples/leapcast/frame.md
+  s_c2433085217ad9::t_7bf067f24833aa 1-485
+ai-skills/.agents/skills/launch-film/examples/leapcast/sfx-cues.json
+  s_c2433085217ad9::t_9c7ecf9585babc 1-240
+ai-skills/.agents/skills/launch-film/examples/localize-french.digital-id.js
+  s_c2433085217ad9::t_5d1787f1d3d733 1-86
+mise/.config/mise/config.toml
+  s_2a573c7cd0593a::t_188e7b3d19c80a 22,28-31
+desktop-defaults/.config/mimeapps.list
+  s_c2433085217ad9::t_1ebb4e1e502743 53-54
+nvim/.config/nvim/lazy-lock.json
+  s_c2433085217ad9::t_71672a7cc62aa6 3,8-9,12,15,19-21,25,29,32-33,41,45,49,52,54-55,58-59,63
+omarchy-shell/.config/omarchy/shell.json
+  s_c2433085217ad9::t_305102eb4d332a 19,22,27,30,38,41
+pi/.pi/agent/settings.json
+  s_c2433085217ad9::t_e02b9e5b9a67d6 2,4,12-18,29-32,39-41,56-58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "035aa70afe15036dca446ddd73ec75a8c660327e",
+  "prompts": {},
+  "sessions": {
+    "s_10ea6092e80adc": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a0c76a-8331-74b3-ba10-fb3a6f765373",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_2a573c7cd0593a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "21ed2d75-8f51-42fc-b76c-f76c0b239ce1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_4a7acd55edd570": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a0ad87-dddc-730b-8e9e-481dcaccf47e",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_6a87a5b5ad4e62": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a0ebc7-7f01-76cb-b122-c678ecea73b2",
+        "model": "gpt-6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_840887bd215d1e": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a0f539-429e-7484-a55c-5e73867a1faf",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_888d4aceee90d3": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a0f194-22b5-733f-b84b-14deb1548d25",
+        "model": "gpt-6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_b3e001f9debc03": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6d838210-ca0f-4bd8-8e48-c1cbe3ed87de",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_c2433085217ad9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "baba8483-95bd-4e00-86af-2360679ba2ac",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_c2a2ce5eac6f19": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a0cdaa-4525-7089-909c-a1ff7b6af6f7",
+        "model": "gpt-6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_ea5644ad088d3d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0050db17-3d55-4636-9fb9-b2e38e09ae14",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_f1ef8006e0aaf7": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a0f0f8-7b29-73a8-8a04-aae71d03bd10",
+        "model": "gpt-6-sol"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    },
+    "s_f9e9e45f26f432": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "75cd2de2-941b-4256-b370-8ec7e8f07808",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
