@@ -24,6 +24,22 @@ return {
         "paulbkim-dev/vim-herdr-navigation",
         config = function(plugin)
           dofile(plugin.dir .. "/editor/nvim.lua")
+          -- herdr-app (no $HERDR_PANE_ID; core terminals set $HC_TERMINAL_ID): at a
+          -- split edge, cross into the neighbouring herdr-app pane.
+          if (vim.env.HERDR_PANE_ID or "") ~= "" or (vim.env.HC_TERMINAL_ID or "") == "" then
+            return
+          end
+          local dirs = { h = "left", j = "down", k = "up", l = "right" }
+          for key, dir in pairs(dirs) do
+            vim.keymap.set("n", "<C-" .. key .. ">", function()
+              local prev = vim.api.nvim_get_current_win()
+              vim.cmd("wincmd " .. key)
+              if vim.api.nvim_get_current_win() ~= prev then
+                return
+              end
+              vim.system({ "herdr-app", "do", "pane.go", "--direction", dir })
+            end, { silent = true, noremap = true, desc = "Navigate " .. dir .. " (vim/herdr-app)" })
+          end
         end,
       },
     },
