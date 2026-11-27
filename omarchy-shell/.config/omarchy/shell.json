@@ -24,20 +24,8 @@
               "zone": "Asia/Kolkata"
             },
             {
-              "name": "Tokyo",
-              "zone": "Asia/Tokyo"
-            },
-            {
-              "name": "Los Angeles",
-              "zone": "America/Los_Angeles"
-            },
-            {
-              "name": "New York",
-              "zone": "America/New_York"
-            },
-            {
-              "name": "London",
-              "zone": "Europe/London"
+              "name": "Houston",
+              "zone": "America/Chicago"
             }
           ]
         },
@@ -61,13 +49,16 @@
           "id": "omarchy.tray"
         },
         {
+          "id": "io.github.thisisgm.omapods"
+        },
+        {
           "id": "omarchy.keyboard-layout"
         },
         {
           "id": "omarchy.agents"
         },
         {
-          "id": "omarchy.bluetooth"
+          "id": "ssupt.bluetooth-audio"
         },
         {
           "id": "omarchy.network"
@@ -81,7 +72,8 @@
         {
           "id": "omarchy.power"
         }
-      ]
+      ],
+      "tray": []
     },
     "position": "top"
   },
