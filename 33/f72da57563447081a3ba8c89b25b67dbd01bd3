@@ -1,0 +1,23 @@
+omarchy-shell/.config/omarchy/shell.toml
+  s_bce9d56878959e::t_79671d08ef6fcd 2
+omarchy-shell/.config/omarchy/shell.json
+  s_bce9d56878959e::t_79671d08ef6fcd 3,11-13,15-42,48,64,67,70,86,88-93,98-99
+install.sh
+  s_bce9d56878959e::t_06b2144c36da4e 55,58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "33f72da57563447081a3ba8c89b25b67dbd01bd3",
+  "prompts": {},
+  "sessions": {
+    "s_bce9d56878959e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f16710a2-b9ab-450f-a6ae-a248cdab4fc2",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
