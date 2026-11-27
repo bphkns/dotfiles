@@ -1,0 +1,25 @@
+claude/.claude/settings.json
+  s_153777cd4eeae9::t_d329753fb83041 10-12
+desktop-defaults/.config/mimeapps.list
+  s_153777cd4eeae9::t_999fe2267bd75e 52
+mise/.config/mise/config.toml
+  s_153777cd4eeae9::t_7dfbf2c350e4d6 27
+zed/.config/zed/settings.json
+  s_153777cd4eeae9::t_0f690515c8ad73 33-58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "cae14be7c6465814456f25801c289f7af492a72b",
+  "prompts": {},
+  "sessions": {
+    "s_153777cd4eeae9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "27482e28-22d4-4de1-bb61-fba55c9d31af",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Bikash Phukan <bphkns@gmail.com>"
+    }
+  }
+}
