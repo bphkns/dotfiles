@@ -1,40 +1,54 @@
 {
   "bar": {
-    "centerAnchor": "omarchy.clock",
+    "background": "opaque",
     "layout": {
       "center": [
-        {
-          "id": "omarchy.indicators"
-        },
-        {
-          "id": "omarchy.keyboard-layout"
-        },
-        {
-          "id": "njpatel.omapager"
-        },
         {
           "format": "dddd HH:mm",
           "formatAlt": "d MMMM 'W'ww yyyy",
           "id": "omarchy.clock",
           "verticalFormat": "HH\n—\nmm"
-        },
+        }
+      ],
+      "centerBegin": [
         {
-          "id": "omarchy.system-update"
+          "id": "omarchy.indicators"
+        }
+      ],
+      "centerEnd": [
+        {
+          "id": "omarchy.elsewhen",
+          "cities": [
+            {
+              "name": "Kolkata",
+              "zone": "Asia/Kolkata"
+            },
+            {
+              "name": "Tokyo",
+              "zone": "Asia/Tokyo"
+            },
+            {
+              "name": "Los Angeles",
+              "zone": "America/Los_Angeles"
+            },
+            {
+              "name": "New York",
+              "zone": "America/New_York"
+            },
+            {
+              "name": "London",
+              "zone": "Europe/London"
+            }
+          ]
         },
         {
           "id": "omarchy.weather"
         },
         {
-          "id": "omarchy.agents"
-        },
-        {
-          "id": "omarchy.microphone"
+          "id": "omarchy.system-update"
         }
       ],
       "left": [
-        {
-          "id": "omarchy.active-window"
-        },
         {
           "id": "omarchy.menu"
         },
@@ -47,16 +61,13 @@
           "id": "omarchy.tray"
         },
         {
-          "id": "io.github.jhaney3.bluetooth-modes"
+          "id": "omarchy.keyboard-layout"
         },
         {
-          "id": "io.github.mb-jambon.omapods"
+          "id": "omarchy.agents"
         },
         {
-          "id": "daferia.lid-sleep"
-        },
-        {
-          "id": "io.github.omarchy-asus.panel"
+          "id": "omarchy.bluetooth"
         },
         {
           "id": "omarchy.network"
@@ -72,27 +83,18 @@
         }
       ]
     },
-    "position": "top",
-    "transparent": false
+    "position": "top"
   },
+  "cloneSourceRestores": [
+    "ssupt.bluetooth-audio"
+  ],
+  "disabledPlugins": [
+    "omarchy.bluetooth"
+  ],
   "idle": {
     "lock": 300,
     "screensaver": 150
   },
-  "plugins": [
-    {
-      "id": "renanmt.switch-magic"
-    },
-    {
-      "id": "io.github.smoothpixels.lock-designs"
-    }
-  ],
-  "version": 1,
-  "disabledPlugins": [
-    "omarchy.notifications",
-    "omarchy.lock"
-  ],
-  "cloneSourceRestores": [
-    "io.github.smoothpixels.lock-designs"
-  ]
+  "plugins": [],
+  "version": 1
 }

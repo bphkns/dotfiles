@@ -50,12 +50,12 @@ NON_STOW_DIRECTORIES=(agents docs omarchy scripts)
 # "<plugin id> <git url>". The plugin code is not stowed; it is cloned.
 OMARCHY_SHELL_PLUGINS=(
 	"daferia.lid-sleep https://github.com/Daferia/omarchy-lid-sleep.git"
-	"io.github.jhaney3.bluetooth-modes https://github.com/jhaney3/omarchy-bluetooth-modes.git"
-	"io.github.mb-jambon.omapods https://github.com/MB-JAMBON/omarchy-pods.git"
 	"io.github.omarchy-asus.panel https://github.com/omarchy-asus/omarchy-asus-plugin.git"
 	"io.github.smoothpixels.lock-designs https://github.com/SmoothPixels/lock-designs.git"
+	"io.github.thisisgm.omapods https://github.com/thisisgm/omarchy-pods.git"
 	"njpatel.omapager https://github.com/njpatel/omapager.git"
 	"renanmt.switch-magic https://github.com/renanmt/switch-magic.git"
+	"ssupt.bluetooth-audio https://github.com/ssupt/omarchy-bluetooth-audio.git"
 )
 
 dry_run=0
