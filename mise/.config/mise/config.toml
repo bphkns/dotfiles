@@ -24,7 +24,7 @@ opencode = "latest"
 codex = "latest"
 "npm:playwright" = "latest"
 gemini = { version = "latest", allow_builds = ["@github/keytar", "node-pty"] }
-cloud-sql-proxy = "2.26.0"
+cloud-sql-proxy = "2.27.0"
 
 [settings]
 minimum_release_age = "0"

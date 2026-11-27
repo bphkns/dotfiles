@@ -7,9 +7,9 @@
     "allow": [
       "Browser(*)",
       "Bash(*)",
-      "Edit(*)",
-      "Write(*)",
-      "Read(*)",
+      "Edit",
+      "Write",
+      "Read",
       "MultiEdit(*)",
       "WebFetch(*)",
       "WebSearch(*)"

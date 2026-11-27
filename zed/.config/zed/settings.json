@@ -30,5 +30,30 @@
     "mode": "system",
     "light": "One Light",
     "dark": "One Dark"
-  }
+  },
+  "ssh_connections": [
+    {
+      "host": "bikash-laptop",
+      "username": "bikash",
+      "args": [],
+      "projects": [
+        {
+          "paths": [
+            "/home/bikash"
+          ]
+        },
+        {
+          "paths": [
+            "/home/bikash/work"
+          ]
+        },
+        {
+          "paths": [
+            "/home/bikash/work/v2"
+          ]
+        }
+      ],
+      "nickname": "work"
+    }
+  ]
 }
